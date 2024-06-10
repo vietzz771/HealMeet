@@ -75,7 +75,7 @@ const Header = () => {
     };
   }, []);
 
-  return (
+  return role !== 'admin' ? (
     <header className="header flex items-center" ref={headerRef}>
       <div className="container">
         <div className="flex items-center justify-between">
@@ -146,7 +146,7 @@ const Header = () => {
         </div>
       </div>
     </header>
-  );
+  ) : null;
 };
 
 export default Header;
