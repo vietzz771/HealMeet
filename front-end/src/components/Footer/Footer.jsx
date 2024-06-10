@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 import { AiFillYoutube, AiFillGithub, AiFillInstagram } from 'react-icons/ai';
+import {  useContext } from 'react';
+import { authContext } from '../../context/authContext';
 
 const socialLinks = [
   {
@@ -68,9 +70,10 @@ const quickLinks03 = [
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const { role } = useContext(authContext);
 
   return (
-    <footer className="pb-16 pt-10">
+    role !== "admin" ? (<footer className="pb-16 pt-10">
       <div className="container">
         <div className="flex justify-between flex-col md:flex-row flex-wrap gap-[30px]">
           <div>
@@ -121,7 +124,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
+    </footer>) : null
   );
 };
 
