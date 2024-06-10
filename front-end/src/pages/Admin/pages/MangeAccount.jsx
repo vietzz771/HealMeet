@@ -1,8 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminLayout from '../layout/AdminLayout';
-import { FaRegEdit } from 'react-icons/fa';
-import { FaRegTrashAlt } from 'react-icons/fa';
+import { FaRegEdit } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
 
@@ -12,7 +13,7 @@ import AddUserModal from '../components/AddUserModal';
 function ManageAccount() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
@@ -28,19 +29,19 @@ function ManageAccount() {
       const token = localStorage.getItem('token');
       const response = await axios.get('http://localhost:5000/api/users', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
         params: {
           page: currentPage,
-          limit: itemsPerPage,
-        },
+          limit: itemsPerPage
+        }
       });
       setTimeout(() => {
         setUsers(response.data.data);
         setIsLoadingData(false);
       }, 500);
     } catch (error) {
-      console.error('There was an error fetching the users!', error);
+      console.error("There was an error fetching the users!", error);
       setIsLoadingData(false);
     }
   };
@@ -55,11 +56,11 @@ function ManageAccount() {
   };
 
   const editUser = (userId, open) => {
-    const user = users.find((user) => user._id === userId);
+    const user = users.find(user => user._id === userId);
     setSelectedUser(user);
     setIsModalEditOpen(open);
   };
-  const addUser = (open) => {
+  const addUser = ( open) => {
     setIsModalAddOpen(open);
   };
   const deleteUser = async (userId) => {
@@ -67,12 +68,12 @@ function ManageAccount() {
       const token = localStorage.getItem('token');
       await axios.delete(`http://localhost:5000/api/users/${userId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       fetchUsers(); // Cập nhật lại danh sách người dùng sau khi xóa
     } catch (error) {
-      console.error('There was an error deleting the user!', error);
+      console.error("There was an error deleting the user!", error);
     }
   };
   const confirmDeleteUser = (userId) => {
@@ -83,16 +84,14 @@ function ManageAccount() {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
         deleteUser(userId);
       }
     });
   };
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -112,6 +111,7 @@ function ManageAccount() {
               className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3 relative"
               type="button"
               onClick={addUser}
+
             >
               Add User
               <svg
@@ -130,26 +130,15 @@ function ManageAccount() {
                 />
               </svg>
             </button>
+
+
+
           </div>
-          <label htmlFor="table-search" className="sr-only">
-            Search
-          </label>
+          <label htmlFor="table-search" className="sr-only">Search</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
+              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
               </svg>
             </div>
             <input
@@ -172,30 +161,32 @@ function ManageAccount() {
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
+
                   <th scope="col" className="px-6 py-3">
                     <div className="flex items-center">
                       Name
-                      <a href="#">
-                        <svg
-                          className="w-3 h-3 ms-1.5"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                        </svg>
-                      </a>
+                      <a href="#"><svg className="w-3 h-3 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                      </svg></a>
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Role</div>
+                    <div className="flex items-center">
+                      Role
+
+                    </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Gender</div>
+                    <div className="flex items-center">
+                      Gender
+
+                    </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Birthday</div>
+                    <div className="flex items-center">
+                      Birthday
+
+                    </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -203,17 +194,11 @@ function ManageAccount() {
                 </tr>
               </thead>
               <tbody>
-                {filteredUsers.slice(indexOfFirstItem, indexOfLastItem).map((user) => (
+                {filteredUsers.slice(indexOfFirstItem, indexOfLastItem).map(user => (
                   <tr key={user._id} className="bg-white border-b hover:bg-gray-50">
-                    <th
-                      scope="row"
-                      className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
-                    >
-                      <img
-                        className="w-10 h-10 rounded-full"
-                        src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/157961237_1328089080905245_5171334421315568845_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF99CmdNvNFHeSE2X2oAF2bSiHTP0RPzcdKIdM_RE_Nx8FryIGP6oPYsu-I6EnZ7dnlIf60FJas0IwShb7FDy2G&_nc_ohc=BlqSc2TXg_kQ7kNvgHi3uwO&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAlt-hNLXpzSV5iAkbgqLMhSl5m2b-Kr0m9DqZFaSxgIw&oe=66848460"
-                        alt={`${user.name} image`}
-                      />
+
+                    <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap">
+                      <img className="w-10 h-10 rounded-full" src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/157961237_1328089080905245_5171334421315568845_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF99CmdNvNFHeSE2X2oAF2bSiHTP0RPzcdKIdM_RE_Nx8FryIGP6oPYsu-I6EnZ7dnlIf60FJas0IwShb7FDy2G&_nc_ohc=BlqSc2TXg_kQ7kNvgHi3uwO&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAlt-hNLXpzSV5iAkbgqLMhSl5m2b-Kr0m9DqZFaSxgIw&oe=66848460" alt={`${user.name} image`} />
                       <div className="pl-3">
                         <div className="text-base font-semibold">{user.name}</div>
                         <div className="font-normal text-gray-500">{user.email}</div>
@@ -223,36 +208,33 @@ function ManageAccount() {
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.gender)}</td>
                     <td className="px-6 py-4">null</td>
                     <td className="px-6 py-4 ">
-                      <button
-                        className="text-blue-600 hover:underline flex items-center"
-                        onClick={() => editUser(user._id, true)}
-                      >
-                        <FaRegEdit className="mr-1" />
-                        Edit
-                      </button>
-                    </td>
-                    <td className="py-4">
-                      <button
-                        className="text-red-600 hover:underline flex items-center"
-                        onClick={() => confirmDeleteUser(user._id)}
-                      >
-                        <FaRegTrashAlt className="mr-1" />
-                        Delete
-                      </button>
-                    </td>
+  <button
+    className="text-blue-600 hover:underline flex items-center"
+    onClick={() => editUser(user._id, true)}
+  >
+    <FaRegEdit className="mr-1" />
+    Edit
+  </button>
+ 
+</td>
+<td className="py-4">
+<button
+    className="text-red-600 hover:underline flex items-center"
+    onClick={() => confirmDeleteUser(user._id)}
+  >
+    <FaRegTrashAlt className="mr-1" />
+    Delete
+  </button>
+</td>
+
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
         </div>
-        <nav
-          className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-          aria-label="Table navigation"
-        >
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">{`Showing ${
-            indexOfFirstItem + 1
-          }-${indexOfLastItem} of ${users.length}`}</span>
+        <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
+          <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">{`Showing ${indexOfFirstItem + 1}-${indexOfLastItem} of ${users.length}`}</span>
           <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
             <li>
               <button
@@ -266,9 +248,7 @@ function ManageAccount() {
             {Array.from({ length: totalPages }, (_, index) => (
               <li key={index}>
                 <button
-                  className={`flex items-center justify-center px-3 h-8 leading-tight bg-white border border-gray-300 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white ${
-                    currentPage === index + 1 ? 'text-blue-600 bg-blue-600' : 'text-gray-500'
-                  }`}
+                  className={`flex items-center justify-center px-3 h-8 leading-tight bg-white border border-gray-300 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white ${currentPage === index + 1 ? 'text-blue-600 bg-blue-600' : 'text-gray-500'}`}
                   onClick={() => paginate(index + 1)}
                 >
                   {index + 1}
@@ -287,6 +267,7 @@ function ManageAccount() {
           </ul>
         </nav>
 
+
         {isModalEditOpen && selectedUser && (
           <EditUserModal
             user={selectedUser}
@@ -295,8 +276,11 @@ function ManageAccount() {
             onClose={() => setIsModalEditOpen(false)}
           />
         )}
-        {isModalAddOpen && (
-          <AddUserModal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)} />
+         {isModalAddOpen  && (
+          <AddUserModal
+            isOpen={isModalAddOpen}
+            onClose={() => setIsModalAddOpen(false)}
+          />
         )}
       </div>
     </AdminLayout>

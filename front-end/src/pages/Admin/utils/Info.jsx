@@ -2,7 +2,12 @@
 import { useState } from 'react';
 import Transition from './Transition';
 
-function Info({ children, className, containerClassName }) {
+function Info({
+  children,
+  className,
+  containerClassName
+}) {
+
   const [infoOpen, setInfoOpen] = useState(false);
 
   return (

@@ -68,4 +68,6 @@ const CardDataStats = ({ count, label, percentage, link }) => {
   );
 };
 
+
+
 export default CardDataStats;

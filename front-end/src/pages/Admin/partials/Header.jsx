@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import  { useState } from 'react';
 
 import SearchModal from '../components/ModalSearch';
 import Notifications from '../components/DropdownNotifications';
@@ -26,11 +26,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
               }}
             >
               <span className="sr-only">Open sidebar</span>
-              <svg
-                className="w-6 h-6 fill-current"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <rect x="4" y="5" width="16" height="2" />
                 <rect x="4" y="11" width="16" height="2" />
                 <rect x="4" y="17" width="16" height="2" />
@@ -63,12 +59,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                   />
                 </svg>
               </button>
-              <SearchModal
-                id="search-modal"
-                searchId="search"
-                modalOpen={searchModalOpen}
-                setModalOpen={setSearchModalOpen}
-              />
+              <SearchModal id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
             </div>
             <Notifications align="right" />
             <Help align="right" />
