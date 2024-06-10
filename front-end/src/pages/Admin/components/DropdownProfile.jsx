@@ -1,7 +1,9 @@
-import  { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Transition from '../utils/Transition';
-
+import { authContext } from '../../../context/authContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function DropdownProfile({
   // eslint-disable-next-line react/prop-types
@@ -9,12 +11,13 @@ function DropdownProfile({
 }) {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const navigate = useNavigate();
   const trigger = useRef(null);
   const dropdown = useRef(null);
-const storedUsers = localStorage.getItem('user');
+  const storedUsers = localStorage.getItem('user');
   const users = storedUsers ? JSON.parse(storedUsers) : null;
-  
+  const { dispatch } = useContext(authContext);
+
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
@@ -35,7 +38,12 @@ const storedUsers = localStorage.getItem('user');
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
-
+  const handleLogout = () => {
+    setDropdownOpen(false);
+    dispatch({ type: 'LOGOUT' });
+    toast.success('Successfully logged out!');
+    navigate('/');
+  };
   return (
     <div className="relative inline-flex">
       <button
@@ -47,8 +55,9 @@ const storedUsers = localStorage.getItem('user');
       >
         <img className="w-8 h-8 rounded-full" src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/157961237_1328089080905245_5171334421315568845_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF99CmdNvNFHeSE2X2oAF2bSiHTP0RPzcdKIdM_RE_Nx8FryIGP6oPYsu-I6EnZ7dnlIf60FJas0IwShb7FDy2G&_nc_ohc=BlqSc2TXg_kQ7kNvgHi3uwO&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAlt-hNLXpzSV5iAkbgqLMhSl5m2b-Kr0m9DqZFaSxgIw&oe=66848460" width="32" height="32" alt="User" />
         <div className="flex items-center truncate">
-          <span className="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">{users.name}</span>
-          <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
+{users && (
+  <span className="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">{users.name}</span>
+)}          <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
             <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
           </svg>
         </div>
@@ -70,7 +79,10 @@ const storedUsers = localStorage.getItem('user');
           onBlur={() => setDropdownOpen(false)}
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
-            <div className="font-medium text-slate-800 dark:text-slate-100">{users.name}</div>
+          {users && (
+
+            <div className="font-medium text-slate-800 dark:text-slate-100">{users.name}</div>)}
+
             <div className="text-xs text-slate-500 dark:text-slate-400 italic">Administrator</div>
           </div>
           <ul>
@@ -86,8 +98,8 @@ const storedUsers = localStorage.getItem('user');
             <li>
               <Link
                 className="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
-                to="/signin"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                to="/login"
+                onClick={handleLogout}
               >
                 Sign Out
               </Link>
