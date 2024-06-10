@@ -32,8 +32,12 @@ const Login = () => {
       });
       setLoading(false);
       toast.success(message);
-      navigate('/home');
-    } catch (error) {
+      if(res.data.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/home');
+      } 
+       } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       toast.error(errorMessage);
       setLoading(false);
