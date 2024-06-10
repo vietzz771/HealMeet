@@ -11,10 +11,11 @@ function AddUserModal({ isOpen, onClose }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('patient');
-  const [gender, setGender] = useState('male');
-  const [birthday, setBirthday] = useState('');
+  const [gender, setGender] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [typeBlood, setTypeBlood] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
@@ -29,7 +30,7 @@ function AddUserModal({ isOpen, onClose }) {
         username,
         role,
         gender,
-        birthday,
+        typeBlood,
         phone,
         address,
       };
@@ -89,6 +90,42 @@ function AddUserModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
+
+                  <div className="col-span-2 sm:col-span-1">
+                    {' '}
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
                       htmlFor="password"
@@ -123,23 +160,7 @@ function AddUserModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
-                  <div className="col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
+
                   <div className="col-span-1">
                     <label
                       htmlFor="phone"
@@ -159,39 +180,22 @@ function AddUserModal({ isOpen, onClose }) {
                   </div>
                   <div className="col-span-1">
                     <label
-                      htmlFor="address"
+                      htmlFor="typeBlood"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Address
+                      Type Blood
                     </label>
                     <input
                       type="text"
-                      name="address"
-                      id="address"
+                      name="typeBlood"
+                      id="typeBlood"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
+                      value={typeBlood}
+                      onChange={(e) => setTypeBlood(e.target.value)}
                       required
                     />
                   </div>
 
-                  <div className="col-span-2 sm:col-span-1">
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
                       htmlFor="role"
@@ -224,22 +228,23 @@ function AddUserModal({ isOpen, onClose }) {
                     >
                       <option value="male">Male</option>
                       <option value="female">Female</option>
+                      <option value="female">Other</option>
                     </select>
                   </div>
-                  <div className="col-span-2 sm:col-span-1">
+                  <div className="col-span-2">
                     <label
-                      htmlFor="birthday"
+                      htmlFor="address"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Birthday
+                      Address
                     </label>
                     <input
-                      type="date"
-                      name="birthday"
-                      id="birthday"
+                      type="text"
+                      name="address"
+                      id="address"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={birthday}
-                      onChange={(e) => setBirthday(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                       required
                     />
                   </div>

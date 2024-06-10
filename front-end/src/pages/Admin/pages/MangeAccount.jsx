@@ -223,7 +223,7 @@ function ManageAccount() {
                       </div>
                     </th>
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.role)}</td>
-                    <td className="px-6 py-4">{capitalizeFirstLetter(user.phone)}</td>
+                    <td className="px-6 py-4">{user.phone}</td>
 
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.gender)}</td>
                     <td className="px-6 py-4">{user.bloodType}</td>
