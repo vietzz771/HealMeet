@@ -9,12 +9,16 @@ import MyAccount from '../components/Dashboard/User/MyAccount';
 import Dashboard from '../components/Dashboard/Doctor/Dashboard';
 
 import ProtectedRoute from './ProtectedRoute';
+import ProtectedRouteAdmin from './ProtectedRouteAdmin';
 
 import { Routes, Route } from 'react-router-dom';
-
+import DashboardAdmin from "../pages/Admin/pages/Dashboard";
+import ManageAccountAdmin from "../pages/Admin/pages/MangeAccount";
 const Routers = () => {
   return (
     <Routes>
+            
+
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/doctors" element={<Doctor />} />
@@ -39,7 +43,32 @@ const Routers = () => {
           </ProtectedRoute>
         }
       />
-    </Routes>
+      <Route
+    path="/admin/account"
+    element={
+      <ProtectedRoute allowedRoles={['admin']}>
+        <ManageAccountAdmin />
+      </ProtectedRoute>
+    }
+  />
+   <Route 
+        path="/admin" 
+        element={
+          <ProtectedRouteAdmin allowedRoles={['admin']}>
+            <DashboardAdmin />
+          </ProtectedRouteAdmin>
+        }
+      />  
+      <Route 
+        path="/admin/account" 
+        element={
+          <ProtectedRouteAdmin allowedRoles={['admin']}>
+            <ManageAccountAdmin />
+          </ProtectedRouteAdmin>
+        }
+      />
+
+   </Routes>
   );
 };
 
