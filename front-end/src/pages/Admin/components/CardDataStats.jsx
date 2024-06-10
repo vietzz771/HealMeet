@@ -67,5 +67,4 @@ const CardDataStats = ({ count, label, percentage, link }) => {
     </div>
   );
 };
-
 export default CardDataStats;
