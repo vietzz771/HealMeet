@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { IoClose } from "react-icons/io5";
+import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 
@@ -25,14 +25,14 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
         gender,
         birthday,
         phone,
-        address
+        address,
       };
 
       const token = localStorage.getItem('token');
       await axios.put(`http://localhost:5000/api/users/${user._id}`, updatedUserData, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       onClose();
@@ -48,10 +48,10 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
     <div>
       {/* Main modal */}
       {isOpen && (
-        <div 
-          id="crud-modal" 
-          tabIndex="-1" 
-          aria-hidden="true" 
+        <div
+          id="crud-modal"
+          tabIndex="-1"
+          aria-hidden="true"
           className="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50"
         >
           <div className="relative p-4 w-full max-w-md max-h-full">
@@ -59,12 +59,10 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Edit User
-                </h3>
-                <button 
-                  type="button" 
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Edit User</h3>
+                <button
+                  type="button"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   onClick={onClose}
                 >
                   <IoClose className="w-3 h-3" />
@@ -75,82 +73,82 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
               <form className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
-                    <label 
-                      htmlFor="name" 
+                    <label
+                      htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Name
                     </label>
-                    <input 
-                      type="text" 
-                      name="name" 
-                      id="name" 
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
                     />
                   </div>
                   <div className="col-span-1">
-                    <label 
-                      htmlFor="phone" 
+                    <label
+                      htmlFor="phone"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Phone
                     </label>
-                    <input 
-                      type="tel" 
-                      name="phone" 
-                      id="phone" 
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                    <input
+                      type="tel"
+                      name="phone"
+                      id="phone"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       required
                     />
                   </div>
                   <div className="col-span-1">
-                    <label 
-                      htmlFor="address" 
+                    <label
+                      htmlFor="address"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Address
                     </label>
-                    <input 
-                      type="text" 
-                      name="address" 
-                      id="address" 
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                    <input
+                      type="text"
+                      name="address"
+                      id="address"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       required
                     />
                   </div>
                   <div className="col-span-2 sm:col-span-1">
-                    <label 
-                      htmlFor="email" 
+                    <label
+                      htmlFor="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Email
                     </label>
-                    <input 
-                      type="email" 
-                      name="email" 
-                      id="email" 
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
                   <div className="col-span-2 sm:col-span-1">
-                    <label 
-                      htmlFor="role" 
+                    <label
+                      htmlFor="role"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Role
                     </label>
-                    <select 
-                      id="role" 
+                    <select
+                      id="role"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={role}
                       onChange={(e) => setRole(e.target.value)}
@@ -160,14 +158,14 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
                     </select>
                   </div>
                   <div className="col-span-2 sm:col-span-1">
-                    <label 
-                      htmlFor="gender" 
+                    <label
+                      htmlFor="gender"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Gender
                     </label>
-                    <select 
-                      id="gender" 
+                    <select
+                      id="gender"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
@@ -177,23 +175,22 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
                     </select>
                   </div>
                   <div className="col-span-2 sm:col-span-1">
-                    <label 
-                      htmlFor="birthday" 
+                    <label
+                      htmlFor="birthday"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Birthday
                     </label>
-                    <input 
-                      type="date" 
-                      name="birthday" 
-                      id="birthday" 
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                    <input
+                      type="date"
+                      name="birthday"
+                      id="birthday"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       value={birthday}
                       onChange={(e) => setBirthday(e.target.value)}
                       required
                     />
                   </div>
-                  
                 </div>
                 <div className="flex items-center justify-between">
                   {isLoading ? (
