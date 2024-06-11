@@ -192,10 +192,13 @@ function ManageAccount() {
                     <div className="flex items-center">Role</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center">Phone</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     <div className="flex items-center">Gender</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Birthday</div>
+                    <div className="flex items-center">Blood Type</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -220,12 +223,21 @@ function ManageAccount() {
                       </div>
                     </th>
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.role)}</td>
+                    <td className="px-6 py-4">{user.phone}</td>
+
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.gender)}</td>
-                    <td className="px-6 py-4">null</td>
+                    <td className="px-6 py-4">{user.bloodType}</td>
                     <td className="px-6 py-4 ">
                       <button
-                        className="text-blue-600 hover:underline flex items-center"
-                        onClick={() => editUser(user._id, true)}
+                        className={`text-blue-600 hover:underline flex items-center ${
+                          user.role === 'admin' ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                        onClick={() => {
+                          if (user.role !== 'admin') {
+                            editUser(user._id, true);
+                          }
+                        }}
+                        disabled={user.role === 'admin'}
                       >
                         <FaRegEdit className="mr-1" />
                         Edit
@@ -233,8 +245,15 @@ function ManageAccount() {
                     </td>
                     <td className="py-4">
                       <button
-                        className="text-red-600 hover:underline flex items-center"
-                        onClick={() => confirmDeleteUser(user._id)}
+                        className={`text-red-600 hover:underline flex items-center ${
+                          user.role === 'admin' ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                        onClick={() => {
+                          if (user.role !== 'admin') {
+                            confirmDeleteUser(user._id);
+                          }
+                        }}
+                        disabled={user.role === 'admin'}
                       >
                         <FaRegTrashAlt className="mr-1" />
                         Delete

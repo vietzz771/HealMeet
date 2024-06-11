@@ -11,11 +11,11 @@ function DropdownProfile({
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const { dispatch } = useContext(authContext);
   const trigger = useRef(null);
   const dropdown = useRef(null);
   const storedUsers = localStorage.getItem('user');
   const users = storedUsers ? JSON.parse(storedUsers) : null;
-  const { dispatch } = useContext(authContext);
 
   // close on click outside
   useEffect(() => {

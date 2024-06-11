@@ -1,69 +1,49 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react';
-import { RiMoreFill } from 'react-icons/ri';
+// CardDataStats.js
 
-const CardDataStats = ({ count, label, percentage, link }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
+const CardDataStats = ({ title, total, rate, levelUp, levelDown, children }) => {
   return (
-    <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-      <div className="flex justify-between mb-4">
-        <div>
-          <div className="flex items-center mb-1">
-            <div className="text-2xl font-semibold">{count}</div>
-            {percentage && (
-              <div className="p-1 rounded bg-emerald-500/10 text-emerald-500 text-[12px] font-semibold leading-none ml-2">
-                {percentage}
-              </div>
-            )}
-          </div>
-          <div className="text-sm font-medium text-gray-400">{label}</div>
-        </div>
-        <div className="relative">
-          <button
-            type="button"
-            className="text-gray-400 hover:text-gray-600"
-            onClick={toggleDropdown}
-          >
-            <RiMoreFill />
-          </button>
-          {dropdownOpen && (
-            <ul className="absolute right-0 mt-2 py-1.5 rounded-md bg-white border border-gray-100 shadow-md shadow-black/5 z-30 w-full max-w-[140px]">
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                >
-                  Profile
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                >
-                  Logout
-                </a>
-              </li>
-            </ul>
-          )}
-        </div>
+    <div className="rounded-sm border border-stroke bg-white py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark px-8">
+      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+        {children}
       </div>
-      <a href={link} className="text-[#f84525] font-medium text-sm hover:text-red-800">
-        View
-      </a>
+
+      <div className="mt-4 flex items-end justify-between">
+        <div>
+          <h4 className="text-title-md font-bold text-black dark:text-white">{total}</h4>
+          <span className="text-sm font-medium">{title}</span>
+        </div>
+
+        <span
+          className={`flex items-center gap-1 text-sm font-medium ${levelUp ? 'text-meta-3' : ''} ${
+            levelDown ? 'text-meta-5' : ''
+          }`}
+        >
+          {rate}
+
+          {levelUp && (
+            <svg
+              className="fill-meta-3"
+              width="10"
+              height="11"
+              viewBox="0 0 10 11"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849Z" />
+            </svg>
+          )}
+          {levelDown && (
+            <svg
+              fill="#f56565" // Màu fill cụ thể
+              width="10"
+              height="11"
+              viewBox="0 0 10 11"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M5.64284 7.69237L9.09102 4.33987L10 5.22362L5 10.0849L-8.98488e-07 5.22362L0.908973 4.33987L4.35716 7.69237L4.35716 0.0848701L5.64284 0.0848704L5.64284 7.69237Z" />
+            </svg>
+          )}
+        </span>
+      </div>
     </div>
   );
 };

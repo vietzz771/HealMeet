@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import logoWhite from '../../../assets/images/logoWhite.png';
-
 import SidebarLinkGroup from './SidebarLinkGroup';
+import { authContext } from '../../../context/authContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -11,12 +13,17 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
-
+  const navigate = useNavigate();
+  const { dispatch } = useContext(authContext);
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
-
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    toast.success('Successfully logged out!');
+    navigate('/');
+  };
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
@@ -354,70 +361,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               </span>
                             </NavLink>
                           </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/settings/apps"
-                              className={({ isActive }) =>
-                                'block transition duration-150 truncate ' +
-                                (isActive
-                                  ? 'text-indigo-500'
-                                  : 'text-slate-400 hover:text-slate-200')
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Connected Apps
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/settings/plans"
-                              className={({ isActive }) =>
-                                'block transition duration-150 truncate ' +
-                                (isActive
-                                  ? 'text-indigo-500'
-                                  : 'text-slate-400 hover:text-slate-200')
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Plans
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/settings/billing"
-                              className={({ isActive }) =>
-                                'block transition duration-150 truncate ' +
-                                (isActive
-                                  ? 'text-indigo-500'
-                                  : 'text-slate-400 hover:text-slate-200')
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Billing & Invoices
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/settings/feedback"
-                              className={({ isActive }) =>
-                                'block transition duration-150 truncate ' +
-                                (isActive
-                                  ? 'text-indigo-500'
-                                  : 'text-slate-400 hover:text-slate-200')
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Give Feedback
-                              </span>
-                            </NavLink>
-                          </li>
                         </ul>
                       </div>
                     </React.Fragment>
@@ -484,33 +427,23 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                           <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/signin"
-                              className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Sign in
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/signup"
-                              className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Sign up
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
                               to="/reset-password"
                               className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
                             >
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Reset Password
+                              </span>
+                            </NavLink>
+                          </li>
+                          <li className="mb-1 last:mb-0">
+                            <NavLink
+                              end
+                              to="/login"
+                              onClick={handleLogout}
+                              className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
+                            >
+                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                Sign out
                               </span>
                             </NavLink>
                           </li>
