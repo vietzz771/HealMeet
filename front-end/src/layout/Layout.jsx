@@ -1,6 +1,6 @@
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
-import Routers from "../routes/Routers";
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
+import Routers from '../routes/Routers';
 
 const Layout = () => {
   return (
@@ -11,7 +11,7 @@ const Layout = () => {
       </main>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

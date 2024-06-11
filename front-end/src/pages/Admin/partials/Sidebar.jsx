@@ -207,6 +207,55 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   );
                 }}
               </SidebarLinkGroup>
+              {/*  Manage Doctor*/}
+              <SidebarLinkGroup activecondition={pathname.includes('doctor')}>
+                {() => {
+                  return (
+                    <React.Fragment>
+                      <NavLink
+                        end
+                        to="/admin/doctor"
+                        className={({ isActive }) =>
+                          'block transition duration-150 truncate ' +
+                          (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
+                        }
+                      >
+                        <a
+                          href="#0"
+                          className={`block text-slate-200 truncate transition duration-150 ${
+                            pathname.includes('ecommerce')
+                              ? 'hover:text-slate-200'
+                              : 'hover:text-white'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                                />
+                              </svg>
+
+                              <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                Manage Doctor
+                              </span>
+                            </div>
+                          </div>
+                        </a>
+                      </NavLink>
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
               {/*  Manage Appointment*/}
               <SidebarLinkGroup activecondition={pathname.includes('appointment')}>
                 {() => {

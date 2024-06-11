@@ -8,6 +8,8 @@ import ChartOne from '../charts/ChartOne';
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [users, setUsers] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -21,9 +23,24 @@ function Dashboard() {
       console.error('There was an error fetching the users!', error);
     }
   };
-
+  const fetchDoctors = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/doctors', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setTimeout(() => {
+        setDoctors(response.data.data);
+      }, 500);
+    } catch (error) {
+      console.error('There was an error fetching the doctors!', error);
+    }
+  };
   useEffect(() => {
     fetchUsers();
+    fetchDoctors();
   }, []);
   return (
     <AdminLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
@@ -32,7 +49,12 @@ function Dashboard() {
         <WelcomeBanner />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-          <CardDataStats title="Total Users" total={users.length} rate="0.43%" levelUp>
+          <CardDataStats
+            title="Total Account"
+            total={users.length + doctors.length}
+            rate="0.43%"
+            levelUp
+          >
             <svg
               className="fill-primary dark:fill-white"
               width="22"
@@ -58,7 +80,7 @@ function Dashboard() {
         </div>
 
         <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-          <ChartOne users={users} />
+          <ChartOne users={users} doctors={doctors} />
         </div>
       </div>
     </AdminLayout>
