@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import HashLoader from 'react-spinners/HashLoader';
 import instance from '../../../utils/http';
-import { token } from '../../../config';
+import { getToken } from '../../../config';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import Loading from '../../Loader/Loading';
 
 const Profile = ({ user }) => {
+  const token = getToken();
   const [formData, setFormData] = useState({
     name: '',
     email: '',

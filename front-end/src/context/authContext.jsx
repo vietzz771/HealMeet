@@ -27,6 +27,9 @@ const authReducer = (state, action) => {
       };
 
     case 'LOGOUT':
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
       return {
         user: null,
         role: null,
@@ -42,9 +45,15 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(state.user));
-    localStorage.setItem('token', state.token);
-    localStorage.setItem('role', state.role);
+    if (state.user === null && state.token === null && state.role === null) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+    } else {
+      localStorage.setItem('user', JSON.stringify(state.user));
+      localStorage.setItem('token', state.token);
+      localStorage.setItem('role', state.role);
+    }
   }, [state]);
 
   return (
