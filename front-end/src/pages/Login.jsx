@@ -32,12 +32,12 @@ const Login = () => {
       });
       setLoading(false);
       toast.success(message);
-      if(res.data.role === 'admin') {
+      if (res.data.role === 'admin') {
         navigate('/admin');
       } else {
         navigate('/home');
-      } 
-       } catch (error) {
+      }
+    } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       toast.error(errorMessage);
       setLoading(false);
@@ -85,7 +85,10 @@ const Login = () => {
                 />
               </div>
               <div className="mt-7 px-[30px] lg:px-0">
-                <button type="submit" className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3">
+                <button
+                  type="submit"
+                  className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
+                >
                   {loading ? <HashLoader size={35} color="#ffffff" /> : 'Login'}
                 </button>
               </div>

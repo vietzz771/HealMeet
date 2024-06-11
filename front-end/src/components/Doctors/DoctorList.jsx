@@ -5,6 +5,7 @@ import Error from '../../components/Error/Error';
 
 const DoctorList = () => {
   const { data: doctors, loading, error } = useInstanceData('doctors');
+  console.log(doctors);
   return (
     <>
       {loading && <Loader />}
