@@ -3,7 +3,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import instance from '../../utils/http';
-import { token } from '../../config';
+import { getToken } from '../../config';
 import HashLoader from 'react-spinners/HashLoader';
 
 const FeedbackForm = () => {
@@ -12,6 +12,7 @@ const FeedbackForm = () => {
   const [reviewText, setReviewText] = useState('');
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const token = getToken();
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();

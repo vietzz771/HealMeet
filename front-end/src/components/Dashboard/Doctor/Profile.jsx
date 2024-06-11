@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import instance from '../../../utils/http';
-import { token } from '../../../config';
+import { getToken } from '../../../config';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import Loading from '../../Loader/Loading';
 
 const Profile = ({ doctor }) => {
+  const token = getToken();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
