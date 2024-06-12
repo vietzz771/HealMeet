@@ -4,6 +4,7 @@ import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 import AdminLayout from '../layout/AdminLayout';
 import CardDataStats from '../components/CardDataStats';
 import ChartOne from '../charts/ChartOne';
+import ChartTwo from '../charts/ChartTwo';
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -79,8 +80,13 @@ function Dashboard() {
           </CardDataStats>
         </div>
 
-        <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-          <ChartOne users={users} doctors={doctors} />
+        <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5 mt-4 md:mt-6 2xl:mt-7.5">
+          <div className="col-span-12 lg:col-span-4">
+            <ChartOne users={users} doctors={doctors} />
+          </div>
+          <div className="col-span-12 lg:col-span-8">
+            <ChartTwo users={users} doctors={doctors} />
+          </div>
         </div>
       </div>
     </AdminLayout>

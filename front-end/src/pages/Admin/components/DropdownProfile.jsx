@@ -53,13 +53,7 @@ function DropdownProfile({
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
       >
-        <img
-          className="w-8 h-8 rounded-full"
-          src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/157961237_1328089080905245_5171334421315568845_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF99CmdNvNFHeSE2X2oAF2bSiHTP0RPzcdKIdM_RE_Nx8FryIGP6oPYsu-I6EnZ7dnlIf60FJas0IwShb7FDy2G&_nc_ohc=BlqSc2TXg_kQ7kNvgHi3uwO&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAlt-hNLXpzSV5iAkbgqLMhSl5m2b-Kr0m9DqZFaSxgIw&oe=66848460"
-          width="32"
-          height="32"
-          alt="User"
-        />
+        <img className="w-8 h-8 rounded-full" width="32" height="32" alt={'Admin'} />
         <div className="flex items-center truncate">
           {users && (
             <span className="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">

@@ -332,7 +332,11 @@ function ManageDoctor() {
           />
         )}
         {isModalAddOpen && (
-          <AddDoctorModal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)} />
+          <AddDoctorModal
+            onAddSuccess={fetchDoctors}
+            isOpen={isModalAddOpen}
+            onClose={() => setIsModalAddOpen(false)}
+          />
         )}
       </div>
     </AdminLayout>

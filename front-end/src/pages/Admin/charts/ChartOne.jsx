@@ -6,8 +6,8 @@ const options = {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
   },
-  colors: ['#6577F3', '#8FD0EF', '#0FADCF'],
-  labels: ['Patient', 'Doctor', 'Admin'],
+  colors: ['#6577F3', '#8FD0EF', '#0FADCF', '#508ac0'],
+  labels: ['Patient', 'Doctor', 'Admin', 'SuperAdmin'],
   legend: {
     show: false,
     position: 'bottom',
@@ -51,7 +51,9 @@ const ChartOne = ({ users = [], doctors = [] }) => {
       const adminCount = users.filter((user) => user.role === 'admin').length;
       const doctorCount = doctors.length;
       const patientCount = users.filter((user) => user.role === 'patient').length;
-      setSeries([patientCount, doctorCount, adminCount]);
+      const superAdminCount = users.filter((user) => user.role === 'superAdmin').length;
+
+      setSeries([patientCount, doctorCount, adminCount, superAdminCount]);
     }
   }, [users, doctors]);
 
@@ -135,6 +137,15 @@ const ChartOne = ({ users = [], doctors = [] }) => {
               <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
                 <span> Admin </span>
                 <span> {((series[2] / (users.length + doctors.length)) * 100).toFixed(2)}% </span>
+              </p>
+            </div>
+          </div>
+          <div className="w-full px-8">
+            <div className="flex w-full items-center">
+              <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#508ac0]"></span>
+              <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+                <span> Super Admin </span>
+                <span> {((series[3] / (users.length + doctors.length)) * 100).toFixed(2)}% </span>
               </p>
             </div>
           </div>

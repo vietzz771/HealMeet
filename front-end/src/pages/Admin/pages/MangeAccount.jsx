@@ -214,7 +214,7 @@ function ManageAccount() {
                     >
                       <img
                         className="w-10 h-10 rounded-full"
-                        src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/157961237_1328089080905245_5171334421315568845_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF99CmdNvNFHeSE2X2oAF2bSiHTP0RPzcdKIdM_RE_Nx8FryIGP6oPYsu-I6EnZ7dnlIf60FJas0IwShb7FDy2G&_nc_ohc=BlqSc2TXg_kQ7kNvgHi3uwO&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAlt-hNLXpzSV5iAkbgqLMhSl5m2b-Kr0m9DqZFaSxgIw&oe=66848460"
+                        src={user.photo}
                         alt={`${user.name} image`}
                       />
                       <div className="pl-3">
@@ -230,14 +230,15 @@ function ManageAccount() {
                     <td className="px-6 py-4 ">
                       <button
                         className={`text-blue-600 hover:underline flex items-center ${
-                          user.role === 'admin' ? 'opacity-50 cursor-not-allowed' : ''
+                          user.role === 'admin' || user.role === 'superAdmin'
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
                         }`}
                         onClick={() => {
-                          if (user.role !== 'admin') {
+                          if (user.role !== 'admin' || user.role === 'superAdmin') {
                             editUser(user._id, true);
                           }
                         }}
-                        disabled={user.role === 'admin'}
                       >
                         <FaRegEdit className="mr-1" />
                         Edit
@@ -246,14 +247,16 @@ function ManageAccount() {
                     <td className="py-4">
                       <button
                         className={`text-red-600 hover:underline flex items-center ${
-                          user.role === 'admin' ? 'opacity-50 cursor-not-allowed' : ''
+                          user.role === 'admin' || user.role === 'superAdmin'
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
                         }`}
                         onClick={() => {
-                          if (user.role !== 'admin') {
+                          if (user.role !== 'admin' || user.role === 'superAdmin') {
                             confirmDeleteUser(user._id);
                           }
                         }}
-                        disabled={user.role === 'admin'}
+                        disabled={user.role === 'admin' || user.role === 'superAdmin'}
                       >
                         <FaRegTrashAlt className="mr-1" />
                         Delete
@@ -315,7 +318,11 @@ function ManageAccount() {
           />
         )}
         {isModalAddOpen && (
-          <AddUserModal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)} />
+          <AddUserModal
+            onAddSuccess={fetchUsers}
+            isOpen={isModalAddOpen}
+            onClose={() => setIsModalAddOpen(false)}
+          />
         )}
       </div>
     </AdminLayout>

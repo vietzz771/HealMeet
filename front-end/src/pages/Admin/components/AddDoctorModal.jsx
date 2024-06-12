@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
-import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
+// import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 
-function AddDoctorModal({ isOpen, onClose }) {
+function AddDoctorModal({ isOpen, onClose, onAddSuccess }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('doctor');
   const [gender, setGender] = useState('');
   const [phone, setPhone] = useState('');
-  const [photo, setPhoto] = useState('');
+  // const [photo, setPhoto] = useState('');
   const [ticketPrice, setTicketPrice] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +32,7 @@ function AddDoctorModal({ isOpen, onClose }) {
         role,
         gender,
         phone,
-        photo,
+        // photo,
         ticketPrice,
         specialization,
         isApproved,
@@ -46,6 +46,7 @@ function AddDoctorModal({ isOpen, onClose }) {
       });
 
       console.log('Doctor added successfully:', response.data);
+      onAddSuccess();
       onClose();
     } catch (error) {
       console.error('Error adding doctor:', error);
@@ -54,20 +55,20 @@ function AddDoctorModal({ isOpen, onClose }) {
     }
   };
 
-  const handleFileInputChange = async (e) => {
-    setIsLoading(true);
-    try {
-      const file = e.target.files[0];
-      // Implement the function uploadImageToCloudinary or any similar function
-      const data = await uploadImageToCloudinary(file);
-      console.log(data);
-      setPhoto(data?.url);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const handleFileInputChange = async (e) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const file = e.target.files[0];
+  //     // Implement the function uploadImageToCloudinary or any similar function
+  //     const data = await uploadImageToCloudinary(file);
+  //     console.log(data);
+  //     setPhoto(data?.url);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div>
@@ -271,7 +272,7 @@ function AddDoctorModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
-                  <div className="col-span-2">
+                  {/* <div className="col-span-2">
                     <label
                       htmlFor="photo"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -286,7 +287,7 @@ function AddDoctorModal({ isOpen, onClose }) {
                       accept=".jpg, .png"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex items-center justify-between">
                   {isLoading ? (

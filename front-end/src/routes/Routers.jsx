@@ -60,7 +60,7 @@ const Routers = () => {
         }
       />
       <Route
-        path="/admin/account"
+        path="/admin/user"
         element={
           <ProtectedRouteAdmin allowedRoles={['admin']}>
             <ManageAccountAdmin />
