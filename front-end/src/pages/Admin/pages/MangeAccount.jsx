@@ -36,8 +36,10 @@ function ManageAccount() {
           limit: itemsPerPage,
         },
       });
+      const filteredUsers = response.data.data.filter((user) => user.role !== 'doctor');
+
       setTimeout(() => {
-        setUsers(response.data.data);
+        setUsers(filteredUsers);
         setIsLoadingData(false);
       }, 500);
     } catch (error) {
@@ -70,6 +72,7 @@ function ManageAccount() {
           Authorization: `Bearer ${token}`,
         },
       });
+
       fetchUsers(); // Cập nhật lại danh sách người dùng sau khi xóa
     } catch (error) {
       console.error('There was an error deleting the user!', error);

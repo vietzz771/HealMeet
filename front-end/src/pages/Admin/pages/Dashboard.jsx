@@ -9,7 +9,6 @@ import ChartTwo from '../charts/ChartTwo';
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [users, setUsers] = useState([]);
-  const [doctors, setDoctors] = useState([]);
 
   const fetchUsers = async () => {
     try {
@@ -24,25 +23,11 @@ function Dashboard() {
       console.error('There was an error fetching the users!', error);
     }
   };
-  const fetchDoctors = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/doctors', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setTimeout(() => {
-        setDoctors(response.data.data);
-      }, 500);
-    } catch (error) {
-      console.error('There was an error fetching the doctors!', error);
-    }
-  };
+
   useEffect(() => {
     fetchUsers();
-    fetchDoctors();
   }, []);
+
   return (
     <AdminLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
       <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
@@ -50,12 +35,7 @@ function Dashboard() {
         <WelcomeBanner />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-          <CardDataStats
-            title="Total Account"
-            total={users.length + doctors.length}
-            rate="0.43%"
-            levelUp
-          >
+          <CardDataStats title="Total Account" total={users.length} rate="0.43%" levelUp>
             <svg
               className="fill-primary dark:fill-white"
               width="22"
@@ -82,10 +62,10 @@ function Dashboard() {
 
         <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5 mt-4 md:mt-6 2xl:mt-7.5">
           <div className="col-span-12 lg:col-span-4">
-            <ChartOne users={users} doctors={doctors} />
+            <ChartOne users={users} />
           </div>
           <div className="col-span-12 lg:col-span-8">
-            <ChartTwo users={users} doctors={doctors} />
+            <ChartTwo users={users} />
           </div>
         </div>
       </div>
