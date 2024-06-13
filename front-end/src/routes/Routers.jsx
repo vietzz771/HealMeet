@@ -14,6 +14,7 @@ import ProtectedRouteAdmin from './ProtectedRouteAdmin';
 import { Routes, Route } from 'react-router-dom';
 import DashboardAdmin from "../pages/Admin/pages/Dashboard";
 import ManageAccountAdmin from "../pages/Admin/pages/MangeAccount";
+import MangeAdminAccount from '../pages/Admin/pages/MangeAdminAccount';
 const Routers = () => {
   return (
     <Routes>
@@ -43,6 +44,7 @@ const Routers = () => {
           </ProtectedRoute>
         }
       />
+      {/* Admin */}
       <Route
     path="/admin/account"
     element={
@@ -67,8 +69,34 @@ const Routers = () => {
           </ProtectedRouteAdmin>
         }
       />
+{/* Super Admin */}
+  <Route
+  path="/super-admin/account"
+  element={
+    <ProtectedRoute allowedRoles={['superAdmin']}>
+      <MangeAdminAccount />
+    </ProtectedRoute>
+  }
+/>
+ <Route 
+      path="/super-admin" 
+      element={
+        <ProtectedRouteAdmin allowedRoles={['superAdmin']}>
+          <DashboardAdmin />
+        </ProtectedRouteAdmin>
+      }
+    />  
+    <Route 
+      path="/super-admin/account" 
+      element={
+        <ProtectedRouteAdmin allowedRoles={['superAdmin']}>
+          <MangeAdminAccount />
+        </ProtectedRouteAdmin>
+      }
+    />
 
-   </Routes>
+ </Routes>
+
   );
 };
 
