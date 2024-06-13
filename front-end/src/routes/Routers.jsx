@@ -43,6 +43,7 @@ const Routers = () => {
           </ProtectedRoute>
         }
       />
+      {/* Admin */}
       <Route
         path="/admin/account"
         element={
@@ -67,6 +68,33 @@ const Routers = () => {
           </ProtectedRouteAdmin>
         }
       />
+{/* Super Admin */}
+  <Route
+  path="/super-admin/account"
+  element={
+    <ProtectedRoute allowedRoles={['superAdmin']}>
+      <MangeAdminAccount />
+    </ProtectedRoute>
+  }
+/>
+ <Route 
+      path="/super-admin" 
+      element={
+        <ProtectedRouteAdmin allowedRoles={['superAdmin']}>
+          <DashboardAdmin />
+        </ProtectedRouteAdmin>
+      }
+    />  
+    <Route 
+      path="/super-admin/account" 
+      element={
+        <ProtectedRouteAdmin allowedRoles={['superAdmin']}>
+          <MangeAdminAccount />
+        </ProtectedRouteAdmin>
+      }
+    />
+
+ </Routes>
       <Route
         path="/admin/doctor"
         element={
