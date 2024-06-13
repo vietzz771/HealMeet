@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { authContext } from '../../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import avt from '../../../assets/images/defaultAvatar.jpg';
 
 import MyBookings from './MyBookings';
 import Profile from './Profile';
@@ -34,7 +35,11 @@ const MyAccount = () => {
             <div className="pb-[50px] px-[30px] rounded-md">
               <div className="flex items-center justify-center">
                 <figure className="w-[100px] h-[100px] rounded-full border-2 border-solid border-primaryColor">
-                  <img src={userData?.photo} alt="" className="w-full h-full rounded-full" />
+                  <img
+                    src={userData?.photo ? userData.photo : avt}
+                    alt=""
+                    className="w-full h-full rounded-full"
+                  />
                 </figure>
               </div>
               <div className="text-center mt-4">

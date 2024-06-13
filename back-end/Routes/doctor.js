@@ -1,18 +1,24 @@
-import {updateDoctor, deleteDoctor, getAllDoctor, getSingleDoctor, getDoctorProfile} from '../Controllers/doctorController.js';
+import {
+  updateDoctor,
+  deleteDoctor,
+  getAllDoctor,
+  getSingleDoctor,
+  getDoctorProfile,
+} from "../Controllers/doctorController.js";
 import express from "express";
-import {authenticate, restrict} from '../auth/verifyToken.js';
-import reviewRoute from './review.js';
+import { authenticate, restrict } from "../auth/verifyToken.js";
+import reviewRoute from "./review.js";
 
 const router = express.Router();
 
-//nested route
-router.use('/:doctorId/reviews', reviewRoute);
+// Nested route
+router.use("/:doctorId/reviews", reviewRoute);
 
-router.get('/:id', getSingleDoctor);
-router.get('/', getAllDoctor);
-router.put('/:id', authenticate, restrict(["doctor"]), updateDoctor);
-router.delete('/:id', authenticate, restrict(["doctor"]), deleteDoctor);
-router.get('/profile/me', authenticate, restrict(["doctor"]), getDoctorProfile);
-
+// Routes
+router.get("/:id", getSingleDoctor);
+router.get("/", getAllDoctor);
+router.put("/:id", authenticate, restrict(["doctor", "admin"]), updateDoctor);
+router.delete("/:id", authenticate, restrict(["doctor", "admin"]), deleteDoctor);
+router.get("/profile/me", authenticate, restrict(["doctor", "admin"]), getDoctorProfile);
 
 export default router;

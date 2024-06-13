@@ -5,29 +5,30 @@ import { FaRegEdit } from 'react-icons/fa';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa6';
 
-import EditUserModal from '../components/EditUserModal';
-import AddUserModal from '../components/AddUserModal';
+import AddDoctorModal from '../components/AddDoctorModal';
 
-function ManageAccount() {
+import EditDoctorModal from '../components/EditDoctorModal';
+
+function ManageDoctor() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [users, setUsers] = useState([]);
-
+  const [doctors, setDoctors] = useState([]);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
 
-  const fetchUsers = async () => {
+  const fetchDoctors = async () => {
     setIsLoadingData(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users', {
+      const response = await axios.get('http://localhost:5000/api/doctors', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -36,19 +37,18 @@ function ManageAccount() {
           limit: itemsPerPage,
         },
       });
-      const filteredUsers = response.data.data.filter((user) => user.role !== 'doctor');
-
       setTimeout(() => {
-        setUsers(filteredUsers);
+        setDoctors(response.data.data);
         setIsLoadingData(false);
       }, 500);
     } catch (error) {
-      console.error('There was an error fetching the users!', error);
+      console.error('There was an error fetching the doctors!', error);
       setIsLoadingData(false);
     }
   };
+
   useEffect(() => {
-    fetchUsers();
+    fetchDoctors();
   }, [currentPage, searchQuery]);
 
   const capitalizeFirstLetter = (string) => {
@@ -56,29 +56,28 @@ function ManageAccount() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const editUser = (userId, open) => {
-    const user = users.find((user) => user._id === userId);
-    setSelectedUser(user);
+  const editDoctor = (doctorId, open) => {
+    const doctor = doctors.find((doctor) => doctor._id === doctorId);
+    setSelectedDoctor(doctor);
     setIsModalEditOpen(open);
   };
-  const addUser = (open) => {
+  const addDoctor = (open) => {
     setIsModalAddOpen(open);
   };
-  const deleteUser = async (userId) => {
+  const deleteDoctor = async (doctorId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
+      await axios.delete(`http://localhost:5000/api/doctors/${doctorId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      fetchUsers(); // Cập nhật lại danh sách người dùng sau khi xóa
+      fetchDoctors(); // Cập nhật lại danh sách người dùng sau khi xóa
     } catch (error) {
-      console.error('There was an error deleting the user!', error);
+      console.error('There was an error deleting the doctor!', error);
     }
   };
-  const confirmDeleteUser = (userId) => {
+  const confirmDeleteDoctor = (doctorId) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -89,18 +88,18 @@ function ManageAccount() {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteUser(userId);
+        deleteDoctor(doctorId);
       }
     });
   };
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const totalPages = Math.ceil(doctors.length / itemsPerPage);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -114,9 +113,9 @@ function ManageAccount() {
               id="dropdownActionButton"
               className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3 relative"
               type="button"
-              onClick={addUser}
+              onClick={addDoctor}
             >
-              Add User
+              Add Doctor
               <svg
                 className="w-4 h-4 ml-1"
                 viewBox="0 0 20 20"
@@ -157,9 +156,9 @@ function ManageAccount() {
             </div>
             <input
               type="text"
-              id="table-search-users"
+              id="table-search-doctors"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search for users"
+              placeholder="Search for doctor"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -195,53 +194,67 @@ function ManageAccount() {
                     <div className="flex items-center">Role</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center">Specialization</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center">Rate</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center">Ticket Price</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     <div className="flex items-center">Phone</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
                     <div className="flex items-center">Gender</div>
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Blood Type</div>
-                  </th>
+
                   <th scope="col" className="px-6 py-3">
                     Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredUsers.slice(indexOfFirstItem, indexOfLastItem).map((user) => (
-                  <tr key={user._id} className="bg-white border-b hover:bg-gray-50">
+                {filteredDoctors.slice(indexOfFirstItem, indexOfLastItem).map((doctor) => (
+                  <tr key={doctor._id} className="bg-white border-b hover:bg-gray-50">
                     <th
                       scope="row"
                       className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
                     >
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={user.photo}
-                        alt={`${user.name} image`}
+                        src={doctor.photo}
+                        alt={`${doctor.name} image`}
                       />
                       <div className="pl-3">
-                        <div className="text-base font-semibold">{user.name}</div>
-                        <div className="font-normal text-gray-500">{user.email}</div>
+                        <div className="text-base font-semibold">{doctor.name}</div>
+                        <div className="font-normal text-gray-500">{doctor.email}</div>
                       </div>
                     </th>
-                    <td className="px-6 py-4">{capitalizeFirstLetter(user.role)}</td>
-                    <td className="px-6 py-4">{user.phone}</td>
+                    <td className="px-6 py-4">{capitalizeFirstLetter(doctor.role)}</td>
+                    <td className="px-6 py-4">{capitalizeFirstLetter(doctor.specialization)}</td>
+                    <td className="px-6 py-4 ">
+                      <div className="flex items-center">
+                        {doctor.averageRating}
+                        <FaStar className="ml-1 text-yellow-400" />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">{doctor.ticketPrice} $</td>
+                    <td className="px-6 py-4">{doctor.phone}</td>
 
-                    <td className="px-6 py-4">{capitalizeFirstLetter(user.gender)}</td>
-                    <td className="px-6 py-4">{user.bloodType}</td>
+                    <td className="px-6 py-4">{capitalizeFirstLetter(doctor.gender)}</td>
+
                     <td className="px-6 py-4 ">
                       <button
                         className={`text-blue-600 hover:underline flex items-center ${
-                          user.role === 'admin' || user.role === 'superAdmin'
-                            ? 'opacity-50 cursor-not-allowed'
-                            : ''
+                          doctor.role === 'admin' ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                         onClick={() => {
-                          if (user.role !== 'admin' || user.role === 'superAdmin') {
-                            editUser(user._id, true);
+                          if (doctor.role !== 'admin') {
+                            editDoctor(doctor._id, true);
                           }
                         }}
+                        disabled={doctor.role === 'admin'}
                       >
                         <FaRegEdit className="mr-1" />
                         Edit
@@ -250,16 +263,14 @@ function ManageAccount() {
                     <td className="py-4">
                       <button
                         className={`text-red-600 hover:underline flex items-center ${
-                          user.role === 'admin' || user.role === 'superAdmin'
-                            ? 'opacity-50 cursor-not-allowed'
-                            : ''
+                          doctor.role === 'admin' ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                         onClick={() => {
-                          if (user.role !== 'admin' || user.role === 'superAdmin') {
-                            confirmDeleteUser(user._id);
+                          if (doctor.role !== 'admin') {
+                            confirmDeleteDoctor(doctor._id);
                           }
                         }}
-                        disabled={user.role === 'admin' || user.role === 'superAdmin'}
+                        disabled={doctor.role === 'admin'}
                       >
                         <FaRegTrashAlt className="mr-1" />
                         Delete
@@ -277,7 +288,7 @@ function ManageAccount() {
         >
           <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">{`Showing ${
             indexOfFirstItem + 1
-          }-${indexOfLastItem} of ${users.length}`}</span>
+          }-${indexOfLastItem} of ${doctors.length}`}</span>
           <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
             <li>
               <button
@@ -312,17 +323,17 @@ function ManageAccount() {
           </ul>
         </nav>
 
-        {isModalEditOpen && selectedUser && (
-          <EditUserModal
-            user={selectedUser}
+        {isModalEditOpen && selectedDoctor && (
+          <EditDoctorModal
+            doctor={selectedDoctor}
             isOpen={isModalEditOpen}
-            onUpdateSuccess={fetchUsers}
+            onUpdateSuccess={fetchDoctors}
             onClose={() => setIsModalEditOpen(false)}
           />
         )}
         {isModalAddOpen && (
-          <AddUserModal
-            onAddSuccess={fetchUsers}
+          <AddDoctorModal
+            onAddSuccess={fetchDoctors}
             isOpen={isModalAddOpen}
             onClose={() => setIsModalAddOpen(false)}
           />
@@ -332,4 +343,4 @@ function ManageAccount() {
   );
 }
 
-export default ManageAccount;
+export default ManageDoctor;

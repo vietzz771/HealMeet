@@ -15,7 +15,7 @@ const Layout = () => {
       </main>
       {!isAdminRoute && <Footer />}
     </>
-  )
-}
+  );
+};
 
 export default Layout;

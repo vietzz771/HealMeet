@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useContext, useState } from 'react';
 import logo from '../../assets/images/logo.png';
-import userImg from '../../assets/images/avatar-icon.png';
+import userImg from '../../assets/images/defaultAvatar.jpg';
 import { NavLink, Link } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import { authContext } from '../../context/authContext';
@@ -42,7 +42,7 @@ const Header = () => {
       headerRef.current.classList.remove('sticky__header');
     }
   }, []);
-
+  console.log(user);
   const toggleMenu = () => menuRef.current.classList.toggle('sticky__menu');
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const Header = () => {
     };
   }, []);
 
-  return (
+  return role !== 'admin' ? (
     <header className="header flex items-center" ref={headerRef}>
       <div className="container">
         <div className="flex items-center justify-between">
@@ -106,7 +106,11 @@ const Header = () => {
                 <div className="flex items-center gap-4 cursor-pointer" onClick={toggleDropdown}>
                   <h2 className="capitalize font-medium">{user?.name}</h2>
                   <figure className="w-[35px] h-[35px] rounded-full">
-                    <img src={userImg} className="w-full rounded-full" alt="user" />
+                    <img
+                      src={user?.photo ? user.photo : userImg}
+                      className="w-full rounded-full"
+                      alt="user"
+                    />
                   </figure>
                   <AiOutlineDown />
                 </div>
@@ -146,7 +150,7 @@ const Header = () => {
         </div>
       </div>
     </header>
-  );
+  ) : null;
 };
 
 export default Header;
