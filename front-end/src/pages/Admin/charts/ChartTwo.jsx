@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
-const ChartTwo = ({ users, doctors }) => {
+const ChartTwo = ({ users }) => {
   const [chartData, setChartData] = useState({
     series: [],
     options: {
@@ -58,7 +58,7 @@ const ChartTwo = ({ users, doctors }) => {
   });
 
   useEffect(() => {
-    if (users.length > 0 || doctors.length > 0) {
+    if (users.length > 0) {
       const monthCounts = Array(12).fill(0);
 
       const roles = ['admin', 'doctor', 'patient', 'superAdmin'];
@@ -78,13 +78,6 @@ const ChartTwo = ({ users, doctors }) => {
         roleCounts[role][month]++;
       });
 
-      doctors.forEach((doctor) => {
-        const createdAt = new Date(doctor.createdAt);
-        const month = createdAt.getMonth();
-        monthCounts[month]++;
-        roleCounts['doctor'][month]++;
-      });
-
       const seriesData = roles.map((role) => ({
         name: role.charAt(0).toUpperCase() + role.slice(1), // Chuyển đổi chữ cái đầu tiên thành chữ hoa
         data: roleCounts[role],
@@ -95,7 +88,7 @@ const ChartTwo = ({ users, doctors }) => {
         series: seriesData,
       }));
     }
-  }, [users, doctors]);
+  }, [users]);
 
   return (
     <div id="chart">
