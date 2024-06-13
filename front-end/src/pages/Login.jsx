@@ -34,6 +34,8 @@ const Login = () => {
       toast.success(message);
       if (res.data.role === 'admin') {
         navigate('/admin');
+      } else if (res.data.role === 'superAdmin') {
+        navigate('/super-admin');
       } else {
         navigate('/home');
       }
