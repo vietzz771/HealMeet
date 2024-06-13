@@ -15,20 +15,10 @@ const router = express.Router();
 router.use("/:doctorId/reviews", reviewRoute);
 
 // Routes
-router.get("/:id", authenticate, restrict(["admin"]), getSingleDoctor);
-router.get("/", authenticate, restrict(["admin"]), getAllDoctor);
-router.put("/:id", authenticate, restrict(["doctor", "admin"]), updateDoctor);
-router.delete(
-  "/:id",
-  authenticate,
-  restrict(["doctor", "admin"]),
-  deleteDoctor
-);
-router.get(
-  "/profile/me",
-  authenticate,
-  restrict(["doctor", "admin"]),
-  getDoctorProfile
-);
+router.get("/:id", getSingleDoctor);
+router.get("/", getAllDoctor);
+router.put("/:id", authenticate, restrict(["doctor, admin"]), updateDoctor);
+router.delete("/:id", authenticate, restrict(["doctor, admin"]), deleteDoctor);
+router.get("/profile/me", authenticate, restrict(["doctor, admin"]), getDoctorProfile);
 
 export default router;
