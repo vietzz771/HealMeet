@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
-
+import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
+import { LuUpload } from 'react-icons/lu';
 function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -12,6 +13,8 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
   const [bloodType, setBloodType] = useState(user.bloodType);
   const [phone, setPhone] = useState(user.phone);
   const [address, setAddress] = useState(user.address);
+  const [photo, setPhoto] = useState(user.photo);
+
   const [isLoading, setIsLoading] = useState(false);
   if (!isOpen) return null;
 
@@ -26,6 +29,7 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
         bloodType,
         phone,
         address,
+        photo,
       };
 
       const token = localStorage.getItem('token');
@@ -43,7 +47,19 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
       setIsLoading(false);
     }
   };
-
+  const handleFileInputChange = async (e) => {
+    setIsLoading(true);
+    try {
+      const file = e.target.files[0];
+      const data = await uploadImageToCloudinary(file);
+      console.log(data);
+      setPhoto(data?.url);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div>
       {/* Main modal */}
@@ -154,7 +170,6 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
                       onChange={(e) => setRole(e.target.value)}
                     >
                       <option value="patient">Patient</option>
-                      <option value="doctor">Doctor</option>
                     </select>
                   </div>
                   <div className="col-span-2 sm:col-span-1">
@@ -190,6 +205,31 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
                       onChange={(e) => setBloodType(e.target.value)}
                       required
                     />
+                  </div>
+                  <div className=" col-span-2 flex items-center gap-3">
+                    {photo && (
+                      <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
+                        {isLoading && <FaSpinner />}
+                        {!isLoading && <img src={photo} alt="" className="w-full rounded-full" />}
+                      </figure>
+                    )}
+                    <div className="relative w-[130px] h-[50px]">
+                      <input
+                        type="file"
+                        name="photo"
+                        id="customFile"
+                        onChange={handleFileInputChange}
+                        accept=".jpg, .png"
+                        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                      <label
+                        htmlFor="customFile"
+                        className="absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden  font-semibold rounded-lg truncate cursor-pointer"
+                      >
+                        Upload Photo
+                        <LuUpload className="ml-1 w-4 h-4 flex-shrink-0" />
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">

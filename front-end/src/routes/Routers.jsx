@@ -12,13 +12,13 @@ import ProtectedRoute from './ProtectedRoute';
 import ProtectedRouteAdmin from './ProtectedRouteAdmin';
 
 import { Routes, Route } from 'react-router-dom';
-import DashboardAdmin from "../pages/Admin/pages/Dashboard";
-import ManageAccountAdmin from "../pages/Admin/pages/MangeAccount";
+import DashboardAdmin from '../pages/Admin/pages/Dashboard';
+import ManageAccountAdmin from '../pages/Admin/pages/MangeAccount';
+import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
+
 const Routers = () => {
   return (
     <Routes>
-            
-
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/doctors" element={<Doctor />} />
@@ -44,31 +44,38 @@ const Routers = () => {
         }
       />
       <Route
-    path="/admin/account"
-    element={
-      <ProtectedRoute allowedRoles={['admin']}>
-        <ManageAccountAdmin />
-      </ProtectedRoute>
-    }
-  />
-   <Route 
-        path="/admin" 
+        path="/admin/account"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ManageAccountAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
         element={
           <ProtectedRouteAdmin allowedRoles={['admin']}>
             <DashboardAdmin />
           </ProtectedRouteAdmin>
         }
-      />  
-      <Route 
-        path="/admin/account" 
+      />
+      <Route
+        path="/admin/user"
         element={
           <ProtectedRouteAdmin allowedRoles={['admin']}>
             <ManageAccountAdmin />
           </ProtectedRouteAdmin>
         }
       />
-
-   </Routes>
+      <Route
+        path="/admin/doctor"
+        element={
+          <ProtectedRouteAdmin allowedRoles={['admin']}>
+            <ManageDoctorAdmin />
+          </ProtectedRouteAdmin>
+        }
+      />
+    </Routes>
   );
 };
 
