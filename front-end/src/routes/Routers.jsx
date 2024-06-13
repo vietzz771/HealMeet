@@ -9,7 +9,6 @@ import MyAccount from '../components/Dashboard/User/MyAccount';
 import Dashboard from '../components/Dashboard/Doctor/Dashboard';
 
 import ProtectedRoute from './ProtectedRoute';
-import ProtectedRouteAdmin from './ProtectedRouteAdmin';
 
 import { Routes, Route } from 'react-router-dom';
 import DashboardAdmin from '../pages/Admin/pages/Dashboard';
@@ -56,17 +55,25 @@ const Routers = () => {
       <Route
         path="/admin"
         element={
-          <ProtectedRouteAdmin allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin']}>
             <DashboardAdmin />
-          </ProtectedRouteAdmin>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/admin/user"
         element={
-          <ProtectedRouteAdmin allowedRoles={['admin']}>
+          <ProtectedRoute allowedRoles={['admin']}>
             <ManageAccountAdmin />
-          </ProtectedRouteAdmin>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/doctor"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ManageDoctorAdmin />
+          </ProtectedRoute>
         }
       />
       {/* Super Admin */}
@@ -81,25 +88,9 @@ const Routers = () => {
       <Route
         path="/super-admin"
         element={
-          <ProtectedRouteAdmin allowedRoles={['superAdmin']}>
+          <ProtectedRoute allowedRoles={['superAdmin']}>
             <DashboardAdmin />
-          </ProtectedRouteAdmin>
-        }
-      />
-      <Route
-        path="/super-admin/account"
-        element={
-          <ProtectedRouteAdmin allowedRoles={['superAdmin']}>
-            <SuperAdmin />
-          </ProtectedRouteAdmin>
-        }
-      />
-      <Route
-        path="/admin/doctor"
-        element={
-          <ProtectedRouteAdmin allowedRoles={['admin']}>
-            <ManageDoctorAdmin />
-          </ProtectedRouteAdmin>
+          </ProtectedRoute>
         }
       />
     </Routes>
