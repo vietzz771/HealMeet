@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 
 const ChartTwo = ({ users }) => {
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [chartData, setChartData] = useState({
     series: [],
     options: {
       chart: {
         type: 'bar',
-        height: 500,
+        height: 460,
       },
       plotOptions: {
         bar: {
@@ -70,7 +72,12 @@ const ChartTwo = ({ users }) => {
         superAdmin: Array(12).fill(0),
       };
 
-      users.forEach((user) => {
+      const filteredUsers = users.filter((user) => {
+        const userYear = new Date(user.createdAt).getFullYear();
+        return userYear === selectedYear;
+      });
+
+      filteredUsers.forEach((user) => {
         const createdAt = new Date(user.createdAt);
         const month = createdAt.getMonth();
         const role = user.role;
@@ -88,10 +95,34 @@ const ChartTwo = ({ users }) => {
         series: seriesData,
       }));
     }
-  }, [users]);
+  }, [users, selectedYear]);
+
+  const handleYearChange = (event) => {
+    setSelectedYear(parseInt(event.target.value));
+  };
+
+  const getYears = () => {
+    const years = [];
+    for (let i = 0; i < 3; i++) {
+      years.push(currentYear - i);
+    }
+    return years;
+  };
 
   return (
-    <div id="chart">
+    <div
+      id="chart"
+      className="sm:px-7.5 col-span-12 rounded-xl border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5"
+    >
+      <div className="flex justify-end mb-2 mt-2">
+        <select onChange={handleYearChange} value={selectedYear}>
+          {getYears().map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+      </div>
       <Chart
         options={chartData.options}
         series={chartData.series}

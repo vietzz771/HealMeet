@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import HashLoader from 'react-spinners/HashLoader';
 import instance from '../utils/http';
 import { authContext } from '../context/authContext.jsx';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,39 @@ const Login = () => {
       toast.error(errorMessage);
       setLoading(false);
     }
+  };
+
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    setLoading(true);
+    try {
+      const res = await instance.post(`auth/google-login`, {
+        token: credentialResponse.credential,
+      });
+      const { message, token, data, role } = res.data;
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        payload: {
+          user: data,
+          token,
+          role,
+        },
+      });
+      toast.success(message);
+      setLoading(false);
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/home');
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message;
+      toast.error(errorMessage);
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLoginFailure = () => {
+    toast.error('Google Login Failed');
   };
 
   return (
@@ -99,6 +133,13 @@ const Login = () => {
                 </Link>
               </p>
             </form>
+            <div className="mt-5 px-[30px] lg:px-0 text-center">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginFailure}
+                useOneTap
+              />
+            </div>
           </div>
         </div>
       </div>

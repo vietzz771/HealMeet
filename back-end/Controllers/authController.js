@@ -2,6 +2,9 @@ import User from "../models/UserSchema.js";
 import Doctor from "../models/DoctorSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { OAuth2Client } from "google-auth-library";
+import moment from "moment";
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
@@ -60,7 +63,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const addAdmin = async(req,res) => {
+export const addAdmin = async (req, res) => {
   try {
     // Destructure user data from request body
     const { name, email, password, gender } = req.body;
@@ -68,7 +71,7 @@ export const addAdmin = async(req,res) => {
     // Check if email is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already exists' });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
     // Hash the password
@@ -80,21 +83,21 @@ export const addAdmin = async(req,res) => {
       email,
       password: hashedPassword,
       gender,
-      role: 'admin'
+      role: "admin",
     });
 
     // Save the user to the database
     await newUser.save();
 
     // Return success message
-    res.status(201).json({ message: 'User registered successfully' });
+    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error registering user:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-}
-export const login = async(req, res) => {
-  const {email} = req.body;
+};
+export const login = async (req, res) => {
+  const { email } = req.body;
   try {
     let user = null;
     const patient = await User.findOne({ email });
@@ -136,5 +139,47 @@ export const login = async(req, res) => {
     });
   } catch (error) {
     res.status(500).json({ status: false, message: "Failed to login!" });
+  }
+};
+const generateRandomPassword = () => {
+  return Math.random().toString(36).slice(-8);
+};
+
+export const googleLogin = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { name, email, picture } = ticket.getPayload();
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const randomPassword = generateRandomPassword();
+
+      user = new User({
+        name,
+        email,
+        password: randomPassword,
+        picture,
+        role: "patient",
+      });
+      await user.save();
+    }
+
+    const authToken = generateToken(user);
+    res.status(200).json({
+      status: true,
+      message: "Successfully logged in with Google",
+      token: authToken,
+      data: user,
+      role: user.role,
+    });
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(400).json({ message: "Invalid Google token" });
   }
 };
