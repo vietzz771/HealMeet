@@ -9,7 +9,7 @@ const ChartTwo = ({ users }) => {
     options: {
       chart: {
         type: 'bar',
-        height: 460,
+        height: 420,
       },
       plotOptions: {
         bar: {

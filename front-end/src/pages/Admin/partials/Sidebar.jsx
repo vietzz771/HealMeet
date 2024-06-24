@@ -6,6 +6,12 @@ import SidebarLinkGroup from './SidebarLinkGroup';
 import { authContext } from '../../../context/authContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { FaUserMd } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
+import { BsBarChart } from 'react-icons/bs';
+import { GrSchedule } from 'react-icons/gr';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { RiLoginCircleLine } from 'react-icons/ri';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -132,21 +138,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
-                                />
-                              </svg>
-
+                              <BsBarChart className="w-6 h-6" />
                               <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Dashboard
                               </span>
@@ -181,20 +173,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                                />
-                              </svg>
+                              <FaUser className="w-6 h-6" />
 
                               <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Manage User
@@ -230,20 +209,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                                />
-                              </svg>
+                              <FaUserMd className="w-6 h-6" />
 
                               <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Manage Doctor
@@ -279,20 +245,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-                                />
-                              </svg>
+                              <GrSchedule className="w-6 h-6" />
 
                               <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Manage Appointment
@@ -325,40 +278,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                              <path
-                                className={`fill-current ${
-                                  pathname.includes('settings')
-                                    ? 'text-indigo-500'
-                                    : 'text-slate-600'
-                                }`}
-                                d="M19.714 14.7l-7.007 7.007-1.414-1.414 7.007-7.007c-.195-.4-.298-.84-.3-1.286a3 3 0 113 3 2.969 2.969 0 01-1.286-.3z"
-                              />
-                              <path
-                                className={`fill-current ${
-                                  pathname.includes('settings')
-                                    ? 'text-indigo-300'
-                                    : 'text-slate-400'
-                                }`}
-                                d="M10.714 18.3c.4-.195.84-.298 1.286-.3a3 3 0 11-3 3c.002-.446.105-.885.3-1.286l-6.007-6.007 1.414-1.414 6.007 6.007z"
-                              />
-                              <path
-                                className={`fill-current ${
-                                  pathname.includes('settings')
-                                    ? 'text-indigo-500'
-                                    : 'text-slate-600'
-                                }`}
-                                d="M5.7 10.714c.195.4.298.84.3 1.286a3 3 0 11-3-3c.446.002.885.105 1.286.3l7.007-7.007 1.414 1.414L5.7 10.714z"
-                              />
-                              <path
-                                className={`fill-current ${
-                                  pathname.includes('settings')
-                                    ? 'text-indigo-300'
-                                    : 'text-slate-400'
-                                }`}
-                                d="M19.707 9.292a3.012 3.012 0 00-1.415 1.415L13.286 5.7c-.4.195-.84.298-1.286.3a3 3 0 113-3 2.969 2.969 0 01-.3 1.286l5.007 5.006z"
-                              />
-                            </svg>
+                            <IoSettingsOutline className="w-6 h-6" />
                             <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                               Settings
                             </span>
@@ -444,16 +364,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                              <path
-                                className="fill-current text-slate-600"
-                                d="M8.07 16H10V8H8.07a8 8 0 110 8z"
-                              />
-                              <path
-                                className="fill-current text-slate-400"
-                                d="M15 12L8 6v5H0v2h8v5z"
-                              />
-                            </svg>
+                            <RiLoginCircleLine className="w-6 h-6" />
                             <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                               Authentication
                             </span>
