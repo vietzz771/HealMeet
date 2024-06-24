@@ -14,6 +14,8 @@ import { Routes, Route } from 'react-router-dom';
 import DashboardAdmin from '../pages/Admin/pages/Dashboard';
 import ManageAccountAdmin from '../pages/Admin/pages/MangeAccount';
 import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
+import ManageAppointmentAdmin from '../pages/Admin/pages/ManageAppointment';
+
 import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
 
 const Routers = () => {
@@ -73,6 +75,14 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <ManageDoctorAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/appointment"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ManageAppointmentAdmin />
           </ProtectedRoute>
         }
       />

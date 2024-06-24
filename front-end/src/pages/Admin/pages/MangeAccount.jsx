@@ -291,8 +291,10 @@ function ManageAccount() {
             {Array.from({ length: totalPages }, (_, index) => (
               <li key={index}>
                 <button
-                  className={`flex items-center justify-center px-3 h-8 leading-tight bg-white border border-gray-300 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white ${
-                    currentPage === index + 1 ? 'text-blue-600 bg-blue-600' : 'text-gray-500'
+                  className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 dark:border-gray-700 ${
+                    currentPage === index + 1
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-500 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white'
                   }`}
                   onClick={() => paginate(index + 1)}
                 >
