@@ -3,6 +3,7 @@ import Contact from '../pages/Contact';
 import Login from '../pages/Login';
 import Services from '../pages/Services';
 import Signup from '../pages/Signup';
+import ForgotPassword from '../pages/ForgotPassword';
 import Doctor from '../pages/Doctors/Doctor';
 import DoctorDetails from '../pages/Doctors/DoctorDetails';
 import MyAccount from '../components/Dashboard/User/MyAccount';
@@ -27,6 +28,8 @@ const Routers = () => {
       <Route path="/doctors/:id" element={<DoctorDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
       <Route

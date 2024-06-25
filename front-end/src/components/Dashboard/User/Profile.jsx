@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 import HashLoader from 'react-spinners/HashLoader';
 import instance from '../../../utils/http';
 import { getToken } from '../../../config';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import Loading from '../../Loader/Loading';
+import { authContext } from '../../../context/authContext';
 
 const Profile = ({ user }) => {
+  const { dispatch } = useContext(authContext);
+
   const token = getToken();
   const [formData, setFormData] = useState({
     name: '',
@@ -57,6 +60,15 @@ const Profile = ({ user }) => {
       const { message } = await res.data;
       setLoading(false);
       toast.success(message);
+      dispatch({
+        type: 'UPDATE_PROFILE',
+        payload: {
+          user: {
+            ...authContext.user,
+            ...formData,
+          },
+        },
+      });
       navigate('/users/profile/me');
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;

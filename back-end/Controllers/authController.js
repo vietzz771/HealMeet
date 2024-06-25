@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { OAuth2Client } from "google-auth-library";
 import moment from "moment";
+import nodemailer from "nodemailer";
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateToken = (user) => {
@@ -96,6 +98,7 @@ export const addAdmin = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const login = async (req, res) => {
   const { email } = req.body;
   try {
@@ -141,6 +144,7 @@ export const login = async (req, res) => {
     res.status(500).json({ status: false, message: "Failed to login!" });
   }
 };
+
 const generateRandomPassword = () => {
   return Math.random().toString(36).slice(-8);
 };
@@ -181,5 +185,103 @@ export const googleLogin = async (req, res) => {
   } catch (error) {
     console.error("Google login error:", error);
     res.status(400).json({ message: "Invalid Google token" });
+  }
+};
+//change password
+export const changePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    let user = null;
+    if (req.role === "patient") {
+      user = await User.findById(req.userId);
+    } else if (req.role === "doctor") {
+      user = await Doctor.findById(req.userId);
+    }
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify current password
+    const isPasswordMatch = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+    if (!isPasswordMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update password in database
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password successfully updated" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+// forgot password
+// Function to send email
+const sendEmail = async (email, newPassword) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.MAIL_USERNAME, // Your Gmail username
+      pass: process.env.MAIL_PASSWORD, // Your Gmail password
+    },
+  });
+  console.log("process.env.EMAIL_USER", process.env.MAIL_USERNAME);
+  console.log("process.env.EMAIL_USER", process.env.MAIL_USERNAME);
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Forgot Password - Reset",
+    text: `Your new password is: ${newPassword}`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await Doctor.findOne({ email });
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate new random password
+    const newPassword = generateRandomPassword();
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update user's password in database
+    user.password = hashedPassword;
+    await user.save();
+
+    // Send email with new password
+    await sendEmail(email, newPassword);
+
+    res
+      .status(200)
+      .json({ message: "New password has been sent to your email" });
+  } catch (error) {
+    console.error("Error in forgotPassword:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
