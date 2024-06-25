@@ -51,6 +51,16 @@ const Tabs = ({ tab, setTab }) => {
         >
           Profile
         </button>
+        <button
+          onClick={() => setTab('changePassword')}
+          className={`${
+            tab === 'changePassword'
+              ? 'bg-indigo-100 text-primaryColor'
+              : 'bg-transparent text-headingColor'
+          } w-full btn mt-0 rounded-md`}
+        >
+          Change Password
+        </button>
         <div className="mt-[100px] w-full">
           <button
             onClick={handleLogout}
