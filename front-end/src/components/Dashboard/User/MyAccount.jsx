@@ -11,6 +11,7 @@ import Error from '../../Error/Error';
 import useGetProfile from '../../../hooks/useInstanceData';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
 import useScrollTop from '../../../hooks/useScrollTop';
+import ChangePassword from '../Doctor/ChangePassword';
 
 const MyAccount = () => {
   useDocumentTitle('HealMeet | Profile');
@@ -76,7 +77,7 @@ const MyAccount = () => {
                     tab === 'settings' && 'bg-primaryColor text-white font-normal'
                   } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
                 >
-                  Profile Settings
+                  Profile Settings2
                 </button>
                 <button
                   onClick={() => setTab('bookings')}
@@ -86,9 +87,18 @@ const MyAccount = () => {
                 >
                   My Bookings
                 </button>
+                <button
+                  onClick={() => setTab('changePassword')}
+                  className={`${
+                    tab === 'changePassword' && 'bg-primaryColor text-white font-normal'
+                  } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+                >
+                  Change Password
+                </button>
               </div>
               {tab === 'bookings' && <MyBookings />}
               {tab === 'settings' && <Profile user={userData} />}
+              {tab === 'changePassword' && <ChangePassword />}
             </div>
           </div>
         )}
