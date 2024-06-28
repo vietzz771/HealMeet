@@ -195,7 +195,14 @@ export const changePassword = async (req, res) => {
     let user = null;
     if (req.role === "patient") {
       user = await User.findById(req.userId);
-    } else if (req.role === "doctor") {
+    }
+    else if (req.role === "admin") {
+      user = await User.findById(req.userId);
+    }
+    else if (req.role === "superAdmin") {
+      user = await User.findById(req.userId);
+    }
+     else if (req.role === "doctor") {
       user = await Doctor.findById(req.userId);
     }
 
