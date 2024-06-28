@@ -5,7 +5,6 @@ import { FaRegEdit } from 'react-icons/fa';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
-
 import EditUserModal from '../components/EditUserModal';
 import AddUserModal from '../components/AddUserModal';
 
