@@ -285,7 +285,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             </div>
                           </div>
                         </a>
-                        <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                        <div className=" lg:sidebar-expanded:block 2xl:block">
                           <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
                             <li className="mb-1 last:mb-0">
                               <NavLink
@@ -366,7 +366,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             </div>
                           </div>
                         </a>
-                        <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                        <div className=" lg:sidebar-expanded:block 2xl:block">
                           <ul className={`pl-9 mt-1 ${!open && 'hidden'}`}>
                             <li className="mb-1 last:mb-0">
                               <NavLink
@@ -375,7 +375,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
                               >
                                 <span className=" text-base font-medium text-bodydark1   2xl:opacity-100 duration-200">
-                                  Reset Password
+                                  Change Password
                                 </span>
                               </NavLink>
                             </li>
