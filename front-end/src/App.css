@@ -56,6 +56,14 @@ body {
 .Toastify__toast-container--top-right {
   margin-top: 100px;
 }
+
+.react-datepicker__input-container input {
+  padding: 10px 50px !important;
+}
+.react-datepicker__calendar-icon {
+  padding: 12px 20px 5px 20px !important;
+}
+
 @media only screen and (max-width: 768px) {
   .navigation {
     width: 100%;

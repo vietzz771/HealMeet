@@ -7,6 +7,7 @@ import Doctor from '../pages/Doctors/Doctor';
 import DoctorDetails from '../pages/Doctors/DoctorDetails';
 import MyAccount from '../components/Dashboard/User/MyAccount';
 import Dashboard from '../components/Dashboard/Doctor/Dashboard';
+import PaymentFormWrapper from '../pages/PaymentFormWrapper';
 
 import ProtectedRoute from './ProtectedRoute';
 
@@ -27,6 +28,7 @@ const Routers = () => {
       <Route path="/register" element={<Signup />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/payment/:id" element={<PaymentFormWrapper />} />
       <Route
         path="/users/profile/me"
         element={

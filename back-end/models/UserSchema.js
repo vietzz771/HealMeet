@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
     },
     gender: { type: String, enum: ["male", "female", "other"] },
     bloodType: { type: String },
-    appointments: [{ type: mongoose.Types.ObjectId, ref: "Appointment" }],
+    appointments: [{ type: mongoose.Types.ObjectId, ref: "Booking" }],
   },
   {
     timestamps: true,

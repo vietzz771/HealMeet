@@ -9,6 +9,7 @@ const MyBookings = () => {
     loading,
     error,
   } = useGetBookings('users/appointments/my-appointments');
+  console.log(appointment);
   return (
     <div>
       {loading && <Loading />}
