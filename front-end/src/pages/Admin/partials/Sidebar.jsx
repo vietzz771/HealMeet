@@ -290,7 +290,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             <li className="mb-1 last:mb-0">
                               <NavLink
                                 end
-                                to="/settings/account"
+                                to="/admin/profile"
                                 className={({ isActive }) =>
                                   'block transition duration-150 truncate ' +
                                   (isActive
@@ -371,7 +371,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             <li className="mb-1 last:mb-0">
                               <NavLink
                                 end
-                                to="/reset-password"
+                                to="/admin/change-password"
                                 className="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
                               >
                                 <span className=" text-base font-medium text-bodydark1   2xl:opacity-100 duration-200">

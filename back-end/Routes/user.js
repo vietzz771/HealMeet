@@ -18,4 +18,5 @@ router.delete("/:id", authenticate, restrict(["patient", "admin", "superAdmin"])
 router.get("/profile/me", authenticate, restrict(["patient"]), getUserProfile);
 router.get("/appointments/my-appointments", authenticate, restrict(["patient"]), getMyAppointment);
 
+
 export default router;
