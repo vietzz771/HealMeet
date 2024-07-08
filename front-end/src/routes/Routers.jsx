@@ -3,6 +3,7 @@ import Contact from '../pages/Contact';
 import Login from '../pages/Login';
 import Services from '../pages/Services';
 import Signup from '../pages/Signup';
+import ForgotPassword from '../pages/ForgotPassword';
 import Doctor from '../pages/Doctors/Doctor';
 import DoctorDetails from '../pages/Doctors/DoctorDetails';
 import MyAccount from '../components/Dashboard/User/MyAccount';
@@ -15,6 +16,8 @@ import { Routes, Route } from 'react-router-dom';
 import DashboardAdmin from '../pages/Admin/pages/Dashboard';
 import ManageAccountAdmin from '../pages/Admin/pages/MangeAccount';
 import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
+import ManageAppointmentAdmin from '../pages/Admin/pages/ManageAppointment';
+
 import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
 
 const Routers = () => {
@@ -26,6 +29,8 @@ const Routers = () => {
       <Route path="/doctors/:id" element={<DoctorDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
       <Route path="/payment/:id" element={<PaymentFormWrapper />} />
@@ -75,6 +80,14 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <ManageDoctorAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/appointment"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ManageAppointmentAdmin />
           </ProtectedRoute>
         }
       />

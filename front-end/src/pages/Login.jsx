@@ -107,6 +107,7 @@ const Login = () => {
                   required
                 />
               </div>
+
               <div className="mb-5 px-[30px] lg:px-0">
                 <input
                   type="password"
@@ -120,10 +121,14 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className="mt-7 px-[30px] lg:px-0">
+
+              <div className="mt-7 px-[30px] lg:px-0 text-right">
+                <Link to="/forgot-password" className="text-primaryColor font-medium text-right">
+                  Forgot Password?
+                </Link>
                 <button
                   type="submit"
-                  className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
+                  className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3 mt-5"
                 >
                   {loading ? <HashLoader size={35} color="#ffffff" /> : 'Login'}
                 </button>

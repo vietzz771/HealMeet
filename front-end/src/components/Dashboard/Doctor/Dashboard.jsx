@@ -9,6 +9,7 @@ import Profile from './Profile';
 import Appointment from './Appointment';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
 import useScrollTop from '../../../hooks/useScrollTop';
+import ChangePassword from './ChangePassword';
 
 const Dashboard = () => {
   useDocumentTitle('HealMeet | Profile');
@@ -57,6 +58,7 @@ const Dashboard = () => {
                 )}
                 {tab === 'appointments' && <Appointment appointment={doctor.appointment} />}
                 {tab === 'settings' && <Profile doctor={doctor} />}
+                {tab === 'changePassword' && <ChangePassword />}
               </div>
             </div>
           </div>

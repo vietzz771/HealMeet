@@ -19,6 +19,11 @@ export default {
         'meta-7': '#FF6766',
         'meta-8': '#F0950C',
         'meta-9': '#E5E7EB',
+        'meta-10': '#31b372',
+        bodydark: '#AEB7C0',
+        bodydark1: '#DEE4EE',
+        bodydark2: '#8A99AF',
+        active: '#333A48',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],
