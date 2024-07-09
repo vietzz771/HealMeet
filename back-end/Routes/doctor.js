@@ -33,12 +33,22 @@ router.get(
   restrict(["doctor", "admin"]),
   getDoctorProfile
 );
-router.post("/add-slot", authenticate, restrict(["admin"]), createSlotDoctor);
-router.get("/:id/slots", authenticate, restrict(["admin"]), getTimeSlotDoctor);
+router.post(
+  "/add-slot",
+  authenticate,
+  restrict(["admin", "doctor"]),
+  createSlotDoctor
+);
+router.get(
+  "/:id/slots",
+  authenticate,
+  restrict(["admin", "doctor"]),
+  getTimeSlotDoctor
+);
 router.delete(
   "/:doctorId/delete-slot",
   authenticate,
-  restrict(["admin"]),
+  restrict(["admin", "doctor"]),
   deleteSlotDoctor
 );
 export default router;

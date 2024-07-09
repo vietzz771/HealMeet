@@ -18,6 +18,7 @@ import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
 import ManageAppointmentAdmin from '../pages/Admin/pages/ManageAppointment';
 
 import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
+import HealthCheckUp from '../pages/Admin/pages/HealthCheckUp';
 
 const Routers = () => {
   return (
@@ -86,6 +87,14 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <ManageAppointmentAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/health"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <HealthCheckUp />
           </ProtectedRoute>
         }
       />
