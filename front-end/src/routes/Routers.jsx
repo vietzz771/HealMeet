@@ -8,6 +8,7 @@ import Doctor from '../pages/Doctors/Doctor';
 import DoctorDetails from '../pages/Doctors/DoctorDetails';
 import MyAccount from '../components/Dashboard/User/MyAccount';
 import Dashboard from '../components/Dashboard/Doctor/Dashboard';
+import PaymentFormWrapper from '../pages/PaymentFormWrapper';
 
 import ProtectedRoute from './ProtectedRoute';
 
@@ -16,11 +17,15 @@ import DashboardAdmin from '../pages/Admin/pages/Dashboard';
 import ManageAccountAdmin from '../pages/Admin/pages/MangeAccount';
 import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
 import ManageAppointmentAdmin from '../pages/Admin/pages/ManageAppointment';
-
+import useGetProfile from '../hooks/useInstanceData';
 import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
 import HealthCheckUp from '../pages/Admin/pages/HealthCheckUp';
+import ChangePassword from '../pages/Admin/pages/ChangePassword';
+import Profile from '../pages/Admin/pages/Profile';
 
 const Routers = () => {
+  const { data: userData, loading, error } = useGetProfile('users/profile/me');
+  console.log('userData', userData)
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -33,6 +38,7 @@ const Routers = () => {
 
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/payment/:id" element={<PaymentFormWrapper />} />
       <Route
         path="/users/profile/me"
         element={
@@ -95,6 +101,18 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <HealthCheckUp />
+        path="/admin/change-password"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ChangePassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/profile"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Profile user={userData} />
           </ProtectedRoute>
         }
       />
@@ -112,6 +130,22 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['superAdmin']}>
             <DashboardAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/super-admin/change-password"
+        element={
+          <ProtectedRoute allowedRoles={['superAdmin']}>
+            <ChangePassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/super-admin/profile"
+        element={
+          <ProtectedRoute allowedRoles={['superAdmin']}>
+            <Profile user={userData} />
           </ProtectedRoute>
         }
       />

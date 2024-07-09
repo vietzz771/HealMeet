@@ -8,6 +8,8 @@ import userRoute from "./Routes/user.js";
 import doctorRoute from "./Routes/doctor.js";
 import reviewRoute from "./Routes/review.js";
 import bookingTicketRoute from "./Routes/bookingTicket.js";
+import clinicRoute from "./Routes/clinic.js";
+import bookingRoute from "./Routes/booking.js";
 
 dotenv.config();
 
@@ -42,6 +44,8 @@ app.use("/api/users", userRoute);
 app.use("/api/doctors", doctorRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/bookingTicket", bookingTicketRoute);
+app.use("/api/clinics", clinicRoute);
+app.use("/api/bookings", bookingRoute);
 
 app.listen(port, () => {
   connectDB();
