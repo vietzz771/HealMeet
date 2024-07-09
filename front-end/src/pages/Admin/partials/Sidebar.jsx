@@ -12,6 +12,7 @@ import { BsBarChart } from 'react-icons/bs';
 import { GrSchedule } from 'react-icons/gr';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { RiLoginCircleLine } from 'react-icons/ri';
+import { RiHealthBookLine } from 'react-icons/ri';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
@@ -247,7 +248,42 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     );
                   }}
                 </SidebarLinkGroup>
+                {/*  Manage Health examination */}
+                <SidebarLinkGroup activecondition={pathname.includes('health')}>
+                  {() => {
+                    return (
+                      <React.Fragment>
+                        <NavLink
+                          end
+                          to="/admin/health"
+                          className={({ isActive }) =>
+                            'block transition duration-150 truncate ' +
+                            (isActive ? 'text-indigo-500' : 'text-slate-400 hover:text-slate-200')
+                          }
+                        >
+                          <a
+                            href="#0"
+                            className={`block text-slate-200 truncate transition duration-150 ${
+                              pathname.includes('ecommerce')
+                                ? 'hover:text-slate-200'
+                                : 'hover:text-white'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center">
+                                <RiHealthBookLine className="w-5 h-5" />
 
+                                <span className=" font-medium text-bodydark1 ml-3   2xl:opacity-100 duration-200">
+                                  Health Check-up
+                                </span>
+                              </div>
+                            </div>
+                          </a>
+                        </NavLink>
+                      </React.Fragment>
+                    );
+                  }}
+                </SidebarLinkGroup>
                 {/* Settings */}
                 <SidebarLinkGroup activecondition={pathname.includes('settings')}>
                   {(handleClick, open) => {

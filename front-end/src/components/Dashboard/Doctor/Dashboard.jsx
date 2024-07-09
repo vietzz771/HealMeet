@@ -10,6 +10,7 @@ import Appointment from './Appointment';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
 import useScrollTop from '../../../hooks/useScrollTop';
 import ChangePassword from './ChangePassword';
+import CreateSlot from './CreateSlot';
 
 const Dashboard = () => {
   useDocumentTitle('HealMeet | Profile');
@@ -56,6 +57,7 @@ const Dashboard = () => {
                     <DoctorAbout doctor={doctor} />
                   </div>
                 )}
+                {tab === 'create' && <CreateSlot doctor={doctor} />}
                 {tab === 'appointments' && <Appointment appointment={doctor.appointment} />}
                 {tab === 'settings' && <Profile doctor={doctor} />}
                 {tab === 'changePassword' && <ChangePassword />}

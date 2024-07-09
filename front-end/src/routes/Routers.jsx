@@ -19,6 +19,7 @@ import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
 import ManageAppointmentAdmin from '../pages/Admin/pages/ManageAppointment';
 import useGetProfile from '../hooks/useInstanceData';
 import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
+import HealthCheckUp from '../pages/Admin/pages/HealthCheckUp';
 import ChangePassword from '../pages/Admin/pages/ChangePassword';
 import Profile from '../pages/Admin/pages/Profile';
 
@@ -96,6 +97,10 @@ const Routers = () => {
         }
       />
       <Route
+        path="/admin/health"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <HealthCheckUp />
         path="/admin/change-password"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
