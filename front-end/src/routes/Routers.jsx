@@ -25,8 +25,7 @@ import ChangePassword from '../pages/Admin/pages/ChangePassword';
 import Profile from '../pages/Admin/pages/Profile';
 
 const Routers = () => {
-  const { data: userData, loading, error } = useGetProfile('users/profile/me');
-  console.log('userData', userData)
+  const { data: userData } = useGetProfile('users/profile/me');
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -103,6 +102,10 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <HealthCheckUp />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/change-password"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
