@@ -77,7 +77,7 @@ const MyAccount = () => {
                     tab === 'settings' && 'bg-primaryColor text-white font-normal'
                   } p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
                 >
-                  Profile Settings2
+                  Profile Setting
                 </button>
                 <button
                   onClick={() => setTab('bookings')}
