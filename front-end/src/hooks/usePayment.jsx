@@ -24,7 +24,26 @@ const usePayment = () => {
       setCurrentStep(3);
       return;
     } else if (currentStep === 2 && formData.payment.method == 'stripe') {
-      console.log('stripe');
+      try {
+        console.log(token);
+        const res = await instance.post(
+          `bookings/checkout-session/${formData.doctor}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        const data = await res.data;
+        if (!(res.status >= 200 && res.status < 300)) {
+          toast.error(res.data.message);
+        }
+        if (data.session.url) {
+          window.location.href = data.session.url;
+        }
+      } catch (error) {
+        const errorMessage = error.response?.data?.message || error.message;
+        toast.error(errorMessage);
+      }
       return;
     }
     setCurrentStep((prevStep) => prevStep + 1);

@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 const DoctorDetails = () => {
   const [tab, setTab] = useState('about');
   const { id } = useParams();
-  const { data: doctor, loading, error } = useInstanceData(`doctors/${id}`);
+  const { data: doctor, loading, error, refetch } = useInstanceData(`doctors/${id}`);
   const { data: clinics, cLoading, cError } = useInstanceData(`clinics/`);
   const {
     name,
@@ -81,7 +81,9 @@ const DoctorDetails = () => {
               </div>
               <div className="mt-[50px]">
                 {tab === 'about' && <DoctorAbout doctor={doctor} />}
-                {tab === 'feedback' && <Feedback reviews={reviews} totalRating={totalRating} />}
+                {tab === 'feedback' && (
+                  <Feedback reviews={reviews} totalRating={totalRating} refetch={refetch} />
+                )}
               </div>
             </div>
             <div>

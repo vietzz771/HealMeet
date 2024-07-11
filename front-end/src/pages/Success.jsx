@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-
-const Complete = () => {
+const Success = () => {
   return (
     <div className="container">
       <div className="flex items-center justify-center flex-col mt-5 gap-y-3">
@@ -17,7 +16,10 @@ const Complete = () => {
             />
           </svg>
         </div>
-        <h2 className="text-headingColor font-semibold text-[30px]">Booking success!</h2>
+        <div className="text-center">
+          <h2 className="text-headingColor font-semibold text-[30px]">Payment done!</h2>
+          <p className="text__para mt-0">Thank you for completing your secure online payment.</p>
+        </div>
       </div>
       <div className="text-center mt-5">
         <h3>Check your booking details</h3>
@@ -29,4 +31,4 @@ const Complete = () => {
   );
 };
 
-export default Complete;
+export default Success;

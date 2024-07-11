@@ -49,7 +49,7 @@ const Booking = () => {
       timeSlot,
     }));
   };
-  const filteredTimeSlots = timeSlots?.filter((timeSlot) => timeSlot.day == selectedDate);
+  const filteredTimeSlots = timeSlots?.filter((timeSlot) => timeSlot.date == selectedDate);
   return (
     <section className="pb-0">
       <div className="mx-auto">
