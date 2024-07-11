@@ -32,6 +32,16 @@ const Tabs = ({ tab, setTab }) => {
           Overview
         </button>
         <button
+          onClick={() => setTab('create')}
+          className={`${
+            tab === 'create'
+              ? 'bg-indigo-100 text-primaryColor'
+              : 'bg-transparent text-headingColor'
+          } w-full btn mt-0 rounded-md`}
+        >
+          Create Slots
+        </button>
+        <button
           onClick={() => setTab('appointments')}
           className={`${
             tab === 'appointments'
@@ -41,6 +51,7 @@ const Tabs = ({ tab, setTab }) => {
         >
           Appointments
         </button>
+
         <button
           onClick={() => setTab('settings')}
           className={`${
@@ -50,6 +61,16 @@ const Tabs = ({ tab, setTab }) => {
           } w-full btn mt-0 rounded-md`}
         >
           Profile
+        </button>
+        <button
+          onClick={() => setTab('changePassword')}
+          className={`${
+            tab === 'changePassword'
+              ? 'bg-indigo-100 text-primaryColor'
+              : 'bg-transparent text-headingColor'
+          } w-full btn mt-0 rounded-md`}
+        >
+          Change Password
         </button>
         <div className="mt-[100px] w-full">
           <button

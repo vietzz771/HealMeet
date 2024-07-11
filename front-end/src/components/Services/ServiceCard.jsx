@@ -1,33 +1,42 @@
 /* eslint-disable react/prop-types */
-import { Link } from 'react-router-dom';
-import { BsArrowRight } from 'react-icons/bs';
 
-const ServiceCard = ({ item, index }) => {
-  const { name, desc, bgColor, textColor } = item;
+const ServiceCard = ({ item }) => {
+  const { title, desc1, desc2, desc3, desc4 } = item;
 
   return (
-    <div className="py-[30px] px-3 lg:px-5">
-      <h2 className="text-[26px] leading-9 text-headingColor font-[700]">{name}</h2>
-      <p className="text-[16px] leading-7 font-[400] text-textColor mt-4">{desc}</p>
-      <div className="flex items-center justify-between mt-[30px]">
-        <Link
-          to="/doctors"
-          className="w-[44px] h-[44px] rounded-full border border-solid border[#181A1E]
-                mt-[30px] mx-auto flex items-center justify-center group hover:bg-primaryColor hover:border-none"
-        >
-          <BsArrowRight className="group-hover:text-white w-6 h-5" />
-        </Link>
-        <span
-          className="w-[44px] h-[44px] flex items-center justify-center text-[18px]
-        leading-[30px] font-[600]"
-          style={{
-            background: `${bgColor}`,
-            color: `${textColor}`,
-            borderRadius: '6px 0 0 6px',
-          }}
-        >
-          {index + 1}
-        </span>
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="max-w-screen-xl w-full mx-auto p-5 sm:p-8  relative flex flex-col  lg:flex-row gap-[40px]">
+        {/* Image column */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center md:justify-start mb-6 md:mb-0">
+          <img
+            src="https://hoanmy.com/vn/itodongnai/kham-suc-khoe-tong-quat/wp-content/uploads/2023/04/4Z5A0964.jpg" // Replace with your image path
+            alt="Image Description"
+            className="w-full h-auto md:max-h-full rounded-lg object-cover"
+          />
+        </div>
+        {/* Content column */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center md:justify-start">
+          <div className="bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal p-8">
+            <h1 className="text-gray-900 font-bold text-3xl mb-2 text-center md:text-left">
+              {title}
+            </h1>
+            <p className="text-gray-700 text-xs mt-2 text-center md:text-left">
+              Written By:
+              <a
+                href="#"
+                className="text-indigo-600 font-medium hover:text-gray-900 transition duration-500 ease-in-out"
+              >
+                The Hoang
+              </a>
+            </p>
+            <p className="text-base leading-8 my-5 text-center md:text-left">{desc1}</p>
+            <ul className="text-base leading-8 list-disc list-inside md:list-outside">
+              <li>{desc2}</li>
+              <li>{desc3}</li>
+              <li>{desc4}</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import instance from '../../../utils/http';
 import { getToken } from '../../../config';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import Loading from '../../Loader/Loading';
-
+import { authContext } from '../../../context/authContext';
 const Profile = ({ doctor }) => {
+  const { dispatch } = useContext(authContext);
   const token = getToken();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -126,11 +127,23 @@ const Profile = ({ doctor }) => {
       });
       const { message } = await res.data;
       toast.success(message);
+
+      // Update user context after successful update
+      dispatch({
+        type: 'UPDATE_PROFILE',
+        payload: {
+          user: {
+            ...authContext.user,
+            ...formData,
+          },
+        },
+      });
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       toast.error(errorMessage);
     }
   };
+
   return (
     <div>
       <h2 className="text-headingColor font-bold text-[24px] leading-9 mb-10">
