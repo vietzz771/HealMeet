@@ -6,6 +6,7 @@ const useInstanceData = (url) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,9 +26,11 @@ const useInstanceData = (url) => {
       }
     };
     fetchData();
-  }, [url]);
-
-  return { data, loading, error };
+  }, [url, key]);
+  const refetch = () => {
+    setKey((prevKey) => prevKey + 1); // Tăng key để gọi lại useEffect
+  };
+  return { data, loading, error, refetch };
 };
 
 export default useInstanceData;

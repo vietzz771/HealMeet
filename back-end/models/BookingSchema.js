@@ -15,11 +15,11 @@ const bookingSchema = new mongoose.Schema(
     clinic: {
       type: mongoose.Types.ObjectId,
       ref: "Clinic",
-      required: true,
+      // required: true,
     },
     userData: {
       type: Object,
-      required: true,
+      // required: true,
     },
     ticketPrice: {
       type: String,
@@ -27,11 +27,11 @@ const bookingSchema = new mongoose.Schema(
     },
     timeSlot: {
       type: Object,
-      required: true,
+      // required: true,
     },
     payment: {
       type: Object,
-      required: true,
+      // required: true,
     },
     status: {
       type: String,
@@ -42,4 +42,18 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+bookingSchema.pre(/^find/, function (next) {
+  this.populate("user").populate({
+    path: "doctor",
+    select: "name photo",
+  });
+  next();
+});
+bookingSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "clinic",
+    select: "name location",
+  });
+  next();
+});
 export default mongoose.model("Booking", bookingSchema);
