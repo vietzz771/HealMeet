@@ -4,6 +4,7 @@ import Login from '../pages/Login';
 import Services from '../pages/Services';
 import Signup from '../pages/Signup';
 import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 import Doctor from '../pages/Doctors/Doctor';
 import DoctorDetails from '../pages/Doctors/DoctorDetails';
 import MyAccount from '../components/Dashboard/User/MyAccount';
@@ -26,6 +27,7 @@ import Profile from '../pages/Admin/pages/Profile';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
+  console.log('userdata', userData)
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -35,6 +37,7 @@ const Routers = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword></ResetPassword>} />
 
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />

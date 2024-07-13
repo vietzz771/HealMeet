@@ -15,6 +15,8 @@ const UserSchema = new mongoose.Schema(
     gender: { type: String, enum: ["male", "female", "other"] },
     bloodType: { type: String },
     appointments: [{ type: mongoose.Types.ObjectId, ref: "Booking" }],
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
   },
   {
     timestamps: true,

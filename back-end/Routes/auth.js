@@ -6,6 +6,7 @@ import {
   googleLogin,
   changePassword,
   forgotPassword,
+  resetPassword,
 } from "../Controllers/authController.js";
 import { authenticate } from "../auth/verifyToken.js";
 const router = express.Router();
@@ -15,5 +16,6 @@ router.post("/login", login);
 router.post("/addAdmin", addAdmin);
 router.put("/change-password", authenticate, changePassword);
 router.post("/forgot-password", forgotPassword); // Add route for forgotPassword API
+router.post("/reset-password/:token", resetPassword);
 
 export default router;

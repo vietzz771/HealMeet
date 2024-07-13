@@ -40,6 +40,8 @@ const DoctorSchema = new mongoose.Schema(
       default: "pending",
     },
     appointments: [{ type: mongoose.Types.ObjectId, ref: "Appointment" }],
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
   },
   {
     timestamps: true,
