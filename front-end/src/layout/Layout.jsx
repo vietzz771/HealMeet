@@ -8,7 +8,9 @@ const Layout = () => {
   const isAdminRoute =
     location.pathname.startsWith('/admin') ||
     location.pathname.startsWith('/super-admin') ||
-    location.pathname.startsWith('/forgot-password');
+    location.pathname.startsWith('/forgot-password') ||
+    location.pathname.startsWith('/reset-password');
+
 
   return (
     <>
