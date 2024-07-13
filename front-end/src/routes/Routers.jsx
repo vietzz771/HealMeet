@@ -24,6 +24,8 @@ import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
 import HealthCheckUp from '../pages/Admin/pages/HealthCheckUp';
 import ChangePassword from '../pages/Admin/pages/ChangePassword';
 import Profile from '../pages/Admin/pages/Profile';
+import Achievements from '../pages/Achievement';
+import MangeAchievement from '../pages/Admin/pages/MangeAchievement';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
@@ -41,6 +43,8 @@ const Routers = () => {
 
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/blogs" element={<Achievements />} />
+
       <Route path="/checkout-success" element={<Success />} />
       <Route path="/payment/:id" element={<PaymentFormWrapper />} />
       <Route
@@ -65,6 +69,14 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <ManageAccountAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/achievement"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MangeAchievement />
           </ProtectedRoute>
         }
       />
