@@ -56,19 +56,15 @@ export const deleteAchievement = async (req, res) => {
 };
 
 export const getSingleAchievement = async (req, res) => {
-  const id = req.params.id;
   try {
-    const Achievement = await Achievement.findById(id).select("-password");
-    res.status(200).json({
-      success: true,
-      message: "Achievement found",
-      data: Achievement,
-    });
-  } catch (error) {
-    res.status(404).json({
-      success: false,
-      message: "No Achievement found",
-    });
+    const { id } = req.params;
+    const achievement = await Achievement.findById(id);
+    if (!achievement) {
+      return res.status(404).send("Achievement not found");
+    }
+    res.json(achievement);
+  } catch (err) {
+    res.status(500).send(err.message);
   }
 };
 

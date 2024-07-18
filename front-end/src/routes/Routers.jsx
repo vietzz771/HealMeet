@@ -26,6 +26,7 @@ import ChangePassword from '../pages/Admin/pages/ChangePassword';
 import Profile from '../pages/Admin/pages/Profile';
 import Achievements from '../pages/Achievement';
 import MangeAchievement from '../pages/Admin/pages/MangeAchievement';
+import AchievementDetail from '../pages/Doctors/AchievementDetails';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
@@ -44,6 +45,7 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
       <Route path="/blogs" element={<Achievements />} />
+      <Route path="/blogs/:id" element={<AchievementDetail />} />
 
       <Route path="/checkout-success" element={<Success />} />
       <Route path="/payment/:id" element={<PaymentFormWrapper />} />

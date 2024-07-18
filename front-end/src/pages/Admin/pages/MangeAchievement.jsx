@@ -154,7 +154,10 @@ function ManageAchievement() {
                 <tr>
                   <th scope="col" className="px-6 py-3">Title</th>
                   <th scope="col" className="px-6 py-3">Author</th>
+                  <th scope="col" className="px-6 py-3">Content</th>
                   <th scope="col" className="px-6 py-3">Date</th>
+                  <th scope="col" className="px-6 py-3">Description</th>
+                  <th scope="col" className="px-6 py-3">Image</th>
                   <th scope="col" className="px-6 py-3">Action</th>
                 </tr>
               </thead>
@@ -165,7 +168,12 @@ function ManageAchievement() {
                       {achievement.title}
                     </th>
                     <td className="px-6 py-4">{achievement.author}</td>
+                    <td className="px-6 py-4">{achievement.content}</td>
+
                     <td className="px-6 py-4">{new Date(achievement.date).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">{achievement.description}</td>
+                    <img class="rounded-full w-20 h-20" src={achievement.image} alt="image description" />
+
                     <td className="px-6 py-4">
                       <button className="text-blue-600 hover:underline" onClick={() => editAchievement(achievement._id, true)}>
                         <FaRegEdit className="mr-1" />

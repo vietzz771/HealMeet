@@ -11,68 +11,54 @@ const Achievements = () => {
 
     const formRegisterRef = useRef(null);
     const [achievements, setAchievements] = useState([]);
-    const [events, setEvents] = useState([]);
 
     useEffect(() => {
         // Fetch achievements from the API
         axios.get('http://localhost:5000/api/achievements')
             .then(response => setAchievements(response.data.data))
             .catch(error => console.error('Error fetching achievements:', error));
-
-
     }, []);
 
     return (
         <>
-            <section className="hero__section pt-[60px] 2xl:h-[650px]">
-                <div className="container h-full">
-                    <div className="flex flex-col lg:flex-row gap-[40px] md:gap-[90px] items-center justify-between h-full">
-                        <div className="lg:w-1/2 flex flex-col justify-center">
-                            <div className="lg:w-[870px]">
-                                <h1 className="text-[36px] leading-[46px] text-headingColor font-[800] md:text-[40px] md:leading-[70px] text-center lg:text-left">
-                                    Achievements
-                                </h1>
-                                <p className="text__para text-center lg:text-left">
-                                    Discover the remarkable achievements of our team at HealMeet Hospital. Our
-                                    dedicated professionals continually strive for excellence in healthcare.
-                                </p>
-                            </div>
-                            <div className="mt-[20px] lg:mt-[30px] flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-[30px]">
-                                <div className="flex flex-col lg:flex-row gap-5 justify-center lg:justify-start">
-                                    <Link to="/contact" className="block">
-                                        <button className="btn hover:opacity-80 w-full lg:w-auto">
-                                            Get free consultation
-                                        </button>
+            <section className="bg-white dark:bg-gray-900">
+                <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+                    <div className="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
+                        <h2 className="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Health checkup package</h2>
+                        <p className="font-light text-gray-500 sm:text-xl dark:text-gray-400">We use an agile approach to test assumptions and connect with the needs of your audience early and often.</p>
+                    </div>
+                    <div className="grid gap-8 lg:grid-cols-2">
+                        {achievements.map(achievement => (
+                            <article key={achievement._id} className="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                                <div className="flex justify-between items-center mb-5 text-gray-500">
+                                    <span className="bg-primary-100 text-primary-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
+                                        <svg className="mr-1 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                                        </svg>
+                                        Package
+                                    </span>
+                                    <span className="text-sm">{new Date(achievement.date).toLocaleDateString()}</span>
+                                </div>
+                                <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><a href="#">{achievement.title}</a></h2>
+                                <p className="mb-5 font-light text-gray-500 dark:text-gray-400">{achievement.content}</p>
+                                <div className="flex justify-between items-center">
+                                    <div className="flex items-center space-x-4">
+                                        <span className="font-medium dark:text-white">
+                                            - {achievement.author}
+                                        </span>
+                                    </div>
+                                    <Link to={`/blogs/${achievement._id}`} className="inline-flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline">
+                                        Read more
+                                        <svg className="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                                        </svg>
                                     </Link>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="flex justify-center lg:justify-end w-full lg:w-1/2 h-full">
-                            <div className="max-w-[400px] md:max-w-[500px] lg:max-w-none h-auto">
-                                <img className="w-full h-full object-cover" src={heroImg03} alt="Achievements" />
-                            </div>
-                        </div>
+                            </article>
+                        ))}
                     </div>
                 </div>
             </section>
-            <section className="achievements__section mt-[60px]">
-                <div className="container">
-                    <div className="flex flex-col items-center">
-                        <h2 className="text-[30px] font-[700] mb-[30px]">Our Achievements</h2>
-                        <div className="w-full max-w-[800px]">
-                            {achievements.map((achievement) => (
-                                <div key={achievement._id} className="mb-[20px] p-[20px] border border-gray-300 rounded">
-                                    <h3 className="text-[24px] font-[600]">{achievement.title}</h3>
-                                    <p className="mt-[10px]">{achievement.content}</p>
-                                    <p className="mt-[10px] text-right font-[500]">- {achievement.author}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div ref={formRegisterRef}></div>
         </>
     );
 };

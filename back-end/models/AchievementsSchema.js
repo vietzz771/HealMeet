@@ -5,6 +5,8 @@ const AchievementsSchema = new mongoose.Schema(
     title: String,
     content: String,
     author: String,
+    description: String,
+    image: String,
     date: { type: Date, default: Date.now },
   },
   {
