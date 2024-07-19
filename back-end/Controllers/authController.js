@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { OAuth2Client } from "google-auth-library";
 import moment from "moment";
 import nodemailer from "nodemailer";
-
+import crypto from "crypto";
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateToken = (user) => {
@@ -195,14 +195,11 @@ export const changePassword = async (req, res) => {
     let user = null;
     if (req.role === "patient") {
       user = await User.findById(req.userId);
-    }
-    else if (req.role === "admin") {
+    } else if (req.role === "admin") {
       user = await User.findById(req.userId);
-    }
-    else if (req.role === "superAdmin") {
+    } else if (req.role === "superAdmin") {
       user = await User.findById(req.userId);
-    }
-     else if (req.role === "doctor") {
+    } else if (req.role === "doctor") {
       user = await Doctor.findById(req.userId);
     }
 
@@ -234,61 +231,96 @@ export const changePassword = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-// forgot password
-// Function to send email
-const sendEmail = async (email, newPassword) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_USERNAME, // Your Gmail username
-      pass: process.env.MAIL_PASSWORD, // Your Gmail password
-    },
-  });
-  console.log("process.env.EMAIL_USER", process.env.MAIL_USERNAME);
-  console.log("process.env.EMAIL_USER", process.env.MAIL_USERNAME);
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "Forgot Password - Reset",
-    text: `Your new password is: ${newPassword}`,
-  };
-
-  await transporter.sendMail(mailOptions);
-};
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "huynhthuy1479@gmail.com",
+    pass: "evyx qyjn drms tdat",
+  },
+});
 
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
-
   try {
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = await Doctor.findOne({ email });
-    }
+    let user =
+      (await User.findOne({ email })) || (await Doctor.findOne({ email }));
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Generate new random password
-    const newPassword = generateRandomPassword();
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+    const resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-    // Hash the new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-    // Update user's password in database
-    user.password = hashedPassword;
+    user.resetPasswordToken = resetPasswordToken;
+    user.resetPasswordExpire = resetPasswordExpire;
     await user.save();
 
-    // Send email with new password
-    await sendEmail(email, newPassword);
+    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
-    res
-      .status(200)
-      .json({ message: "New password has been sent to your email" });
+    const message = `
+      You requested a password reset. Please click on the following link to reset your password: \n\n
+      ${resetUrl} \n\n
+      If you did not request this, please ignore this email.
+    `;
+
+    await transporter.sendMail({
+      from: "huynhthuy1479@gmail.com",
+      to: email,
+      subject: "Password Reset Request",
+      text: message,
+    });
+    console.log("Email to send reset link:", email);
+
+    res.status(200).json({ success: true, message: "Email sent" });
   } catch (error) {
-    console.error("Error in forgotPassword:", error);
+    console.error("Error sending reset email:", error); // Log lỗi chi tiết
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  console.log("Received token:", token); // Log để kiểm tra token nhận được
+
+  try {
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+    console.log("Hashed token:", resetPasswordToken); // Log để kiểm tra token đã mã hóa
+
+    let user =
+      (await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() },
+      })) ||
+      (await Doctor.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() },
+      }));
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    console.log("Stored token in database:", resetPasswordToken); // Log để kiểm tra token đã lưu trong cơ sở dữ liệu
+
+    res.status(200).json({ message: "Password successfully reset" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

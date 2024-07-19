@@ -42,8 +42,8 @@ const FormRegister = () => {
 
       // Gửi email với ticketNumber qua EmailJS
       await emailjs.send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        import.meta.env.VITE_APP_EMAILJS_SERVICE_HOANG_ID,
+        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_HOANG_ID,
         {
           from_name: 'HealMeet Hospital',
           to_name: form.name,
@@ -54,11 +54,11 @@ const FormRegister = () => {
           ticket_number: ticketNumber,
           to_date: form.date,
         },
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY,
+        import.meta.env.VITE_APP_EMAILJS_PUBLIC_HOANG_KEY,
       );
 
       setLoading(false);
-      toast.success('Thank you. I will get back to you as soon as possible.');
+      toast.success('Thank you. Please check your email.');
       setForm({
         name: '',
         email: '',

@@ -4,6 +4,7 @@ import Login from '../pages/Login';
 import Services from '../pages/Services';
 import Signup from '../pages/Signup';
 import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 import Doctor from '../pages/Doctors/Doctor';
 import DoctorDetails from '../pages/Doctors/DoctorDetails';
 import MyAccount from '../components/Dashboard/User/MyAccount';
@@ -23,6 +24,9 @@ import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
 import HealthCheckUp from '../pages/Admin/pages/HealthCheckUp';
 import ChangePassword from '../pages/Admin/pages/ChangePassword';
 import Profile from '../pages/Admin/pages/Profile';
+import Achievements from '../pages/Achievement';
+import MangeAchievement from '../pages/Admin/pages/MangeAchievement';
+import AchievementDetail from '../pages/Doctors/AchievementDetails';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
@@ -36,9 +40,13 @@ const Routers = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword></ResetPassword>} />
 
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/blogs" element={<Achievements />} />
+      <Route path="/blogs/:id" element={<AchievementDetail />} />
+
       <Route path="/checkout-success" element={<Success />} />
       <Route path="/payment/:id" element={<PaymentFormWrapper />} />
       <Route
@@ -63,6 +71,14 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <ManageAccountAdmin />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/achievement"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MangeAchievement />
           </ProtectedRoute>
         }
       />
