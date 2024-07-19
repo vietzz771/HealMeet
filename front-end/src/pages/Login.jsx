@@ -140,11 +140,12 @@ const Login = () => {
                 </Link>
               </p>
             </form>
-            <div className="mt-5 px-[30px] lg:px-0 text-center">
+            <div className="mt-5 px-[30px] lg:px-0 text-center flex justify-center">
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginFailure}
                 useOneTap
+                locale="en"
               />
             </div>
           </div>
