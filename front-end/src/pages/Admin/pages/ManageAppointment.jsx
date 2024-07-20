@@ -7,8 +7,11 @@ import axios from 'axios';
 import TableAppointment from '../components/TableAppointment';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 function ManageAppointment() {
+  useDocumentTitle('HealMeet | Admin');
+
   const [date, setDate] = useState(new Date());
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [availableSlots, setAvailableSlots] = useState([]);

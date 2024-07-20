@@ -30,7 +30,8 @@ import AchievementDetail from '../pages/Doctors/AchievementDetails';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
-  console.log('userData', userData);
+  // console.log('userdata', userData)
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

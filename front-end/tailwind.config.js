@@ -39,6 +39,8 @@ export default {
         'title-xsm': ['18px', '24px'],
       },
       boxShadow: {
+        default: '0px 8px 13px -3px rgba(0, 0, 0, 0.07)',
+        card: '0px 1px 3px rgba(0, 0, 0, 0.12)',
         panelShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;',
       },
     },

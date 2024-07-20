@@ -6,10 +6,13 @@ import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
 
 import AddHealthModal from '../components/AddHealthModal';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 // import EditHealthModal from '../components/EditHealthModal';
 
 function HealthCheckUp() {
+  useDocumentTitle('HealMeet | Admin');
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');

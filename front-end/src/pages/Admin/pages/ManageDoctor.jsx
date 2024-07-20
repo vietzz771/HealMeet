@@ -10,8 +10,11 @@ import { FaStar } from 'react-icons/fa6';
 import AddDoctorModal from '../components/AddDoctorModal';
 
 import EditDoctorModal from '../components/EditDoctorModal';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 function ManageDoctor() {
+  useDocumentTitle('HealMeet | Admin');
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');

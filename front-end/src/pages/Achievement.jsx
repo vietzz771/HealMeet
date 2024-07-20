@@ -6,8 +6,9 @@ import heroImg03 from '../assets/images/doctor-img03.png';
 import { Link } from 'react-router-dom';
 
 const Achievements = () => {
-    useDocumentTitle('HealMeet | Achievements');
-    useScrollTop();
+  useDocumentTitle('HealMeet | Achievements');
+  useScrollTop();
+
 
     const formRegisterRef = useRef(null);
     const [achievements, setAchievements] = useState([]);
