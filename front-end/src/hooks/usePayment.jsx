@@ -25,14 +25,9 @@ const usePayment = () => {
       return;
     } else if (currentStep === 2 && formData.payment.method == 'stripe') {
       try {
-        console.log(token);
-        const res = await instance.post(
-          `bookings/checkout-session/${formData.doctor}`,
-          {},
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const res = await instance.post(`bookings/checkout-session/${formData.doctor}`, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const data = await res.data;
         if (!(res.status >= 200 && res.status < 300)) {
           toast.error(res.data.message);

@@ -155,53 +155,43 @@ function ManageAchievement() {
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Title
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Author
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Date
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Action
-                  </th>
+
+
+                  <th scope="col" className="px-6 py-3">Title</th>
+                  <th scope="col" className="px-6 py-3">Author</th>
+                  <th scope="col" className="px-6 py-3">Content</th>
+                  <th scope="col" className="px-6 py-3">Date</th>
+                  <th scope="col" className="px-6 py-3">Description</th>
+                  <th scope="col" className="px-6 py-3">Image</th>
+                  <th scope="col" className="px-6 py-3">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredAchievements
-                  .slice(indexOfFirstItem, indexOfLastItem)
-                  .map((achievement) => (
-                    <tr key={achievement._id} className="bg-white border-b hover:bg-gray-50">
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                      >
-                        {achievement.title}
-                      </th>
-                      <td className="px-6 py-4">{achievement.author}</td>
-                      <td className="px-6 py-4">
-                        {new Date(achievement.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4">
-                        <button
-                          className="text-blue-600 hover:underline"
-                          onClick={() => editAchievement(achievement._id, true)}
-                        >
-                          <FaRegEdit className="mr-1" />
-                          Edit
-                        </button>
-                        <button
-                          className="text-red-600 hover:underline ml-4"
-                          onClick={() => confirmDeleteAchievement(achievement._id)}
-                        >
-                          <FaRegTrashAlt className="mr-1" />
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                {filteredAchievements.slice(indexOfFirstItem, indexOfLastItem).map((achievement) => (
+                  <tr key={achievement._id} className="bg-white border-b hover:bg-gray-50">
+                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      {achievement.title}
+                    </th>
+                    <td className="px-6 py-4">{achievement.author}</td>
+                    <td className="px-6 py-4">{achievement.content}</td>
+
+                    <td className="px-6 py-4">{new Date(achievement.date).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">{achievement.description}</td>
+                    <img class="rounded-full w-20 h-20" src={achievement.image} alt="image description" />
+
+                    <td className="px-6 py-4">
+                      <button className="text-blue-600 hover:underline" onClick={() => editAchievement(achievement._id, true)}>
+                        <FaRegEdit className="mr-1" />
+                        Edit
+                      </button>
+                      <button className="text-red-600 hover:underline ml-4" onClick={() => confirmDeleteAchievement(achievement._id)}>
+                        <FaRegTrashAlt className="mr-1" />
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+
               </tbody>
             </table>
           )}

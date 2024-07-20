@@ -167,30 +167,6 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            <div>
-              <label
-                htmlFor="voucher"
-                className="mb-2 block text-[16px] font-medium text-gray-900 "
-              >
-                {' '}
-                Enter a gift card, voucher or promotional code{' '}
-              </label>
-              <div className="flex max-w-md items-center gap-4">
-                <input
-                  type="text"
-                  id="voucher"
-                  className="block w-full rounded-lg border p-2.5 text-sm text-headingColor focus:ring focus:ring-blue-300 outline-none ring-opacity-30"
-                  placeholder="#URENC2J3DS"
-                  required
-                />
-                <button
-                  type="button"
-                  className="flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-400 bg-blue-500"
-                >
-                  Apply
-                </button>
-              </div>
-            </div>
           </div>
 
           <div className="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
