@@ -29,7 +29,7 @@ import MangeAchievement from '../pages/Admin/pages/MangeAchievement';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
-  console.log('userdata', userData)
+  // console.log('userdata', userData)
   return (
     <Routes>
       <Route path="/" element={<Home />} />

@@ -9,8 +9,11 @@ import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import Loading from '../../../components/Loader/Loading';
 import { authContext } from '../../../context/authContext';
 import AdminLayout from '../layout/AdminLayout';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 const Profile = ({ user }) => {
+  useDocumentTitle('HealMeet | Admin');
+
   console.log('user', user);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

@@ -42,11 +42,11 @@ const ChartTwo = ({ users }) => {
           'Dec',
         ],
       },
-      yaxis: {
-        title: {
-          text: 'Number of Accounts',
-        },
-      },
+      // yaxis: {
+      //   title: {
+      //     text: 'Number of Accounts',
+      //   },
+      // },
       fill: {
         opacity: 1,
       },
@@ -86,7 +86,7 @@ const ChartTwo = ({ users }) => {
       });
 
       const seriesData = roles.map((role) => ({
-        name: role.charAt(0).toUpperCase() + role.slice(1), // Chuyển đổi chữ cái đầu tiên thành chữ hoa
+        name: role.charAt(0).toUpperCase() + role.slice(1),
         data: roleCounts[role],
       }));
 
@@ -110,18 +110,20 @@ const ChartTwo = ({ users }) => {
   };
 
   return (
-    <div
-      id="chart"
-      className="sm:px-7.5 col-span-12 rounded-xl border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5"
-    >
-      <div className="flex justify-end mb-2 mt-2">
-        <select onChange={handleYearChange} value={selectedYear}>
-          {getYears().map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+    <div className="sm:px-8 col-span-12 rounded-xl border border-stroke bg-white px-5 pb-3 pt-1 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
+      <div className="mt-3 flex justify-between gap-4 sm:flex">
+        <div>
+          <h4 className="text-xl font-semibold text-black dark:text-white">Number of Accounts </h4>
+        </div>
+        <div className="flex justify-end mb-2 mt-2">
+          <select onChange={handleYearChange} value={selectedYear}>
+            {getYears().map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <Chart
         options={chartData.options}

@@ -7,8 +7,11 @@ import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
 import EditUserModal from '../components/EditUserModal';
 import AddUserModal from '../components/AddUserModal';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 function ManageAccount() {
+  useDocumentTitle('HealMeet | Admin');
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
