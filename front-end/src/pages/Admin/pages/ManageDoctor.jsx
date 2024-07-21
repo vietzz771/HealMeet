@@ -6,6 +6,7 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
 import { FaStar } from 'react-icons/fa6';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 import AddDoctorModal from '../components/AddDoctorModal';
 
@@ -31,7 +32,7 @@ function ManageDoctor() {
     setIsLoadingData(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/doctors', {
+      const response = await axios.get(`${SERVER_URL}/api/doctors`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

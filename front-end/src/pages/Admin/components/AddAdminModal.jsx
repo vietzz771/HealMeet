@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
-
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 function AddAdminModal({ isOpen, onClose }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ function AddAdminModal({ isOpen, onClose }) {
         gender,
       };
 
-      const response = await axios.post('http://localhost:5000/api/auth/addAdmin', userData);
+      const response = await axios.post(`${SERVER_URL}/api/auth/addAdmin`, userData);
       console.log('User registration successful:', response.data);
       onClose();
     } catch (error) {

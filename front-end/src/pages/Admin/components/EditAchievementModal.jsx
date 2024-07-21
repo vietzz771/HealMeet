@@ -5,6 +5,7 @@ import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 import { LuUpload } from 'react-icons/lu';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function EditAchievementModal({ isOpen, onClose, achievement, onUpdateSuccess }) {
   const [title, setTitle] = useState(achievement.title);
@@ -39,10 +40,10 @@ function EditAchievementModal({ isOpen, onClose, achievement, onUpdateSuccess })
         author,
         date,
         description,
-        image
+        image,
       };
 
-      await axios.put(`http://localhost:5000/api/achievements/${achievement._id}`, updatedAchievementData);
+      await axios.put(`${SERVER_URL}/api/achievements/${achievement._id}`, updatedAchievementData);
 
       onClose();
       onUpdateSuccess();
@@ -68,7 +69,9 @@ function EditAchievementModal({ isOpen, onClose, achievement, onUpdateSuccess })
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Edit Achievement</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Edit Achievement
+                </h3>
                 <button
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"

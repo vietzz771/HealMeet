@@ -13,6 +13,7 @@ import useDocumentTitle from '../../../hooks/useDocumentTitle';
 import moment from 'moment';
 import ChartThree from '../charts/ChartThree';
 import ChartFour from '../charts/ChartFour';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function Dashboard() {
   useDocumentTitle('HealMeet | Admin');
@@ -28,7 +29,7 @@ function Dashboard() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users/', {
+      const response = await axios.get(`${SERVER_URL}/api/users/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

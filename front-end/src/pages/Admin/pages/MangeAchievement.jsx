@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import AddAchievementModal from '../components/AddAchievementModal';
 import EditAchievementModal from '../components/EditAchievementModal';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function ManageAchievement() {
   useDocumentTitle('HealMeet | Admin');
@@ -24,7 +25,7 @@ function ManageAchievement() {
   const fetchAchievements = async () => {
     setIsLoadingData(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/achievements', {
+      const response = await axios.get(`${SERVER_URL}/api/achievements`, {
         params: {
           page: currentPage,
           limit: itemsPerPage,

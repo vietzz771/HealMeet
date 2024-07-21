@@ -5,6 +5,7 @@ import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import { LuUpload } from 'react-icons/lu';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function EditDoctorModal({ isOpen, onClose, doctor, onUpdateSuccess }) {
   const [name, setName] = useState(doctor.name);
@@ -37,7 +38,7 @@ function EditDoctorModal({ isOpen, onClose, doctor, onUpdateSuccess }) {
       };
 
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/doctors/${doctor._id}`, updatedDoctorData, {
+      await axios.put(`${SERVER_URL}/api/doctors/${doctor._id}`, updatedDoctorData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

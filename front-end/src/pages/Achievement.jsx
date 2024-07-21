@@ -4,6 +4,8 @@ import useScrollTop from '../hooks/useScrollTop';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import { Link } from 'react-router-dom';
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 const Achievements = () => {
   useDocumentTitle('HealMeet | Achievements');
   useScrollTop();
@@ -13,7 +15,7 @@ const Achievements = () => {
   useEffect(() => {
     // Fetch achievements from the API
     axios
-      .get('http://localhost:5000/api/achievements')
+      .get(`${SERVER_URL}/api/achievements`)
       .then((response) => setAchievements(response.data.data))
       .catch((error) => console.error('Error fetching achievements:', error));
   }, []);

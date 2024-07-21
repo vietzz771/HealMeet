@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import HashLoader from 'react-spinners/HashLoader';
 import axios from 'axios';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 const FormRegister = () => {
   const formRef = useRef();
@@ -18,7 +19,7 @@ const FormRegister = () => {
   const createBookingTicket = async (formData) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/bookingTicket/add-bookingTicket',
+        `${SERVER_URL}/api/bookingTicket/add-bookingTicket`,
         formData,
       );
       if (response.data.success) {

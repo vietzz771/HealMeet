@@ -8,6 +8,7 @@ import { FaSpinner } from 'react-icons/fa';
 import EditUserModal from '../components/EditUserModal';
 import AddUserModal from '../components/AddUserModal';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function ManageAccount() {
   useDocumentTitle('HealMeet | Admin');
@@ -29,7 +30,7 @@ function ManageAccount() {
     setIsLoadingData(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users', {
+      const response = await axios.get(`${SERVER_URL}/api/users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

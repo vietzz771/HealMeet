@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function AddHealthModal({ isOpen, onClose, onAddSuccess }) {
   const [name, setName] = useState('');
@@ -29,7 +30,7 @@ function AddHealthModal({ isOpen, onClose, onAddSuccess }) {
 
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/bookingTicket/add-bookingTicket',
+        `${SERVER_URL}/api/bookingTicket/add-bookingTicket`,
         healthData,
         {
           headers: {

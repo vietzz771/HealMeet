@@ -4,6 +4,7 @@ import AdminLayout from '../layout/AdminLayout';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 import AddHealthModal from '../components/AddHealthModal';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
@@ -30,7 +31,7 @@ function HealthCheckUp() {
     setIsLoadingData(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/bookingTicket', {
+      const response = await axios.get(`${SERVER_URL}/api/bookingTicket`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

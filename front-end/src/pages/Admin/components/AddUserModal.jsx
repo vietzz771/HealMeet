@@ -5,6 +5,7 @@ import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 // import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 // import { LuUpload } from 'react-icons/lu';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function AddUserModal({ isOpen, onClose, onAddSuccess }) {
   const [username, setUsername] = useState('');
@@ -43,7 +44,7 @@ function AddUserModal({ isOpen, onClose, onAddSuccess }) {
         // photo,
       };
 
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axios.post(`${SERVER_URL}/api/auth/register`, userData);
       console.log('User registration successful:', response.data);
       onAddSuccess();
       onClose();

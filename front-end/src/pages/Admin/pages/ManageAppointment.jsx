@@ -7,6 +7,7 @@ import useDocumentTitle from '../../../hooks/useDocumentTitle';
 import instance from '../../../utils/http';
 import { toast } from 'react-toastify';
 import { getToken } from '../../../config';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function ManageAppointment() {
   useDocumentTitle('HealMeet | Admin');
@@ -24,7 +25,7 @@ function ManageAppointment() {
     setIsLoadingData(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/bookings', {
+      const response = await axios.get(`${SERVER_URL}/api/bookings`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

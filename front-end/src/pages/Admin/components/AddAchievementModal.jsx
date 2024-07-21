@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
-
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 function AddAchievementModal({ isOpen, onClose, onAddSuccess }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -23,7 +23,7 @@ function AddAchievementModal({ isOpen, onClose, onAddSuccess }) {
         date,
       };
 
-      const response = await axios.post('http://localhost:5000/api/achievements', achievementData);
+      const response = await axios.post(`${SERVER_URL}/api/achievements`, achievementData);
       console.log('Achievement added successfully:', response.data);
       onAddSuccess();
       onClose();
@@ -50,7 +50,9 @@ function AddAchievementModal({ isOpen, onClose, onAddSuccess }) {
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add Achievement</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Add Achievement
+                </h3>
                 <button
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"

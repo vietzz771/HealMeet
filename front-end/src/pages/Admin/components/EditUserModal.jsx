@@ -5,6 +5,8 @@ import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import { LuUpload } from 'react-icons/lu';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -33,7 +35,7 @@ function EditUserModal({ isOpen, onClose, user, onUpdateSuccess }) {
       };
 
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/users/${user._id}`, updatedUserData, {
+      await axios.put(`${SERVER_URL}/api/users/${user._id}`, updatedUserData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -3,13 +3,15 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import userImg from '../../assets/images/defaultAvatar.jpg'; // Default avatar, replace if needed
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 const AchievementDetail = () => {
   const { id } = useParams();
   const [achievement, setAchievement] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/achievements/${id}`)
+      .get(`${SERVER_URL}/api/achievements/${id}`)
       .then((response) => setAchievement(response.data))
       .catch((error) => console.error('Error fetching achievement details:', error));
   }, [id]);

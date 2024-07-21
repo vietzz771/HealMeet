@@ -5,6 +5,7 @@ import { FaRegEdit } from 'react-icons/fa';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 import EditAdminModal from '../components/EditAdminModal';
 import AddAdminModal from '../components/AddAdminModal';
@@ -26,7 +27,7 @@ function SuperAdmin() {
     setIsLoadingData(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users/', {
+      const response = await axios.get(`${SERVER_URL}/api/users/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

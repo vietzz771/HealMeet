@@ -4,6 +4,7 @@ import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 // import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function AddDoctorModal({ isOpen, onClose, onAddSuccess }) {
   const [name, setName] = useState('');
@@ -39,7 +40,7 @@ function AddDoctorModal({ isOpen, onClose, onAddSuccess }) {
       };
 
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/auth/register', doctorData, {
+      const response = await axios.post(`${SERVER_URL}/api/auth/register`, doctorData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
