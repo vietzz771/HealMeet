@@ -67,7 +67,7 @@ function SuperAdmin() {
   const deleteUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
+      await axios.delete(`${SERVER_URL}/api/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

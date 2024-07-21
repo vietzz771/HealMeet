@@ -68,7 +68,7 @@ function HealthCheckUp() {
   const deleteHealth = async (healthId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/bookingTicket/${healthId}`, {
+      await axios.delete(`${SERVER_URL}/api/bookingTicket/${healthId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

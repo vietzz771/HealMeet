@@ -53,7 +53,7 @@ function ManageAchievement() {
 
   const deleteAchievement = async (achievementId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/achievements/${achievementId}`);
+      await axios.delete(`${SERVER_URL}/api/achievements/${achievementId}`);
       fetchAchievements(); // Refresh the achievements list after deletion
     } catch (error) {
       console.error('There was an error deleting the achievement!', error);
