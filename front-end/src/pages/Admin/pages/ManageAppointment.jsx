@@ -1,260 +1,350 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import MyCalendar from '../components/MyCalendar';
 import AdminLayout from '../layout/AdminLayout';
+import moment from 'moment';
+import { AiOutlineDelete } from 'react-icons/ai';
+import axios from 'axios';
+import TableAppointment from '../components/TableAppointment';
 import { FaSpinner } from 'react-icons/fa';
-import Swal from 'sweetalert2';
-import useDocumentTitle from '../../../hooks/useDocumentTitle';
-import instance from '../../../utils/http';
 import { toast } from 'react-toastify';
-import { getToken } from '../../../config';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 function ManageAppointment() {
   useDocumentTitle('HealMeet | Admin');
-  const token = getToken();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [appointments, setAppointments] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [selectedDoctor, setSelectedDoctor] = useState('');
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [newSlot, setNewSlot] = useState({ startingTime: '', endingTime: '' });
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const handleDoctorChange = (event) => {
+    const doctorId = event.target.value;
+    setSelectedDoctor(doctorId);
+    if (doctorId) {
+      fetchTimeSlots(doctorId, date);
+    } else {
+      setAvailableSlots([]);
+    }
+  };
 
-  const [isLoadingData, setIsLoadingData] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
-
-  const fetchAppointments = async () => {
-    setIsLoadingData(true);
+  const fetchDoctors = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/bookings', {
+      const response = await axios.get('http://localhost:5000/api/doctors/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: {
-          page: currentPage,
-          limit: itemsPerPage,
+      });
+      setDoctors(response.data.data);
+    } catch (error) {
+      console.error('There was an error fetching the users!', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTimeSlots = async (doctorId, selectedDate) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+
+      const response = await axios.get(`http://localhost:5000/api/doctors/${doctorId}/slots`, {
+        params: { date: formattedDate },
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       });
-      setTimeout(() => {
-        setAppointments(response.data);
-        setIsLoadingData(false);
-      }, 500);
+
+      const slotsForSelectedDate = response.data.timeSlots.filter((slot) =>
+        moment(slot.date).isSame(selectedDate, 'day'),
+      );
+
+      setAvailableSlots(slotsForSelectedDate);
     } catch (error) {
-      console.error('There was an error fetching the appointments!', error);
-      setIsLoadingData(false);
+      console.error('There was an error fetching the time slots!', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createTimeSlots = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        'http://localhost:5000/api/doctors/add-slot',
+        {
+          doctorId: selectedDoctor,
+          date: moment(date).format('YYYY-MM-DD'),
+          startingTime: moment(newSlot.startingTime, 'hh:mm A').format('hh:mm A'),
+          endingTime: moment(newSlot.endingTime, 'hh:mm A').format('hh:mm A'),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      fetchTimeSlots(selectedDoctor, date);
+      setNewSlot({ startingTime: '', endingTime: '' });
+    } catch (error) {
+      console.error('Error adding time slot', error);
+      // alert('Failed to add time slot. Please try again.');
+      toast.error('Failed to add time slot. Please try again.');
     }
   };
 
   useEffect(() => {
-    fetchAppointments();
-  }, [currentPage, searchQuery]);
+    fetchDoctors();
+  }, []);
 
-  const handleCancel = async (id) => {
-    try {
-      const res = await instance.put(
-        'bookings',
-        { id },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      const { message } = await res.data;
-      toast.success(message);
-      fetchAppointments();
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message;
-      toast.error(errorMessage);
+  useEffect(() => {
+    if (selectedDoctor) {
+      fetchTimeSlots(selectedDoctor, date);
+    } else {
+      setAvailableSlots([]);
     }
+  }, [selectedDoctor, date]);
+
+  const formatDateForDateInput = (dateOfJoining) => {
+    return moment(new Date(dateOfJoining)).format('YYYY-MM-DD');
   };
 
-  const confirmCancelAppointment = (appointmentId) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, cancel it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleCancel(appointmentId);
-      }
+  const getformDate = (mydate) => {
+    const parts = mydate.split('-');
+    return new Date(+parts[0], parts[1] - 1, +parts[2], 12);
+  };
+
+  const isPastTime = (date, time) => {
+    const selectedDateTime = moment(date).set({
+      hour: moment(time, 'hh:mm A').hour(),
+      minute: moment(time, 'hh:mm A').minute(),
+    });
+    return selectedDateTime.isBefore(moment());
+  };
+
+  const isTimeSlotOverlap = (newSlot, slots) => {
+    const newStartTime = moment(newSlot.startingTime, 'hh:mm A');
+    const newEndTime = moment(newSlot.endingTime, 'hh:mm A');
+
+    return slots.some((slot) => {
+      const startTime = moment(slot.startingTime, 'hh:mm A');
+      const endTime = moment(slot.endingTime, 'hh:mm A');
+      return (
+        (newStartTime.isSameOrAfter(startTime) && newStartTime.isBefore(endTime)) ||
+        (newEndTime.isAfter(startTime) && newEndTime.isSameOrBefore(endTime)) ||
+        (newStartTime.isSameOrBefore(startTime) && newEndTime.isSameOrAfter(endTime))
+      );
     });
   };
 
-  const filteredAppointments = appointments.filter(
-    (appointment) =>
-      appointment.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      appointment.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      appointment.doctor.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const addNewSlot = () => {
+    const currentDate = moment();
+    const selectedDate = moment(date);
+    // if (!selectedDoctor) return alert('Please select a doctor');
+    if (!selectedDoctor) {
+      return toast.error('Please select a doctor');
+    } else if (
+      moment(selectedDate).isSame(currentDate, 'day') &&
+      (isPastTime(date, newSlot.startingTime) || isPastTime(date, newSlot.endingTime))
+    ) {
+      toast.error('Cannot select past time for today');
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const totalPages = Math.ceil(appointments.length / itemsPerPage);
+      return setNewSlot({ startingTime: '', endingTime: '' });
+    } else if (isTimeSlotOverlap(newSlot, availableSlots)) {
+      toast.error('Time slot overlaps with existing slot');
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
+      return setNewSlot({ startingTime: '', endingTime: '' });
+    }
+
+    createTimeSlots();
+  };
+
+  const deleteTimeSlot = async (e, index) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      const slot = availableSlots[index];
+
+      await axios.delete(`http://localhost:5000/api/doctors/${selectedDoctor}/delete-slot`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          doctorId: selectedDoctor,
+          date: slot.date,
+          startingTime: slot.startingTime,
+          endingTime: slot.endingTime,
+        },
+      });
+
+      fetchTimeSlots(selectedDoctor, date);
+    } catch (error) {
+      console.error('Error deleting time slot', error);
+      // alert('Failed to delete time slot. Please try again.');
+      toast.error('Failed to delete time slot. Please try again.');
+    }
   };
 
   return (
-    <AdminLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
+    <AdminLayout>
+      {loading && <FaSpinner className="animate-spin h-5 w-5 mx-auto" />}
+
       <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white">
-          <label htmlFor="table-search" className="sr-only">
-            Search
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
+        <h3 className="text-2xl font-bold mb-8">Appointments</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="lg:col-span-1 lg:col-start-1">
+            <div className="max-w-screen-md mx-auto">
+              <MyCalendar date={date} setDate={setDate} />
             </div>
-            <input
-              type="text"
-              id="table-search-users"
-              className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search for name or status"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          </div>
+
+          <div className="lg:col-span-1">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <h4 className="text-lg font-semibold">Select Date</h4>
+                <div className="flex items-center">
+                  <label htmlFor="appDate" className="w-24 mr-2">
+                    Date:
+                  </label>
+                  <input
+                    id="appDate"
+                    name="appDate"
+                    type="date"
+                    className="flex-1 px-3 py-2 border rounded"
+                    value={formatDateForDateInput(date)}
+                    onChange={(e) => setDate(getformDate(e.target.value))}
+                    min={moment().format('YYYY-MM-DD')}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h4 className="text-lg font-semibold">Select Doctor</h4>
+                <div className="flex items-center">
+                  <label htmlFor="appDoctor" className="w-24 mr-2">
+                    Doctor:
+                  </label>
+                  <select
+                    id="appDoctor"
+                    value={selectedDoctor}
+                    onChange={handleDoctorChange}
+                    className="block w-full flex-1 px-3 py-2 border rounded"
+                  >
+                    <option value="">Select a doctor</option>
+                    {doctors.map((doctor) => (
+                      <option key={doctor._id} value={doctor._id}>
+                        {doctor.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h4 className="text-lg font-semibold">Available Slots</h4>
+
+                <div className="space-y-4">
+                  {availableSlots.map(
+                    (slot, index) =>
+                      slot && (
+                        <div
+                          key={index}
+                          className="grid grid-cols-2 md:grid-cols-4 mb-[30px] gap-5"
+                        >
+                          <div>
+                            <p className="form__label">Starting Time*</p>
+                            <input
+                              type="time"
+                              name="startingTime"
+                              value={
+                                moment(
+                                  slot.startingTime,
+                                  'hh:mm A                             ',
+                                ).format('HH:mm') || ''
+                              }
+                              className="block w-full flex-1 px-3 py-2 border rounded"
+                              disabled
+                            />
+                          </div>
+                          <div>
+                            <p className="form__label">Ending Time*</p>
+                            <input
+                              type="time"
+                              name="endingTime"
+                              value={moment(slot.endingTime, 'hh:mm A').format('HH:mm') || ''}
+                              className="block w-full flex-1 px-3 py-2 border rounded"
+                              disabled
+                            />
+                          </div>
+                          <div className="flex items-center">
+                            <button
+                              onClick={(e) => deleteTimeSlot(e, index)}
+                              className="bg-red-600 p-2 rounded-full text-white test-[18px] cursor-pointer mt-8"
+                            >
+                              <AiOutlineDelete />
+                            </button>
+                          </div>
+                        </div>
+                      ),
+                  )}
+                </div>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 mb-[30px] gap-5">
+                    <div>
+                      <p className="form__label">Starting Time*</p>
+                      <input
+                        type="time"
+                        name="startingTime"
+                        value={moment(newSlot.startingTime, 'hh:mm A').format('HH:mm') || ''}
+                        className="block w-full flex-1 px-3 py-2 border rounded"
+                        onChange={(e) =>
+                          setNewSlot({
+                            ...newSlot,
+                            startingTime: moment(e.target.value, 'HH:mm').format('hh:mm A'),
+                          })
+                        }
+                        min={
+                          formatDateForDateInput(date) === formatDateForDateInput(new Date())
+                            ? moment().format('HH:mm')
+                            : '00:00'
+                        }
+                      />
+                    </div>
+                    <div>
+                      <p className="form__label">Ending Time*</p>
+                      <input
+                        type="time"
+                        name="endingTime"
+                        value={moment(newSlot.endingTime, 'hh:mm A').format('HH:mm') || ''}
+                        className="block w-full flex-1 px-3 py-2 border rounded"
+                        onChange={(e) =>
+                          setNewSlot({
+                            ...newSlot,
+                            endingTime: moment(e.target.value, 'HH:mm').format('hh:mm A'),
+                          })
+                        }
+                        min={newSlot.startingTime}
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <button
+                        onClick={addNewSlot}
+                        className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-8 relative"
+                      >
+                        Add Slot
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          {isLoadingData ? (
-            <div className="flex items-center space-x-2">
-              <FaSpinner className="animate-spin text-blue-500" />
-              <span>Loading...</span>
-            </div>
-          ) : (
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Patient Name
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Doctor Name
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Clinic
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Time
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Date
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAppointments
-                  .slice(indexOfFirstItem, indexOfLastItem)
-                  .map((appointment) => (
-                    <tr key={appointment._id} className="bg-white border-b hover:bg-gray-50">
-                      <td className="px-6 py-4">
-                        <div>
-                          <div className="text-base font-semibold">{appointment.user.name}</div>
-                          <div className="font-normal text-gray-500">{appointment.user.email}</div>
-                        </div>
-                      </td>
-
-                      <td className="px-6 py-4">{appointment.doctor.name}</td>
-                      <td className="px-6 py-4">{appointment.clinic.name}</td>
-                      <td className="px-6 py-4">
-                        {appointment.timeSlot.startingTime} - {appointment.timeSlot.endingTime}
-                      </td>
-                      <td className="px-6 py-4">{`${appointment.timeSlot.date} `}</td>
-                      <td className="px-6 py-4">
-                        {' '}
-                        {appointment.status === 'pending' ? (
-                          <p className="rounded-xl bg-blue-500 text-center text-white p-2">
-                            Pending
-                          </p>
-                        ) : appointment.status === 'cancelled' ? (
-                          <p className="rounded-xl bg-red-500 text-center text-white p-2">
-                            Cancelled
-                          </p>
-                        ) : appointment.status === 'approved' ? (
-                          <p className="rounded-xl bg-green-500 text-center text-white p-2">
-                            Approved
-                          </p>
-                        ) : null}
-                      </td>
-
-                      <td className="px-6 py-4 ">
-                        <button
-                          className="px-2 py-1 border rounded-2xl bg-red-500 text-white hover:bg-red-400"
-                          onClick={() => confirmCancelAppointment(appointment._id)}
-                        >
-                          Cancel
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-        <nav
-          className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-          aria-label="Table navigation"
-        >
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-            {`Showing ${indexOfFirstItem + 1}-${indexOfLastItem} of ${appointments.length}`}
-          </span>
-          <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-            <li>
-              <button
-                className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li key={index}>
-                <button
-                  className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 dark:border-gray-700 ${
-                    currentPage === index + 1
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-500 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white'
-                  }`}
-                  onClick={() => paginate(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                onClick={() => paginate(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
+      </div>
+      <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+        <h3 className="text-2xl font-bold mb-8">Table Appointments Available</h3>
+        <TableAppointment doctors={doctors} />{' '}
       </div>
     </AdminLayout>
   );

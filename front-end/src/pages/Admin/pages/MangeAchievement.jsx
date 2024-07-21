@@ -162,6 +162,8 @@ function ManageAchievement() {
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
+
+
                   <th scope="col" className="px-6 py-3">Title</th>
                   <th scope="col" className="px-6 py-3">Author</th>
                   <th scope="col" className="px-6 py-3">Content</th>
@@ -218,25 +220,6 @@ function ManageAchievement() {
                   </tr>
                 ))}
 
-
-                      <td className="px-6 py-4">
-                        <button
-                          className="text-blue-600 hover:underline"
-                          onClick={() => editAchievement(achievement._id, true)}
-                        >
-                          <FaRegEdit className="mr-1" />
-                          Edit
-                        </button>
-                        <button
-                          className="text-red-600 hover:underline ml-4"
-                          onClick={() => confirmDeleteAchievement(achievement._id)}
-                        >
-                          <FaRegTrashAlt className="mr-1" />
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
               </tbody>
             </table>
           )}

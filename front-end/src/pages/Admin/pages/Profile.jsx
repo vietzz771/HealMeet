@@ -10,7 +10,6 @@ import Loading from '../../../components/Loader/Loading';
 import { authContext } from '../../../context/authContext';
 import AdminLayout from '../layout/AdminLayout';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
-import userImg from '../../../assets/images/defaultAvatar.jpg';
 
 const Profile = ({ user }) => {
   useDocumentTitle('HealMeet | Admin');
@@ -25,6 +24,7 @@ const Profile = ({ user }) => {
     name: '',
     email: '',
     gender: '',
+    bloodType: '',
     photo: null,
   });
   const [loading, setLoading] = useState(false);
@@ -36,6 +36,7 @@ const Profile = ({ user }) => {
       name: user.name,
       email: user.email,
       gender: user.gender,
+      bloodType: user.bloodType,
       photo: user.photo,
     });
   }, [user]);
@@ -119,7 +120,19 @@ const Profile = ({ user }) => {
               disabled={true}
             />
           </div>
-
+          <div className="mb-5 px-[30px] lg:px-0">
+            <label className="text-headingColor font-bold text-[16px] leading-7">Blood Type:</label>
+            <input
+              type="text"
+              placeholder="Blood Type"
+              name="bloodType"
+              value={formData.bloodType}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
+                  focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
+                  cursor-pointer placeholder:text-textColor"
+            />
+          </div>
           <div className="mb-5 px-[30px] lg:px-0">
             <label className="text-headingColor font-bold text-[16px] leading-7">
               Gender:
@@ -140,13 +153,7 @@ const Profile = ({ user }) => {
             {formData.photo && (
               <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
                 {imgLoading && <Loading />}
-                {!imgLoading && (
-                  <img
-                    src={formData.photo ? formData.photo : userImg}
-                    alt=""
-                    className="w-full rounded-full"
-                  />
-                )}
+                {!imgLoading && <img src={formData.photo} alt="" className="w-full rounded-full" />}
               </figure>
             )}
             <div className="relative w-[130px] h-[50px]">
