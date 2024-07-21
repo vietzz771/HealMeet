@@ -5,15 +5,18 @@ import { FaRegEdit } from 'react-icons/fa';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { FaSpinner } from 'react-icons/fa';
-
 import EditUserModal from '../components/EditUserModal';
 import AddUserModal from '../components/AddUserModal';
+import useDocumentTitle from '../../../hooks/useDocumentTitle';
 
 function ManageAccount() {
+  useDocumentTitle('HealMeet | Admin');
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
+
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
@@ -35,8 +38,10 @@ function ManageAccount() {
           limit: itemsPerPage,
         },
       });
+      const filteredUsers = response.data.data.filter((user) => user.role !== 'doctor');
+
       setTimeout(() => {
-        setUsers(response.data.data);
+        setUsers(filteredUsers);
         setIsLoadingData(false);
       }, 500);
     } catch (error) {
@@ -44,7 +49,6 @@ function ManageAccount() {
       setIsLoadingData(false);
     }
   };
-
   useEffect(() => {
     fetchUsers();
   }, [currentPage, searchQuery]);
@@ -70,6 +74,7 @@ function ManageAccount() {
           Authorization: `Bearer ${token}`,
         },
       });
+
       fetchUsers(); // Cập nhật lại danh sách người dùng sau khi xóa
     } catch (error) {
       console.error('There was an error deleting the user!', error);
@@ -90,8 +95,10 @@ function ManageAccount() {
       }
     });
   };
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -156,7 +163,7 @@ function ManageAccount() {
               type="text"
               id="table-search-users"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search for users"
+              placeholder="Search for name or role"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -192,10 +199,13 @@ function ManageAccount() {
                     <div className="flex items-center">Role</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center">Phone</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     <div className="flex items-center">Gender</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Birthday</div>
+                    <div className="flex items-center">Blood Type</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -211,7 +221,7 @@ function ManageAccount() {
                     >
                       <img
                         className="w-10 h-10 rounded-full"
-                        src="https://scontent.fhan14-2.fna.fbcdn.net/v/t1.6435-9/157961237_1328089080905245_5171334421315568845_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeF99CmdNvNFHeSE2X2oAF2bSiHTP0RPzcdKIdM_RE_Nx8FryIGP6oPYsu-I6EnZ7dnlIf60FJas0IwShb7FDy2G&_nc_ohc=BlqSc2TXg_kQ7kNvgHi3uwO&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAlt-hNLXpzSV5iAkbgqLMhSl5m2b-Kr0m9DqZFaSxgIw&oe=66848460"
+                        src={user.photo}
                         alt={`${user.name} image`}
                       />
                       <div className="pl-3">
@@ -220,12 +230,22 @@ function ManageAccount() {
                       </div>
                     </th>
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.role)}</td>
+                    <td className="px-6 py-4">{user.phone}</td>
+
                     <td className="px-6 py-4">{capitalizeFirstLetter(user.gender)}</td>
-                    <td className="px-6 py-4">null</td>
+                    <td className="px-6 py-4">{user.bloodType}</td>
                     <td className="px-6 py-4 ">
                       <button
-                        className="text-blue-600 hover:underline flex items-center"
-                        onClick={() => editUser(user._id, true)}
+                        className={`text-blue-600 hover:underline flex items-center ${
+                          user.role === 'admin' || user.role === 'superAdmin'
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
+                        }`}
+                        onClick={() => {
+                          if (user.role !== 'admin' || user.role === 'superAdmin') {
+                            editUser(user._id, true);
+                          }
+                        }}
                       >
                         <FaRegEdit className="mr-1" />
                         Edit
@@ -233,8 +253,17 @@ function ManageAccount() {
                     </td>
                     <td className="py-4">
                       <button
-                        className="text-red-600 hover:underline flex items-center"
-                        onClick={() => confirmDeleteUser(user._id)}
+                        className={`text-red-600 hover:underline flex items-center ${
+                          user.role === 'admin' || user.role === 'superAdmin'
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
+                        }`}
+                        onClick={() => {
+                          if (user.role !== 'admin' || user.role === 'superAdmin') {
+                            confirmDeleteUser(user._id);
+                          }
+                        }}
+                        disabled={user.role === 'admin' || user.role === 'superAdmin'}
                       >
                         <FaRegTrashAlt className="mr-1" />
                         Delete
@@ -266,8 +295,10 @@ function ManageAccount() {
             {Array.from({ length: totalPages }, (_, index) => (
               <li key={index}>
                 <button
-                  className={`flex items-center justify-center px-3 h-8 leading-tight bg-white border border-gray-300 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white ${
-                    currentPage === index + 1 ? 'text-blue-600 bg-blue-600' : 'text-gray-500'
+                  className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 dark:border-gray-700 ${
+                    currentPage === index + 1
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-500 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white'
                   }`}
                   onClick={() => paginate(index + 1)}
                 >
@@ -296,7 +327,11 @@ function ManageAccount() {
           />
         )}
         {isModalAddOpen && (
-          <AddUserModal isOpen={isModalAddOpen} onClose={() => setIsModalAddOpen(false)} />
+          <AddUserModal
+            onAddSuccess={fetchUsers}
+            isOpen={isModalAddOpen}
+            onClose={() => setIsModalAddOpen(false)}
+          />
         )}
       </div>
     </AdminLayout>

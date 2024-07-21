@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import starIcon from '../../assets/images/Star.png';
 import DoctorAbout from './DoctorAbout';
 import Feedback from './Feedback';
 import SidePanel from './SidePanel';
@@ -7,11 +6,37 @@ import useInstanceData from '../../hooks/useInstanceData';
 import Loader from '../../components/Loader/Loading';
 import Error from '../../components/Error/Error';
 import { useParams } from 'react-router-dom';
+import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+
+const StarRating = ({ averageRating }) => {
+  const fullStars = Math.floor(averageRating);
+  const halfStar = averageRating % 1 !== 0;
+  const stars = [];
+
+  // Tạo các ngôi sao đầy đủ
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<FaStar key={`full-${i}`} className="text-yellow-500 w-6 h-6 inline-block" />);
+  }
+
+  // Thêm nửa ngôi sao nếu cần
+  if (halfStar) {
+    stars.push(<FaStarHalfAlt key="half" className="text-yellow-500 w-6 h-6 inline-block" />);
+  }
+
+  // Hoàn thành số lượng ngôi sao tối đa (5 ngôi sao)
+  const remainingStars = 5 - stars.length;
+  for (let i = 0; i < remainingStars; i++) {
+    stars.push(<FaRegStar key={`empty-${i}`} className="text-gray-300 w-6 h-6 inline-block" />);
+  }
+
+  return <div className="flex items-center">{stars}</div>;
+};
 
 const DoctorDetails = () => {
   const [tab, setTab] = useState('about');
   const { id } = useParams();
-  const { data: doctor, loading, error } = useInstanceData(`doctors/${id}`);
+  const { data: doctor, loading, error, refetch } = useInstanceData(`doctors/${id}`);
+  const { data: clinics, cLoading, cError } = useInstanceData(`clinics/`);
   const {
     name,
     timeSlots,
@@ -49,7 +74,7 @@ const DoctorDetails = () => {
                       className="flex items-center gap-[6px] text-[14px] leading-5 lg:text-[16px]
                   lg:leading-7 font-semibold text-headingColor"
                     >
-                      <img src={starIcon} alt="" /> {averageRating}
+                      <StarRating averageRating={averageRating} />
                     </span>
                     <span className="text-[14px] leading-5 lg:text-[16px] lg:leading-7 font-[400]">
                       ({totalRating})
@@ -80,11 +105,20 @@ const DoctorDetails = () => {
               </div>
               <div className="mt-[50px]">
                 {tab === 'about' && <DoctorAbout doctor={doctor} />}
-                {tab === 'feedback' && <Feedback reviews={reviews} totalRating={totalRating} />}
+                {tab === 'feedback' && (
+                  <Feedback reviews={reviews} totalRating={totalRating} refetch={refetch} />
+                )}
               </div>
             </div>
             <div>
-              <SidePanel doctorId={doctor._id} ticketPrice={ticketPrice} timeSlots={timeSlots} />
+              <SidePanel
+                doctorId={doctor._id}
+                ticketPrice={ticketPrice}
+                timeSlots={timeSlots}
+                clinics={clinics}
+                loading={cLoading}
+                error={cError}
+              />
             </div>
           </div>
         )}

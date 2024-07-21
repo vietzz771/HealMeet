@@ -21,6 +21,7 @@ import useDocumentTitle from '../hooks/useDocumentTitle';
 const Home = () => {
   useDocumentTitle('HealMeet | Home');
   useScrollTop();
+
   return (
     <>
       <section className="hero__section pt-[60px] 2xl:h-[800px]">
