@@ -2,7 +2,7 @@ function WelcomeBanner() {
   return (
     <div
       className="bg-cover bg-no-repeat bg-center w-full h-72 p-6 sm:p-12 rounded-3xl mb-8"
-      style={{ backgroundImage: "url('/public/images/welcomeBanner.png')" }}
+      style={{ backgroundImage: "url('/src/assets/images/welcomeBanner.png')" }}
     >
       <div className="text-white w-full sm:w-1/2">
         <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold">Welcome back, Admin. 👋</h2>
