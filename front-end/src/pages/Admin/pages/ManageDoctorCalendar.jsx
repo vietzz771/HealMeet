@@ -143,7 +143,8 @@ function ManageDoctorCalendar() {
   const addNewSlot = () => {
     const currentDate = moment();
     const selectedDate = moment(date);
-    // if (!selectedDoctor) return alert('Please select a doctor');
+    const startTimeMoment = moment(newSlot.startingTime, 'HH:mm');
+    const endTimeMoment = moment(newSlot.endingTime, 'HH:mm');
     if (!selectedDoctor) {
       return toast.error('Please select a doctor');
     } else if (
@@ -156,6 +157,9 @@ function ManageDoctorCalendar() {
     } else if (isTimeSlotOverlap(newSlot, availableSlots)) {
       toast.error('Time slot overlaps with existing slot');
 
+      return setNewSlot({ startingTime: '', endingTime: '' });
+    } else if (endTimeMoment.isBefore(startTimeMoment)) {
+      toast.error('End time cannot be earlier than start time');
       return setNewSlot({ startingTime: '', endingTime: '' });
     }
 

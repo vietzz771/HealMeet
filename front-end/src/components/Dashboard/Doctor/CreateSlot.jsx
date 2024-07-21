@@ -141,7 +141,8 @@ function DoctorCreateSlots() {
     const currentDate = moment();
     const selectedDate = moment(date);
     const userString = localStorage.getItem('user');
-
+    const startTimeMoment = moment(newSlot.startingTime, 'HH:mm');
+    const endTimeMoment = moment(newSlot.endingTime, 'HH:mm');
     if (!userString) {
       return toast.error('User not identified');
     }
@@ -161,6 +162,9 @@ function DoctorCreateSlots() {
       return setNewSlot({ startingTime: '', endingTime: '' });
     } else if (isTimeSlotOverlap(newSlot, availableSlots)) {
       toast.error('Time slot overlaps with existing slot');
+      return setNewSlot({ startingTime: '', endingTime: '' });
+    } else if (endTimeMoment.isBefore(startTimeMoment)) {
+      toast.error('End time cannot be earlier than start time');
       return setNewSlot({ startingTime: '', endingTime: '' });
     }
 
