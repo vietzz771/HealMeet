@@ -8,8 +8,9 @@ import { getToken } from '../../../config';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import Loading from '../../Loader/Loading';
 import { authContext } from '../../../context/authContext';
+import avatar from '../../../assets/images/defaultAvatar.jpg';
 
-const Profile = ({ user }) => {
+const Profile = ({ user, refetch }) => {
   const { dispatch } = useContext(authContext);
 
   const token = getToken();
@@ -18,6 +19,8 @@ const Profile = ({ user }) => {
     email: '',
     gender: '',
     bloodType: '',
+    phone: '',
+    address: '',
     photo: null,
   });
   const [loading, setLoading] = useState(false);
@@ -31,6 +34,8 @@ const Profile = ({ user }) => {
       gender: user.gender,
       bloodType: user.bloodType,
       photo: user.photo,
+      phone: user.phone,
+      address: user.address,
     });
   }, [user]);
 
@@ -43,7 +48,6 @@ const Profile = ({ user }) => {
       const file = e.target.files[0];
       const data = await uploadImageToCloudinary(file);
       setFormData({ ...formData, photo: data?.url });
-      console.log(data);
     } catch (error) {
       toast.error(error);
     } finally {
@@ -70,6 +74,7 @@ const Profile = ({ user }) => {
         },
       });
       navigate('/users/profile/me');
+      refetch();
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       toast.error(errorMessage);
@@ -81,45 +86,82 @@ const Profile = ({ user }) => {
       <form>
         <div className="mb-5 px-[30px] lg:px-0">
           <label className="text-headingColor font-bold text-[16px] leading-7">Full Name:</label>
-          <input
-            type="text"
-            placeholder="Full Name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
-                  focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
-                  cursor-pointer placeholder:text-textColor"
-          />
+          <p>
+            <input
+              type="text"
+              placeholder="Full Name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-[75%] px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
+                    focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
+                    cursor-pointer placeholder:text-textColor"
+            />
+          </p>
         </div>
         <div className="mb-5 px-[30px] lg:px-0">
           <label className="text-headingColor font-bold text-[16px] leading-7">Email:</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
-                  focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
-                  cursor-pointer placeholder:text-textColor"
-            aria-readonly
-            readOnly
-            disabled={true}
-          />
+          <p>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="w-[75%] px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
+                    focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
+                    cursor-pointer placeholder:text-textColor"
+              aria-readonly
+              readOnly
+              disabled={true}
+            />
+          </p>
+        </div>
+        <div className="mb-5 px-[30px] lg:px-0">
+          <label className="text-headingColor font-bold text-[16px] leading-7">Phone Number:</label>
+          <p>
+            <input
+              type="text"
+              placeholder="Enter your phone"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className="w-[75%] px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
+                    focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
+                    cursor-pointer placeholder:text-textColor"
+            />
+          </p>
+        </div>
+        <div className="mb-5 px-[30px] lg:px-0">
+          <label className="text-headingColor font-bold text-[16px] leading-7">Adress:</label>
+          <div>
+            <input
+              type="text"
+              placeholder="Enter your address"
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+              className="w-[75%] px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
+                    focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
+                    cursor-pointer placeholder:text-textColor"
+            />
+          </div>
         </div>
         <div className="mb-5 px-[30px] lg:px-0">
           <label className="text-headingColor font-bold text-[16px] leading-7">Blood Type:</label>
-          <input
-            type="text"
-            placeholder="Blood Type"
-            name="bloodType"
-            value={formData.bloodType}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
-                  focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
-                  cursor-pointer placeholder:text-textColor"
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Blood Type"
+              name="bloodType"
+              value={formData.bloodType}
+              onChange={handleInputChange}
+              className="w-[75%] px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
+                    focus:border-b-primaryColor text-[16px] leading-7 text-headingColor rounded-md shadow-md
+                    cursor-pointer placeholder:text-textColor"
+            />
+          </div>
         </div>
         <div className="mb-5 px-[30px] lg:px-0">
           <label className="text-headingColor font-bold text-[16px] leading-7">
@@ -138,10 +180,14 @@ const Profile = ({ user }) => {
           </label>
         </div>
         <div className="mb-5 flex items-center gap-3">
-          {formData.photo && (
+          {formData.photo ? (
             <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
               {imgLoading && <Loading />}
               {!imgLoading && <img src={formData.photo} alt="" className="w-full rounded-full" />}
+            </figure>
+          ) : (
+            <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
+              <img src={avatar} alt="" className="w-full rounded-full" />
             </figure>
           )}
           <div className="relative w-[130px] h-[50px]">
@@ -165,7 +211,7 @@ const Profile = ({ user }) => {
           <button
             disabled={loading && true}
             type="submit"
-            className="w-full bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
+            className="w-[75%] bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
             onClick={submitHandler}
           >
             {loading ? <HashLoader size={35} color="#ffffff" /> : 'Update'}

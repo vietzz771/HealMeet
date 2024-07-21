@@ -19,7 +19,7 @@ const MyAccount = () => {
   const [tab, setTab] = useState('bookings');
   const { dispatch } = useContext(authContext);
   const navigate = useNavigate();
-  const { data: userData, loading, error } = useGetProfile('users/profile/me');
+  const { data: userData, loading, error, refetch } = useGetProfile('users/profile/me');
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
     toast.success('Successfully logged out!');
@@ -28,7 +28,7 @@ const MyAccount = () => {
 
   return (
     <section>
-      <div className="max-w-[1170px] px-5 mx-auto">
+      <div className="max-w-[1370px] px-5 mx-auto">
         {loading && <Loading />}
         {error && <Error errMessage={error} />}
         {!loading && !error && (
@@ -64,9 +64,6 @@ const MyAccount = () => {
                 >
                   Logout
                 </button>
-                <button className="w-full bg-red-600 mt-4 p-3 text-[16px] leading-7 rounded-md text-white">
-                  Delete account
-                </button>
               </div>
             </div>
             <div className="md:col-span-2 md:px-[30px]">
@@ -97,7 +94,7 @@ const MyAccount = () => {
                 </button>
               </div>
               {tab === 'bookings' && <MyBookings />}
-              {tab === 'settings' && <Profile user={userData} />}
+              {tab === 'settings' && <Profile user={userData} refetch={refetch} />}
               {tab === 'changePassword' && <ChangePassword />}
             </div>
           </div>
