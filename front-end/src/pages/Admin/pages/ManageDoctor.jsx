@@ -71,7 +71,7 @@ function ManageDoctor() {
   const deleteDoctor = async (doctorId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/doctors/${doctorId}`, {
+      await axios.delete(`${SERVER_URL}/api/doctors/${doctorId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

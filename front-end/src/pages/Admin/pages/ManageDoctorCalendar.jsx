@@ -8,6 +8,7 @@ import TableAppointment from '../components/TableAppointment';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import useDocumentTitle from '../../../hooks/useDocumentTitle';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function ManageDoctorCalendar() {
   useDocumentTitle('HealMeet | Admin');
@@ -32,7 +33,7 @@ function ManageDoctorCalendar() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/doctors/', {
+      const response = await axios.get(`${SERVER_URL}/api/doctors/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +52,7 @@ function ManageDoctorCalendar() {
       const token = localStorage.getItem('token');
       const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
 
-      const response = await axios.get(`http://localhost:5000/api/doctors/${doctorId}/slots`, {
+      const response = await axios.get(`${SERVER_URL}/api/doctors/${doctorId}/slots`, {
         params: { date: formattedDate },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +75,7 @@ function ManageDoctorCalendar() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:5000/api/doctors/add-slot',
+        `${SERVER_URL}/api/doctors/add-slot`,
         {
           doctorId: selectedDoctor,
           date: moment(date).format('YYYY-MM-DD'),
@@ -172,7 +173,7 @@ function ManageDoctorCalendar() {
       const token = localStorage.getItem('token');
       const slot = availableSlots[index];
 
-      await axios.delete(`http://localhost:5000/api/doctors/${selectedDoctor}/delete-slot`, {
+      await axios.delete(`${SERVER_URL}/api/doctors/${selectedDoctor}/delete-slot`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

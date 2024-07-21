@@ -42,7 +42,7 @@ function Dashboard() {
   const fetchBooking = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/bookings/', {
+      const response = await axios.get(`${SERVER_URL}/api/bookings/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -76,7 +76,7 @@ function Dashboard() {
   const fetchClinic = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/clinics/`, {
+      const response = await axios.get(`${SERVER_URL}/api/clinics/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
