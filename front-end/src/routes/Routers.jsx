@@ -18,7 +18,7 @@ import { Routes, Route } from 'react-router-dom';
 import DashboardAdmin from '../pages/Admin/pages/Dashboard';
 import ManageAccountAdmin from '../pages/Admin/pages/MangeAccount';
 import ManageDoctorAdmin from '../pages/Admin/pages/ManageDoctor';
-import ManageAppointmentAdmin from '../pages/Admin/pages/ManageAppointment';
+import ManageDoctorCalendar from '../pages/Admin/pages/ManageDoctorCalendar';
 import useGetProfile from '../hooks/useInstanceData';
 import SuperAdmin from '../pages/Admin/pages/SuperAdmin';
 import HealthCheckUp from '../pages/Admin/pages/HealthCheckUp';
@@ -27,6 +27,7 @@ import Profile from '../pages/Admin/pages/Profile';
 import Achievements from '../pages/Achievement';
 import MangeAchievement from '../pages/Admin/pages/MangeAchievement';
 import AchievementDetail from '../pages/Doctors/AchievementDetails';
+import ManageAppointment from '../pages/Admin/pages/ManageAppointment';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
@@ -108,10 +109,18 @@ const Routers = () => {
         }
       />
       <Route
+        path="/admin/calendar"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ManageDoctorCalendar />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/appointment"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <ManageAppointmentAdmin />
+            <ManageAppointment />
           </ProtectedRoute>
         }
       />

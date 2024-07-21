@@ -8,7 +8,7 @@ const options = {
     position: 'top',
     horizontalAlign: 'left',
   },
-  colors: ['#3056D3', '#ff4560', '#4CAF50'],
+  colors: ['#3056D3', '#ff4560', '#4CAF50'], // Colors for pending, canceled, approved
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     height: 335,
@@ -25,7 +25,6 @@ const options = {
       show: false,
     },
   },
-
   stroke: {
     width: [2, 2],
     curve: 'straight',
@@ -105,7 +104,6 @@ const ChartFour = ({ clinic, booking }) => {
   };
 
   useEffect(() => {
-    // Chọn nút đầu tiên
     if (clinic.length > 0) {
       if (selectedClinic === null) {
         setSelectedClinic(0);
@@ -125,13 +123,14 @@ const ChartFour = ({ clinic, booking }) => {
           return acc;
         }, {});
 
+        const statusOrder = ['pending', 'cancelled', 'approved'];
         const capitalizeFirstLetter = (string) => {
           return string.charAt(0).toUpperCase() + string.slice(1);
         };
 
-        const series = Object.keys(statusCounts).map((status) => ({
+        const series = statusOrder.map((status) => ({
           name: capitalizeFirstLetter(status),
-          data: options.xaxis.categories.map((month) => statusCounts[status][month] || 0),
+          data: options.xaxis.categories.map((month) => statusCounts[status]?.[month] || 0),
         }));
 
         const maxValue = Math.max(...series.flatMap((s) => s.data));
@@ -143,6 +142,7 @@ const ChartFour = ({ clinic, booking }) => {
 
   const currentYear = moment().year();
   const years = [currentYear, currentYear - 1, currentYear - 2];
+
   return (
     <div className="sm:px-8 col-span-12 rounded-xl border border-stroke bg-white px-5 pb-1 pt-5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
       <div className="mb-4 flex justify-between gap-4 sm:flex">
