@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import instance from '../../../utils/http';
 import { toast } from 'react-toastify';
 import { getToken } from '../../../config';
+import convertTime from '../../../utils/convertTime';
 
 const MyBookings = () => {
   const token = getToken();
@@ -16,7 +17,7 @@ const MyBookings = () => {
     error,
   } = useGetBookings('users/appointments/my-appointments');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  console.log(appointment);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const handleCancel = async (id) => {
@@ -101,16 +102,17 @@ const MyBookings = () => {
                   <div className="text-center">
                     <p>{formatDate(item.timeSlot.date)}</p>
                     <p>
-                      {item.timeSlot.startingTime} - {item.timeSlot.endingTime}
+                      {convertTime(item.timeSlot.startingTime)} -{' '}
+                      {convertTime(item.timeSlot.endingTime)}
                     </p>
                   </div>
                 </td>
                 <td className="py-4">
                   <button
-                    className="px-2 py-1 border rounded-2xl bg-red-500 text-white hover:bg-red-400"
+                    className="px-2 py-1 border rounded-2xl bg-purple-400 text-white hover:bg-purple-200"
                     onClick={openModal}
                   >
-                    Cancel
+                    Detail
                   </button>
                 </td>
                 <Modal
@@ -120,20 +122,86 @@ const MyBookings = () => {
                   ariaHideApp={false}
                   style={{
                     overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
-                    content: { inset: '50% auto auto 50%', transform: 'translate(-50%, -50%)' },
+                    content: {
+                      inset: '50% auto auto 50%',
+                      transform: 'translate(-50%, -50%)',
+                    },
                   }}
                 >
-                  <h2 className="text-xl mb-4">Are you sure you want to cancel?</h2>
-                  <div className="flex justify-end">
+                  <h2 className="text-xl mb-4 text-center font-bold">Appointment Details</h2>
+                  <div className="flex justify-center items-center gap-x-10">
+                    <img src={item?.doctor.photo} alt="" className="w-[100px] rounded-lg" />
+                    <div>
+                      <h3>Dr.{item?.doctor.name}</h3>
+                      <h3 className="font-bold">{item.ticketPrice}$</h3>
+                    </div>
+                  </div>
+                  <div className="mt-7 flex gap-x-5 items-center justify-around">
+                    <div className="flex items-center">
+                      <p className="font-bold">Payment method:</p>
+                      <p className="capitalize ml-2 rounded-xl text-white p-2 bg-green-500">
+                        {item?.payment.method}
+                      </p>
+                    </div>
+                    <div>
+                      {item.status === 'pending' ? (
+                        <div className="flex items-center">
+                          <p className="font-bold">Status:</p>
+                          <p className="ml-2 rounded-xl bg-blue-500 text-center text-white p-2">
+                            Pending
+                          </p>
+                        </div>
+                      ) : item.status === 'cancelled' ? (
+                        <div className="flex items-center">
+                          <p className="font-bold">Status:</p>
+                          <p className="ml-2 rounded-xl bg-red-500 text-center text-white p-2">
+                            Cancelled
+                          </p>
+                        </div>
+                      ) : item.status === 'approved' ? (
+                        <div className="flex items-center">
+                          <p className="font-bold">Status:</p>
+                          <p className="ml-2 rounded-xl bg-green-500 text-center text-white p-2">
+                            Approved
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="mt-7 flex items-center gap-x-3">
+                    <h3 className="font-bold">Address:</h3>
+                    {item.clinic.name === 'HealMeet' ? (
+                      <p>
+                        {item.clinic.name} - {item.clinic.location}
+                      </p>
+                    ) : (
+                      <p>
+                        {item.clinic.name} - {item.userData.address}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-7">
+                    <div className="text-center">
+                      <h3 className="font-bold">Time</h3>
+                      <p>{formatDate(item.timeSlot.date)}</p>
+                      <p>
+                        {item.timeSlot.startingTime} - {item.timeSlot.endingTime}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end mt-7">
                     <button className="px-4 py-2 bg-gray-300 rounded mr-2" onClick={closeModal}>
-                      No
+                      Exit
                     </button>
-                    <button
-                      className="px-4 py-2 bg-red-500 text-white rounded"
-                      onClick={() => handleCancel(item._id)}
-                    >
-                      Yes
-                    </button>
+                    {item.status === 'pending' && (
+                      <button
+                        className="px-4 py-2 bg-red-500 text-white rounded"
+                        onClick={() => handleCancel(item._id)}
+                      >
+                        Cancel
+                      </button>
+                    )}
                   </div>
                 </Modal>
               </tr>

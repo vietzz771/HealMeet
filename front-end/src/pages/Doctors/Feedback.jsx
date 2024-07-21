@@ -1,6 +1,6 @@
 import { formatDate } from '../../utils/formatDate';
 import { AiFillStar } from 'react-icons/ai';
-
+import avatar from '../../assets/images/defaultAvatar.jpg';
 import { useState } from 'react';
 import FeedbackForm from './FeedbackForm';
 
@@ -17,7 +17,11 @@ const Feedback = ({ reviews, totalRating, refetch }) => {
           <div key={index} className="flex justify-between gap-10 mb-[30px]">
             <div className="flex gap-3">
               <figure className="w-10 h-10 rounded-full">
-                <img className="w-full" src={review?.user?.photo} alt="" />
+                {review?.user?.photo ? (
+                  <img className="w-full rounded-full" src={review?.user?.photo} alt="" />
+                ) : (
+                  <img className="w-full rounded-full" src={avatar} alt="" />
+                )}
               </figure>
               <div>
                 <h5 className="tet-[16px] leading-6 text-primaryColor font-bold">

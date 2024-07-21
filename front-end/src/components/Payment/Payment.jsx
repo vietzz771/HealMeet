@@ -12,15 +12,17 @@ const Payment = () => {
     setFormData((prevData) => ({ ...prevData, payment: { method, status } }));
   };
   const [userFormData, setUserFormData] = useState({
-    name: '',
-    email: '',
-    phone: null,
-    address: '',
+    name: user.name || '',
+    email: user?.email || '',
+    phone: user?.phone || null,
+    address: user?.address || '',
   });
   useEffect(() => {
     setUserFormData({
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      address: user.address,
     });
     setFormData((prevData) => ({
       ...prevData,
