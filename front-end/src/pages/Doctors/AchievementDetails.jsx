@@ -1,47 +1,88 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import userImg from '../../assets/images/defaultAvatar.jpg'; // Default avatar, replace if needed
 
 const AchievementDetail = () => {
-    const { id } = useParams();
-    const [achievement, setAchievement] = useState(null);
+  const { id } = useParams();
+  const [achievement, setAchievement] = useState(null);
 
-    useEffect(() => {
-        axios.get(`http://localhost:5000/api/achievements/${id}`)
-            .then(response => setAchievement(response.data))
-            .catch(error => console.error('Error fetching achievement details:', error));
-    }, [id]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/achievements/${id}`)
+      .then((response) => setAchievement(response.data))
+      .catch((error) => console.error('Error fetching achievement details:', error));
+  }, [id]);
 
-    if (!achievement) {
-        return <p>Loading...</p>;
-    }
+  if (!achievement) {
+    return <p className="text-center text-gray-500 dark:text-gray-400">Loading...</p>;
+  }
 
-    // Split the description into paragraphs
-    const descriptionParagraphs = achievement.description.split('\n').map((text, index) => (
-        <p key={index} className="mt-2 text-lg text-gray-500">{text}</p>
-    ));
+  // Split the description into paragraphs
+  const descriptionParagraphs = achievement.description.split('\n').map((text, index) => (
+    <p key={index} className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+      {text}
+    </p>
+  ));
 
-    return (
-        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <div id="about" className="relative bg-white overflow-hidden mt-16">
-                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center">
-                    <div className="lg:w-1/2">
-                        <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                            <div className="sm:text-center lg:text-left">
-                                <h2 className="my-6 text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
-                                    {achievement.title}
-                                </h2>
-                                {descriptionParagraphs}
-                            </div>
-                        </main>
-                    </div>
-                    <div className="lg:w-1/2">
-                        <img className="h-56 w-full object-cover object-top sm:h-72 md:h-96 lg:w-full lg:h-full" src={achievement.image} alt={achievement.title} />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const formattedDate = formatDate(achievement.date);
+
+  return (
+    <main className="pt-12 pb-16 lg:pt-16 lg:pb-24 bg-gray-100 dark:bg-gray-900 antialiased">
+      <div className="px-4 mx-auto max-w-screen-xl">
+        <article className="w-full max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          <header className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <address className="flex items-center mb-6">
+              <img
+                className="mr-4 w-16 h-16 rounded-full"
+                src={userImg} // Replace with dynamic author image if available
+                alt={achievement.author || 'Author'}
+              />
+              <div>
+                <a
+                  href="#"
+                  rel="author"
+                  className="text-xl font-bold text-gray-900 dark:text-white"
+                >
+                  {achievement.author || 'Author Name'}
+                </a>
+
+                <p className="text-base text-gray-600 dark:text-gray-400">
+                  <time dateTime={achievement.date} title={formattedDate}>
+                    {formattedDate}
+                  </time>
+                </p>
+              </div>
+            </address>
+            <h1 className="text-3xl font-extrabold leading-tight text-gray-900 dark:text-white mb-4">
+              {achievement.title}
+            </h1>
+          </header>
+          <div className="p-6">
+            <div className="prose dark:prose-invert">{descriptionParagraphs}</div>
+            {achievement.image && (
+              <figure className="mt-6">
+                <img
+                  src={achievement.image}
+                  alt={achievement.title}
+                  className="w-full object-cover object-center h-72 sm:h-96"
+                />
+                <figcaption className="mt-2 text-center text-gray-500 dark:text-gray-400">
+                  {achievement.imageCaption || 'HealMeet Hospital'}
+                </figcaption>
+              </figure>
+            )}
+          </div>
+        </article>
+      </div>
+    </main>
+  );
 };
 
 export default AchievementDetail;
