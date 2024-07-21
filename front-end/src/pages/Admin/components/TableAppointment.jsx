@@ -7,6 +7,32 @@ function TableAppointment({ doctors }) {
   const [itemsPerPage] = useState(5);
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
 
+  // const [doctors, setDoctors] = useState([]);
+  // const [isLoadingData, setIsLoadingData] = useState(false);
+
+  // const fetchDoctors = async () => {
+  //   setIsLoadingData(true);
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const response = await axios.get('http://localhost:5000/api/doctors', {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       params: {
+  //         page: currentPage,
+  //         limit: itemsPerPage,
+  //       },
+  //     });
+  //     setTimeout(() => {
+  //       setDoctors(response.data.data);
+  //       setIsLoadingData(false);
+  //     }, 500);
+  //   } catch (error) {
+  //     console.error('There was an error fetching the doctors!', error);
+  //     setIsLoadingData(false);
+  //   }
+  // };
+
   useEffect(() => {
     // fetchDoctors();
   }, [currentPage]);
@@ -59,6 +85,12 @@ function TableAppointment({ doctors }) {
   return (
     <div className="my-8">
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        {/* {isLoadingData ? (
+            <div className="flex items-center space-x-2">
+              <FaSpinner className="animate-spin text-blue-500" />
+              <span>Loading...</span>
+            </div>
+          ) : ( */}
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>

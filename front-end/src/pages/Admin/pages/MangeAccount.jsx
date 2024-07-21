@@ -95,10 +95,8 @@ function ManageAccount() {
       }
     });
   };
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -163,7 +161,7 @@ function ManageAccount() {
               type="text"
               id="table-search-users"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search for name or role"
+              placeholder="Search for users"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

@@ -95,10 +95,8 @@ function ManageDoctor() {
       }
     });
   };
-  const filteredDoctors = doctors.filter(
-    (doctor) =>
-      doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      doctor.specialization.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -163,7 +161,7 @@ function ManageDoctor() {
               type="text"
               id="table-search-doctors"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search for name or specialization"
+              placeholder="Search for doctor"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
