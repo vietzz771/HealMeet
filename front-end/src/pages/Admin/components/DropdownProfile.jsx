@@ -4,6 +4,7 @@ import Transition from '../utils/Transition';
 import { authContext } from '../../../context/authContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import avatar from '../../../assets/images/defaultAvatar.jpg';
 
 function DropdownProfile({
   // eslint-disable-next-line react/prop-types
@@ -59,7 +60,7 @@ function DropdownProfile({
             width="32"
             height="32"
             alt={'Admin'}
-            src={users.photo}
+            src={users?.photo || avatar}
           />
         )}
         <div className="flex items-center truncate">

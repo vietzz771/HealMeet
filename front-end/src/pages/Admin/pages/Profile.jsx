@@ -137,16 +137,20 @@ const Profile = ({ user }) => {
             </label>
           </div>
           <div className="mb-5 flex items-center gap-3">
-            {formData.photo && (
+            {formData?.photo ? (
               <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
                 {imgLoading && <Loading />}
                 {!imgLoading && (
                   <img
-                    src={formData.photo ? formData.photo : userImg}
+                    src={formData?.photo ? formData.photo : userImg}
                     alt=""
                     className="w-full rounded-full"
                   />
                 )}
+              </figure>
+            ) : (
+              <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
+                <img src={userImg} alt="" className="w-full rounded-full" />
               </figure>
             )}
             <div className="relative w-[130px] h-[50px]">
