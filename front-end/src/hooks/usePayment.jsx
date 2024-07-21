@@ -9,13 +9,30 @@ const usePayment = () => {
   const { formData, setFormData, currentStep, setCurrentStep } = useContext(PaymentContext);
 
   const handleNext = async () => {
+    if (currentStep === 1) {
+      if (!formData.timeSlot) {
+        toast.error('Please select a time for appointment!!!!');
+        return;
+      }
+    }
+
+    if (currentStep === 2) {
+      if (!formData.userData.phone) {
+        toast.error('Empty phone number!!!');
+        return;
+      }
+      if (!formData.userData.address || formData.userData.address.trim() == '') {
+        toast.error('Empty address!!!!!!');
+        return;
+      }
+    }
+
     if (currentStep === 2 && formData.payment.method == 'cash') {
       try {
         const res = await instance.post('bookings', formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const { message } = await res.data;
-        console.log(res);
         toast.success(message);
       } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;

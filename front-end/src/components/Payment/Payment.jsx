@@ -24,6 +24,8 @@ const Payment = () => {
     });
     setFormData((prevData) => ({
       ...prevData,
+      user: user._id,
+      userData: userFormData,
       payment: { method: selectedPayment, status: 'completed' },
     }));
   }, [user, setFormData, selectedPayment]);
@@ -32,7 +34,6 @@ const Payment = () => {
     setUserFormData({ ...userFormData, [e.target.name]: e.target.value });
     setFormData((prevData) => ({
       ...prevData,
-      user: user._id,
       userData: {
         ...userFormData,
         [e.target.name]: e.target.value,

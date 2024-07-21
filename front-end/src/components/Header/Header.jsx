@@ -46,7 +46,6 @@ const Header = () => {
       headerRef.current.classList.remove('sticky__header');
     }
   }, []);
-  console.log('user', user);
   const toggleMenu = () => menuRef.current.classList.toggle('sticky__menu');
 
   useEffect(() => {

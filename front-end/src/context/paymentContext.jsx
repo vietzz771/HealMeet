@@ -7,7 +7,6 @@ export const PaymentContext = createContext();
 
 const PaymentProvider = ({ children }) => {
   const { data: user } = useGetProfile('users/profile/me');
-  console.log(user);
   const [formData, setFormData] = useState({});
   const [currentStep, setCurrentStep] = useState(1);
   const { id } = useParams();
@@ -20,7 +19,6 @@ const PaymentProvider = ({ children }) => {
       ticketPrice: doctor?.ticketPrice,
     }));
   }, [doctor]);
-  console.log(formData);
   return (
     <PaymentContext.Provider
       value={{

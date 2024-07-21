@@ -9,12 +9,20 @@ export const getCheckoutSession = async (req, res) => {
     const user = await User.findById(req.userId);
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+    const customer = await stripe.customers.create({
+      email: user.email,
+      metadata: {
+        userId: req.userId,
+        box: JSON.stringify(req.body),
+      },
+    });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      success_url: `http://localhost:5173/checkout-success`,
-      cancel_url: `${req.protocol}://${req.get("host")}/doctors/${doctor.id}`,
-      customer_email: user.email,
+      success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      cancel_url: `${process.env.CLIENT_URL}/checkout-failed`,
+      customer: customer.id,
       client_reference_id: req.params.doctorId,
       line_items: [
         {
@@ -31,19 +39,14 @@ export const getCheckoutSession = async (req, res) => {
         },
       ],
     });
-    const booking = new Booking({
-      doctor: doctor._id,
-      user: user._id,
-      ticketPrice: doctor.ticketPrice,
-      session: session.id,
-    });
-    await booking.save();
+
     res.status(200).json({ success: true, message: "Successfully paid", session });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error creating checkout session" });
+    console.error("Error creating checkout session:", error); // Log the error
+    res.status(500).json({ success: false, message: "Error creating checkout session", error: error.message });
   }
 };
-// Tạo booking mới
+
 export const createBooking = async (req, res) => {
   const newBooking = new Booking(req.body);
   try {
@@ -61,7 +64,6 @@ export const createBooking = async (req, res) => {
   }
 };
 
-// Lấy tất cả bookings
 export const getAllBooking = async (req, res) => {
   try {
     const bookings = await Booking.find().populate("doctor user clinic");
@@ -71,7 +73,6 @@ export const getAllBooking = async (req, res) => {
   }
 };
 
-// Lấy booking theo ID
 export const getBookingById = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id).populate("doctor user clinic");
@@ -84,7 +85,6 @@ export const getBookingById = async (req, res) => {
   }
 };
 
-// Cập nhật booking
 export const updateBooking = async (req, res) => {
   try {
     const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
