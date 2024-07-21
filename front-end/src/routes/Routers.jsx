@@ -11,6 +11,7 @@ import MyAccount from '../components/Dashboard/User/MyAccount';
 import Dashboard from '../components/Dashboard/Doctor/Dashboard';
 import PaymentFormWrapper from '../pages/PaymentFormWrapper';
 import Success from '../pages/Success';
+import Error from '../pages/Error';
 
 import ProtectedRoute from './ProtectedRoute';
 
@@ -31,7 +32,6 @@ import ManageAppointment from '../pages/Admin/pages/ManageAppointment';
 
 const Routers = () => {
   const { data: userData } = useGetProfile('users/profile/me');
-  // console.log('userdata', userData)
 
   return (
     <Routes>
@@ -50,6 +50,7 @@ const Routers = () => {
       <Route path="/blogs/:id" element={<AchievementDetail />} />
 
       <Route path="/checkout-success" element={<Success />} />
+      <Route path="/checkout-failed" element={<Error />} />
       <Route path="/payment/:id" element={<PaymentFormWrapper />} />
       <Route
         path="/users/profile/me"
