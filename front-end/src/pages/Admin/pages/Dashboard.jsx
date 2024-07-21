@@ -1,10 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 import AdminLayout from '../layout/AdminLayout';
 import CardDataStats from '../components/CardDataStats';
+import ChartOne from '../charts/ChartOne';
+import ChartTwo from '../charts/ChartTwo';
+import { FaUsers } from 'react-icons/fa';
+import { RiCalendarScheduleLine } from 'react-icons/ri';
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUsers(response.data.data);
+    } catch (error) {
+      console.error('There was an error fetching the users!', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, [users]);
 
   return (
     <AdminLayout sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
@@ -12,10 +36,22 @@ function Dashboard() {
         {/* Welcome banner */}
         <WelcomeBanner />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          <CardDataStats count="100" label="Users" percentage="+30%" link="/admin/account" />
-          <CardDataStats count="100" label="Companies" percentage="+30%" link="/dierenartsen" />
-          <CardDataStats count="100" label="Companies" percentage="+30%" link="/dierenartsen" />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+          <CardDataStats title="Total Account" total={users.length} rate="+3">
+            <FaUsers size={25} />
+          </CardDataStats>
+          <CardDataStats title="Appointment Today" total={0} rate="+3">
+            <RiCalendarScheduleLine size={25} />
+          </CardDataStats>
+        </div>
+
+        <div className="grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5 mt-4 md:mt-6 2xl:mt-7.5">
+          <div className="col-span-12 lg:col-span-4">
+            <ChartOne users={users} />
+          </div>
+          <div className="col-span-12 lg:col-span-8">
+            <ChartTwo users={users} />
+          </div>
         </div>
       </div>
     </AdminLayout>

@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
+// import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
+// import { LuUpload } from 'react-icons/lu';
 
-function AddUserModal({ isOpen, onClose }) {
+function AddUserModal({ isOpen, onClose, onAddSuccess }) {
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -12,9 +14,11 @@ function AddUserModal({ isOpen, onClose }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('patient');
   const [gender, setGender] = useState('male');
-  const [birthday, setBirthday] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [typeBlood, setTypeBlood] = useState('');
+  // const [photo, setPhoto] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
 
   if (!isOpen) return null;
@@ -22,6 +26,10 @@ function AddUserModal({ isOpen, onClose }) {
   const handleSaveChanges = async () => {
     setIsLoading(true);
     try {
+      if (password !== confirmPassword) {
+        throw new Error("Password and confirm password don't match");
+      }
+
       const userData = {
         name,
         email,
@@ -29,21 +37,37 @@ function AddUserModal({ isOpen, onClose }) {
         username,
         role,
         gender,
-        birthday,
+        typeBlood,
         phone,
         address,
+        // photo,
       };
 
       const response = await axios.post('http://localhost:5000/api/auth/register', userData);
       console.log('User registration successful:', response.data);
+      onAddSuccess();
       onClose();
     } catch (error) {
       console.error('Error registering user:', error);
+      console.log(error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // const handleFileInputChange = async (e) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const file = e.target.files[0];
+  //     const data = await uploadImageToCloudinary(file);
+  //     console.log(data);
+  //     setPhoto(data?.url);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   return (
     <div>
       {/* Main modal */}
@@ -72,7 +96,7 @@ function AddUserModal({ isOpen, onClose }) {
               {/* Modal body */}
               <form className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
-                  <div className="col-span-2">
+                  <div className="col-span-2 sm:col-span-1">
                     <label
                       htmlFor="username"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -89,6 +113,26 @@ function AddUserModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
+
+                  <div className="col-span-2 sm:col-span-1">
+                    {' '}
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+
                   <div className="col-span-2 sm:col-span-1">
                     <label
                       htmlFor="password"
@@ -123,23 +167,7 @@ function AddUserModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
-                  <div className="col-span-2">
-                    <label
-                      htmlFor="name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
+
                   <div className="col-span-1">
                     <label
                       htmlFor="phone"
@@ -157,24 +185,6 @@ function AddUserModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
-                  <div className="col-span-1">
-                    <label
-                      htmlFor="address"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      name="address"
-                      id="address"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      required
-                    />
-                  </div>
-
                   <div className="col-span-2 sm:col-span-1">
                     <label
                       htmlFor="email"
@@ -192,6 +202,24 @@ function AddUserModal({ isOpen, onClose }) {
                       required
                     />
                   </div>
+                  <div className="col-span-1">
+                    <label
+                      htmlFor="typeBlood"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Type Blood
+                    </label>
+                    <input
+                      type="text"
+                      name="typeBlood"
+                      id="typeBlood"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      value={typeBlood}
+                      onChange={(e) => setTypeBlood(e.target.value)}
+                      required
+                    />
+                  </div>
+
                   <div className="col-span-2 sm:col-span-1">
                     <label
                       htmlFor="role"
@@ -206,7 +234,6 @@ function AddUserModal({ isOpen, onClose }) {
                       onChange={(e) => setRole(e.target.value)}
                     >
                       <option value="patient">Patient</option>
-                      <option value="doctor">Doctor</option>
                     </select>
                   </div>
                   <div className="col-span-2 sm:col-span-1">
@@ -224,25 +251,34 @@ function AddUserModal({ isOpen, onClose }) {
                     >
                       <option value="male">Male</option>
                       <option value="female">Female</option>
+                      <option value="other">Other</option>
                     </select>
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label
-                      htmlFor="birthday"
+                      htmlFor="address"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Birthday
+                      Address
                     </label>
                     <input
-                      type="date"
-                      name="birthday"
-                      id="birthday"
+                      type="text"
+                      name="address"
+                      id="address"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      value={birthday}
-                      onChange={(e) => setBirthday(e.target.value)}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                       required
                     />
                   </div>
+                  {/* <div className=" col-span-2 flex items-center gap-3">
+                    {photo && (
+                      <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
+                        {isLoading && <FaSpinner />}
+                        {!isLoading && <img src={photo} alt="" className="w-full rounded-full" />}
+                      </figure>
+                    )}
+                  </div> */}
                 </div>
                 <div className="flex items-center justify-between">
                   {isLoading ? (

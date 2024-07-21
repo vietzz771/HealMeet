@@ -4,7 +4,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { useState } from 'react';
 import FeedbackForm from './FeedbackForm';
 
-const Feedback = ({ reviews, totalRating }) => {
+const Feedback = ({ reviews, totalRating, refetch }) => {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
 
   return (
@@ -44,7 +44,7 @@ const Feedback = ({ reviews, totalRating }) => {
           </button>
         </div>
       )}
-      {showFeedbackForm && <FeedbackForm />}
+      {showFeedbackForm && <FeedbackForm refetch={refetch} />}
     </div>
   );
 };

@@ -78,7 +78,11 @@ export const getUserProfile = async (req, res) => {
       return res.status(404).json({ success: false, message: "User not found" });
     }
     const { password, ...rest } = user._doc;
-    res.status(200).json({ success: true, message: "Profile info is getting", data: { ...rest } });
+    res.status(200).json({
+      success: true,
+      message: "Profile info is getting",
+      data: { ...rest },
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Something went wrong, can't get" });
   }
@@ -87,9 +91,11 @@ export const getUserProfile = async (req, res) => {
 export const getMyAppointment = async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.userId });
-    const doctorIds = bookings.map((el) => el.doctor.id);
-    const doctors = await Doctor.find({ _id: { $in: doctorIds } }).select("-password");
-    res.status(200).json({ success: true, message: "Appointment are getting", data: doctors });
+    res.status(200).json({
+      success: true,
+      message: "Appointment are getting",
+      data: bookings,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Something went wrong, can't get" });
   }
