@@ -162,63 +162,86 @@ function ManageAchievement() {
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3">Title</th>
-                  <th scope="col" className="px-6 py-3">Author</th>
-                  <th scope="col" className="px-6 py-3">Content</th>
-                  <th scope="col" className="px-6 py-3">Date</th>
-                  <th scope="col" className="px-6 py-3">Description</th>
-                  <th scope="col" className="px-6 py-3">Image</th>
-                  <th scope="col" className="px-6 py-3">Action</th>
+                  <th scope="col" className="px-6 py-3">
+                    Title
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Author
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Content
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Date
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Description
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Image
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
                   <th scope="col" className="px-6 py-3"></th>
-
                 </tr>
               </thead>
               <tbody>
-                {filteredAchievements.slice(indexOfFirstItem, indexOfLastItem).map((achievement) => (
-                  <tr key={achievement._id} className="bg-white border-b hover:bg-gray-50">
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {achievement.title}
-                    </th>
-                    <td className="px-6 py-4">{achievement.author}</td>
-                    <td className="px-6 py-4">
-                      {expandedAchievement === achievement._id ? achievement.content : truncateText(achievement.content, 50)}
-                      {achievement.content.length > 50 && (
-                        <button className="text-blue-600 hover:underline ml-2" onClick={() => setExpandedAchievement(expandedAchievement === achievement._id ? null : achievement._id)}>
-                          {expandedAchievement === achievement._id ? 'Show less' : 'Show more'}
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">{new Date(achievement.date).toLocaleDateString()}</td>
-                    <td className="px-6 py-4">
-                      {expandedAchievement === achievement._id ? achievement.description : truncateText(achievement.description, 50)}
-                      {achievement.description.length > 50 && (
-                        <button className="text-blue-600 hover:underline ml-2" onClick={() => setExpandedAchievement(expandedAchievement === achievement._id ? null : achievement._id)}>
-                          {expandedAchievement === achievement._id ? 'Show less' : 'Show more'}
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <img className="rounded-full w-20 h-20" src={achievement.image} alt="image description" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <button className="text-blue-600 hover:underline" onClick={() => editAchievement(achievement._id, true)}>
-                        <FaRegEdit className="mr-1" />
-                        Edit
-                      </button>
-
-                    </td>
-                    <td className="px-6 py-4">
-
-                      <button className="text-red-600 hover:underline ml-4" onClick={() => confirmDeleteAchievement(achievement._id)}>
-                        <FaRegTrashAlt className="mr-1" />
-                        Delete
-                      </button>
-                    </td>
-
-                  </tr>
-                ))}
-
-
+                {filteredAchievements
+                  .slice(indexOfFirstItem, indexOfLastItem)
+                  .map((achievement) => (
+                    <tr key={achievement._id} className="bg-white border-b hover:bg-gray-50">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        {achievement.title}
+                      </th>
+                      <td className="px-6 py-4">{achievement.author}</td>
+                      <td className="px-6 py-4">
+                        {expandedAchievement === achievement._id
+                          ? achievement.content
+                          : truncateText(achievement.content, 50)}
+                        {achievement.content.length > 50 && (
+                          <button
+                            className="text-blue-600 hover:underline ml-2"
+                            onClick={() =>
+                              setExpandedAchievement(
+                                expandedAchievement === achievement._id ? null : achievement._id,
+                              )
+                            }
+                          >
+                            {expandedAchievement === achievement._id ? 'Show less' : 'Show more'}
+                          </button>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        {new Date(achievement.date).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4">
+                        {expandedAchievement === achievement._id
+                          ? achievement.description
+                          : truncateText(achievement.description, 50)}
+                        {achievement.description.length > 50 && (
+                          <button
+                            className="text-blue-600 hover:underline ml-2"
+                            onClick={() =>
+                              setExpandedAchievement(
+                                expandedAchievement === achievement._id ? null : achievement._id,
+                              )
+                            }
+                          >
+                            {expandedAchievement === achievement._id ? 'Show less' : 'Show more'}
+                          </button>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <img
+                          className="rounded-full w-20 h-20"
+                          src={achievement.image}
+                          alt="image description"
+                        />
+                      </td>
                       <td className="px-6 py-4">
                         <button
                           className="text-blue-600 hover:underline"
@@ -227,6 +250,8 @@ function ManageAchievement() {
                           <FaRegEdit className="mr-1" />
                           Edit
                         </button>
+                      </td>
+                      <td className="px-6 py-4">
                         <button
                           className="text-red-600 hover:underline ml-4"
                           onClick={() => confirmDeleteAchievement(achievement._id)}
@@ -245,8 +270,9 @@ function ManageAchievement() {
           className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
           aria-label="Table navigation"
         >
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">{`Showing ${indexOfFirstItem + 1
-            }-${indexOfLastItem} of ${achievements.length}`}</span>
+          <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">{`Showing ${
+            indexOfFirstItem + 1
+          }-${indexOfLastItem} of ${achievements.length}`}</span>
           <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
             <li>
               <button
@@ -260,10 +286,11 @@ function ManageAchievement() {
             {Array.from({ length: totalPages }, (_, index) => (
               <li key={index}>
                 <button
-                  className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 dark:border-gray-700 ${currentPage === index + 1
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-gray-500 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white'
-                    }`}
+                  className={`flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 dark:border-gray-700 ${
+                    currentPage === index + 1
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-500 hover:bg-blue-600 hover:text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-600 dark:hover:text-white'
+                  }`}
                   onClick={() => paginate(index + 1)}
                 >
                   {index + 1}

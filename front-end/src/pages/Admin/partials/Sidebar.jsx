@@ -67,7 +67,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     <div>
       {/* Sidebar backdrop (mobile only) */}
       <div
-        className={`flex  absolute z-40 left-0 top-0 h-screen w-72.5 flex-col overflow-y-hidden shrink-0 bg-slate-800 p-3 transition-all  dark:bg-boxdark lg:static lg:translate-x-0 ${
+        className={`flex  absolute z-40 left-0 top-0 h-screen w-72.5 flex-col overflow-y-auto shrink-0 bg-slate-800 p-3 transition-all  dark:bg-boxdark lg:static lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -102,11 +102,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
         {/* Links */}
         {/* Links */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+        <nav className="mt-5 py-2 px-4 lg:mt-5 lg:px-6">
           <div className="space-y-8">
             {/* Pages group */}
             <div>
-              <h3 className="mb-4 ml-4 text-base font-semibold text-bodydark2">MENU</h3>
+              <h3 className="mb-3 ml-4 text-base font-semibold text-bodydark2">MENU</h3>
               <ul className="mt-3">
                 {/* Dashboard */}
                 <SidebarLinkGroup activecondition={pathname === '/admin'}>
@@ -421,8 +421,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </div>
             {/* More group */}
             <div>
-              <h3 className="mb-4 ml-4 text-base font-semibold text-bodydark2">MORE</h3>
-              <ul className="mt-3">
+              <h3 className="ml-4 text-base font-semibold text-bodydark2">MORE</h3>
+              <ul className="mt-1">
                 {/* Authentication */}
                 <SidebarLinkGroup>
                   {(handleClick, open) => {
