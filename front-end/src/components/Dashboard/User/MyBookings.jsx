@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import Loading from '../../Loader/Loading';
 import Error from '../../Error/Error';
 import useGetBookings from '../../../hooks/useInstanceData';
 import { formatDate } from '../../../utils/formatDate';
-import { useState } from 'react';
 import Modal from 'react-modal';
 import instance from '../../../utils/http';
 import { toast } from 'react-toastify';
@@ -15,10 +15,21 @@ const MyBookings = () => {
     data: appointment,
     loading,
     error,
+    refetch,
   } = useGetBookings('users/appointments/my-appointments');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const openModal = (item) => {
+    setSelectedItem(item);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedItem(null);
+    setModalIsOpen(false);
+  };
+
   const handleCancel = async (id) => {
     try {
       const res = await instance.put(
@@ -30,12 +41,14 @@ const MyBookings = () => {
       );
       const { message } = await res.data;
       toast.success(message);
+      refetch();
       closeModal();
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       toast.error(errorMessage);
     }
   };
+
   return (
     <div>
       {loading && <Loading />}
@@ -109,101 +122,11 @@ const MyBookings = () => {
                 <td className="py-4">
                   <button
                     className="px-2 py-1 border rounded-2xl bg-purple-400 text-white hover:bg-purple-200"
-                    onClick={openModal}
+                    onClick={() => openModal(item)}
                   >
                     Detail
                   </button>
                 </td>
-                <Modal
-                  isOpen={modalIsOpen}
-                  onRequestClose={closeModal}
-                  contentLabel="Confirmation Modal"
-                  ariaHideApp={false}
-                  style={{
-                    overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
-                    content: {
-                      inset: '50% auto auto 50%',
-                      transform: 'translate(-50%, -50%)',
-                    },
-                  }}
-                >
-                  <h2 className="text-xl mb-4 text-center font-bold">Appointment Details</h2>
-                  <div className="flex justify-center items-center gap-x-10">
-                    <img src={item?.doctor.photo} alt="" className="w-[100px] rounded-lg" />
-                    <div>
-                      <h3>Dr.{item?.doctor.name}</h3>
-                      <h3 className="font-bold">{item.ticketPrice}$</h3>
-                    </div>
-                  </div>
-                  <div className="mt-7 flex gap-x-5 items-center justify-around">
-                    <div className="flex items-center">
-                      <p className="font-bold">Payment method:</p>
-                      <p className="capitalize ml-2 rounded-xl text-white p-2 bg-green-500">
-                        {item?.payment.method}
-                      </p>
-                    </div>
-                    <div>
-                      {item.status === 'pending' ? (
-                        <div className="flex items-center">
-                          <p className="font-bold">Status:</p>
-                          <p className="ml-2 rounded-xl bg-blue-500 text-center text-white p-2">
-                            Pending
-                          </p>
-                        </div>
-                      ) : item.status === 'cancelled' ? (
-                        <div className="flex items-center">
-                          <p className="font-bold">Status:</p>
-                          <p className="ml-2 rounded-xl bg-red-500 text-center text-white p-2">
-                            Cancelled
-                          </p>
-                        </div>
-                      ) : item.status === 'approved' ? (
-                        <div className="flex items-center">
-                          <p className="font-bold">Status:</p>
-                          <p className="ml-2 rounded-xl bg-green-500 text-center text-white p-2">
-                            Approved
-                          </p>
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                  <div className="mt-7 flex items-center gap-x-3">
-                    <h3 className="font-bold">Address:</h3>
-                    {item.clinic.name === 'HealMeet' ? (
-                      <p>
-                        {item.clinic.name} - {item.clinic.location}
-                      </p>
-                    ) : (
-                      <p>
-                        {item.clinic.name} - {item.userData.address}
-                      </p>
-                    )}
-                  </div>
-                  <div className="mt-7">
-                    <div className="text-center">
-                      <h3 className="font-bold">Time</h3>
-                      <p>{formatDate(item.timeSlot.date)}</p>
-                      <p>
-                        {convertTime(item.timeSlot.startingTime)} -{' '}
-                        {convertTime(item.timeSlot.endingTime)}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end mt-7">
-                    <button className="px-4 py-2 bg-gray-300 rounded mr-2" onClick={closeModal}>
-                      Exit
-                    </button>
-                    {item.status === 'pending' && (
-                      <button
-                        className="px-4 py-2 bg-red-500 text-white rounded"
-                        onClick={() => handleCancel(item._id)}
-                      >
-                        Cancel
-                      </button>
-                    )}
-                  </div>
-                </Modal>
               </tr>
             ))}
           </tbody>
@@ -211,9 +134,97 @@ const MyBookings = () => {
       )}
 
       {!loading && !error && appointment.length === 0 && (
-        <h2 className="mt-5 text-center  leading-7 text-[20px] font-semibold text-primaryColor">
+        <h2 className="mt-5 text-center leading-7 text-[20px] font-semibold text-primaryColor">
           You did not book any doctor yet!
         </h2>
+      )}
+
+      {selectedItem && (
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Confirmation Modal"
+          ariaHideApp={false}
+          style={{
+            overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+            content: {
+              inset: '50% auto auto 50%',
+              transform: 'translate(-50%, -50%)',
+            },
+          }}
+        >
+          <h2 className="text-xl mb-4 text-center font-bold">Appointment Details</h2>
+          <div className="flex justify-center items-center gap-x-10">
+            <img src={selectedItem?.doctor.photo} alt="" className="w-[100px] rounded-lg" />
+            <div>
+              <h3>Dr.{selectedItem?.doctor.name}</h3>
+              <h3 className="font-bold">{selectedItem.ticketPrice}$</h3>
+            </div>
+          </div>
+          <div className="mt-7 flex gap-x-5 items-center justify-around">
+            <div className="flex items-center">
+              <p className="font-bold">Payment method:</p>
+              <p className="capitalize ml-2 rounded-xl text-white p-2 bg-green-500">
+                {selectedItem?.payment.method}
+              </p>
+            </div>
+            <div>
+              {selectedItem.status === 'pending' ? (
+                <div className="flex items-center">
+                  <p className="font-bold">Status:</p>
+                  <p className="ml-2 rounded-xl bg-blue-500 text-center text-white p-2">Pending</p>
+                </div>
+              ) : selectedItem.status === 'cancelled' ? (
+                <div className="flex items-center">
+                  <p className="font-bold">Status:</p>
+                  <p className="ml-2 rounded-xl bg-red-500 text-center text-white p-2">Cancelled</p>
+                </div>
+              ) : selectedItem.status === 'approved' ? (
+                <div className="flex items-center">
+                  <p className="font-bold">Status:</p>
+                  <p className="ml-2 rounded-xl bg-green-500 text-center text-white p-2">
+                    Approved
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className="mt-7 flex items-center gap-x-3">
+            <h3 className="font-bold">Address:</h3>
+            {selectedItem.clinic.name === 'HealMeet' ? (
+              <p>
+                {selectedItem.clinic.name} - {selectedItem.clinic.location}
+              </p>
+            ) : (
+              <p>
+                {selectedItem.clinic.name} - {selectedItem.userData.address}
+              </p>
+            )}
+          </div>
+          <div className="mt-7">
+            <div className="text-center">
+              <h3 className="font-bold">Time</h3>
+              <p>{formatDate(selectedItem.timeSlot.date)}</p>
+              <p>
+                {convertTime(selectedItem.timeSlot.startingTime)} -{' '}
+                {convertTime(selectedItem.timeSlot.endingTime)}
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-end mt-7">
+            <button className="px-4 py-2 bg-gray-300 rounded mr-2" onClick={closeModal}>
+              Exit
+            </button>
+            {selectedItem.status === 'pending' && (
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded"
+                onClick={() => handleCancel(selectedItem._id)}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </Modal>
       )}
     </div>
   );
