@@ -11,6 +11,7 @@ const Achievements = () => {
   useScrollTop();
 
   const [achievements, setAchievements] = useState([]);
+  const [expandedAchievement, setExpandedAchievement] = useState(null);
 
   useEffect(() => {
     // Fetch achievements from the API
@@ -19,6 +20,11 @@ const Achievements = () => {
       .then((response) => setAchievements(response.data.data))
       .catch((error) => console.error('Error fetching achievements:', error));
   }, []);
+
+  const truncateText = (text, length) => {
+    if (text.length <= length) return text;
+    return text.substring(0, length) + '...';
+  };
 
   return (
     <section className="bg-gray-100 dark:bg-gray-900 py-12">
@@ -63,7 +69,21 @@ const Achievements = () => {
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   <Link to={`/blogs/${achievement._id}`}>{achievement.title}</Link>
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{achievement.content}</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  {expandedAchievement === achievement._id
+                    ? achievement.content
+                    : truncateText(achievement.content, 100)}
+                  {achievement.content.length > 100 && (
+                    <button
+                      className="text-primary-600 dark:text-primary-400 hover:underline ml-2"
+                      onClick={() =>
+                        setExpandedAchievement(
+                          expandedAchievement === achievement._id ? null : achievement._id,
+                        )
+                      }
+                    ></button>
+                  )}
+                </p>
                 <div className="flex justify-between items-center">
                   <span className="font-medium dark:text-white">- {achievement.author}</span>
                   <Link

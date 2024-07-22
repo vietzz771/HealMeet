@@ -107,18 +107,6 @@ const Profile = ({ doctor }) => {
     deleteItem('experiences', index);
   };
 
-  const addTimeSlot = (e) => {
-    e.preventDefault();
-    addItem('timeSlots', { day: '', startingTime: '', endingTime: '' });
-  };
-  const handleTimeSlotChange = (e, index) => {
-    handleReusableInputChangeFunc('timeSlots', index, e);
-  };
-  const deleteTimeSlot = (e, index) => {
-    e.preventDefault();
-    deleteItem('timeSlots', index);
-  };
-
   const updateProfileHandler = async (e) => {
     e.preventDefault();
     try {
@@ -370,71 +358,7 @@ const Profile = ({ doctor }) => {
             Add Experience
           </button>
         </div>
-        <div className="mb-5">
-          <p className="form__label">Time Slots*</p>
-          {formData.timeSlots?.map((item, index) => (
-            <div key={index}>
-              <div>
-                <div className="grid grid-cols-2 md:grid-cols-4 mb-[30px] gap-5">
-                  <div>
-                    <p className="form__label">Day*</p>
-                    <select
-                      name="day"
-                      value={item.day}
-                      className="form__input py-3.5"
-                      onChange={(e) => handleTimeSlotChange(e, index)}
-                    >
-                      <option value="">Select</option>
-                      <option value="monday">Monday</option>
-                      <option value="tuesday">Tuesday</option>
-                      <option value="monday">Monday</option>
-                      <option value="wednesday">Wednesday</option>
-                      <option value="thursday">Thursday</option>
-                      <option value="friday">Friday</option>
-                      <option value="saturday">Saturday</option>
-                      <option value="sunday">Sunday</option>
-                    </select>
-                  </div>
-                  <div>
-                    <p className="form__label">Starting Time*</p>
-                    <input
-                      type="time"
-                      name="startingTime"
-                      value={item.startingTime}
-                      className="form__input"
-                      onChange={(e) => handleTimeSlotChange(e, index)}
-                    />
-                  </div>
-                  <div>
-                    <p className="form__label">Ending Time*</p>
-                    <input
-                      type="time"
-                      name="endingTime"
-                      value={item.endingTime}
-                      className="form__input"
-                      onChange={(e) => handleTimeSlotChange(e, index)}
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <button
-                      onClick={(e) => deleteTimeSlot(e, index)}
-                      className="bg-red-600 p-2 rounded-full text-white test-[18px]  cursor-pointer mt-6"
-                    >
-                      <AiOutlineDelete />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
 
-          <button
-            onClick={addTimeSlot}
-            className="bg-[#000] py-2 px-5 rounded text-white h-fit cursor-pointer "
-          >
-            Add TimeSlot
-          </button>
-        </div>
         <div className="mb-5">
           <p className="form__label">About</p>
           <textarea
