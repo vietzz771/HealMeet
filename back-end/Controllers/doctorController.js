@@ -171,3 +171,23 @@ export const getMyAppointment = async (req, res) => {
     return res.status(500).json({ success: false, message: "Something went wrong, can't get" });
   }
 };
+
+export const updateBookingStatus = async (req, res) => {
+  const { id, status } = req.body;
+  console.log(req.body);
+  console.log(status);
+  try {
+    const booking = await Booking.findById(id);
+    if (booking == null) {
+      return res.status(404).json({ message: "Cannot find booking" });
+    }
+    booking.status = status;
+    await booking.save();
+    res.status(200).json({
+      status: true,
+      message: "Booking updated successfully",
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

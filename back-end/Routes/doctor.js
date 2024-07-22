@@ -8,6 +8,7 @@ import {
   getTimeSlotDoctor,
   deleteSlotDoctor,
   getMyAppointment,
+  updateBookingStatus,
 } from "../Controllers/doctorController.js";
 import express from "express";
 import { authenticate, restrict } from "../auth/verifyToken.js";
@@ -28,4 +29,5 @@ router.post("/add-slot", authenticate, restrict(["admin", "doctor"]), createSlot
 router.get("/:id/slots", authenticate, restrict(["admin", "doctor"]), getTimeSlotDoctor);
 router.delete("/:doctorId/delete-slot", authenticate, restrict(["admin", "doctor"]), deleteSlotDoctor);
 router.get("/appointments/my-appointments", authenticate, restrict(["doctor"]), getMyAppointment);
+router.put("/bookings/status", authenticate, restrict(["doctor"]), updateBookingStatus);
 export default router;
