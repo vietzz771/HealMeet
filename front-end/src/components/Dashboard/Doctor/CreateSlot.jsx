@@ -5,6 +5,7 @@ import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { AiOutlineDelete } from 'react-icons/ai';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 function DoctorCreateSlots() {
   const [date, setDate] = useState(new Date());
@@ -34,7 +35,7 @@ function DoctorCreateSlots() {
 
       const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
 
-      const response = await axios.get(`http://localhost:5000/api/doctors/${doctorId}/slots`, {
+      const response = await axios.get(`${SERVER_URL}/api/doctors/${doctorId}/slots`, {
         params: { date: formattedDate },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +75,7 @@ function DoctorCreateSlots() {
       console.log(doctorId);
 
       await axios.post(
-        'http://localhost:5000/api/doctors/add-slot',
+        `${SERVER_URL}/api/doctors/add-slot`,
         {
           doctorId: doctorId,
           date: moment(date).format('YYYY-MM-DD'),
@@ -186,7 +187,7 @@ function DoctorCreateSlots() {
       const doctorId = user._id;
       const slot = availableSlots[index];
 
-      await axios.delete(`http://localhost:5000/api/doctors/${doctorId}/delete-slot`, {
+      await axios.delete(`${SERVER_URL}/api/doctors/${doctorId}/delete-slot`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

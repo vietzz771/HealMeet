@@ -114,3 +114,22 @@ export const cancelBooking = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const updateBookingStatus = async (req, res) => {
+  const { id } = req.body;
+  console.log(req.body);
+  try {
+    const booking = await Booking.findById(id);
+    if (booking == null) {
+      return res.status(404).json({ message: "Cannot find booking" });
+    }
+    // booking.status = status;
+    // await booking.save();
+    res.status(200).json({
+      status: true,
+      message: "Booking updated successfully",
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

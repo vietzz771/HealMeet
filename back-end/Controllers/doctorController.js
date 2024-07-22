@@ -5,11 +5,7 @@ export const updateDoctor = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const updatedDoctor = await Doctor.findByIdAndUpdate(
-      id,
-      { $set: req.body },
-      { new: true }
-    );
+    const updatedDoctor = await Doctor.findByIdAndUpdate(id, { $set: req.body }, { new: true });
     res.status(200).json({
       success: true,
       message: "Successfully updated",
@@ -43,9 +39,7 @@ export const deleteDoctor = async (req, res) => {
 export const getSingleDoctor = async (req, res) => {
   const id = req.params.id;
   try {
-    const doctor = await Doctor.findById(id)
-      .populate("reviews")
-      .select("-password");
+    const doctor = await Doctor.findById(id).populate("reviews").select("-password");
     res.status(200).json({
       success: true,
       message: "Doctor found",
@@ -66,15 +60,10 @@ export const getAllDoctor = async (req, res) => {
     if (query) {
       doctors = await Doctor.find({
         isApproved: "approved",
-        $or: [
-          { name: { $regex: query, $options: "i" } },
-          { specialization: { $regex: query, $options: "i" } },
-        ],
+        $or: [{ name: { $regex: query, $options: "i" } }, { specialization: { $regex: query, $options: "i" } }],
       });
     } else {
-      doctors = await Doctor.find({ isApproved: "approved" }).select(
-        "-password"
-      );
+      doctors = await Doctor.find({ isApproved: "approved" }).select("-password");
     }
     res.status(200).json({
       success: true,
@@ -94,9 +83,7 @@ export const getDoctorProfile = async (req, res) => {
   try {
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Doctor not found" });
+      return res.status(404).json({ success: false, message: "Doctor not found" });
     }
     const { password, ...rest } = doctor._doc;
     const appointments = await Booking.find({ doctor: doctorId });
@@ -106,9 +93,7 @@ export const getDoctorProfile = async (req, res) => {
       data: { ...rest, appointments },
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Something went wrong, can't get" });
+    return res.status(500).json({ success: false, message: "Something went wrong, can't get" });
   }
 };
 
@@ -132,9 +117,7 @@ export const getTimeSlotDoctor = async (req, res) => {
   try {
     const doctor = await Doctor.findById(doctorId).select("timeSlots");
     if (!doctor) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Doctor not found" });
+      return res.status(404).json({ success: false, message: "Doctor not found" });
     }
     res.status(200).json({
       success: true,
@@ -142,9 +125,7 @@ export const getTimeSlotDoctor = async (req, res) => {
       timeSlots: doctor.timeSlots,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error fetching time slots", error });
+    res.status(500).json({ success: false, message: "Error fetching time slots", error });
   }
 };
 export const deleteSlotDoctor = async (req, res) => {
@@ -152,9 +133,7 @@ export const deleteSlotDoctor = async (req, res) => {
 
   // Kiểm tra doctorId có phải là ObjectId hợp lệ không
   if (!mongoose.Types.ObjectId.isValid(doctorId)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid doctorId" });
+    return res.status(400).json({ success: false, message: "Invalid doctorId" });
   }
 
   const { date, startingTime, endingTime } = req.body;
@@ -169,20 +148,26 @@ export const deleteSlotDoctor = async (req, res) => {
 
     // Kiểm tra xem bác sĩ có tồn tại không
     if (!updatedDoctor) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Doctor not found" });
+      return res.status(404).json({ success: false, message: "Doctor not found" });
     }
 
     // Trả về thông báo thành công
-    res
-      .status(200)
-      .json({ success: true, message: "Slot deleted successfully" });
+    res.status(200).json({ success: true, message: "Slot deleted successfully" });
   } catch (error) {
     // Xử lý lỗi và trả về thông báo lỗi
     console.error("Error deleting slot:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to delete slot", error });
+    res.status(500).json({ success: false, message: "Failed to delete slot", error });
+  }
+};
+export const getMyAppointment = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ doctor: req.userId });
+    res.status(200).json({
+      success: true,
+      message: "Appointment are getting",
+      data: bookings,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Something went wrong, can't get" });
   }
 };

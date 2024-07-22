@@ -16,10 +16,12 @@ const Dashboard = () => {
   useDocumentTitle('HealMeet | Profile');
   useScrollTop();
   const { data: doctor, loading, error } = useGetProfile('doctors/profile/me');
+  const { data: appointment } = useGetProfile('doctors/appointments/my-appointments');
+  console.log(appointment);
   const [tab, setTab] = useState('overview');
   return (
     <section>
-      <div className="max-w-[1170px] px-5 mx-auto">
+      <div className="max-w-[1370px] px-5 mx-auto">
         {loading && !error && <Loader />}
         {error && !loading && <Error />}
         {!loading && !error && (
@@ -58,7 +60,9 @@ const Dashboard = () => {
                   </div>
                 )}
                 {tab === 'create' && <CreateSlot doctor={doctor} />}
-                {tab === 'appointments' && <Appointment appointment={doctor.appointment} />}
+                {tab === 'appointments' && (
+                  <Appointment appointment={appointment} loading={loading} error={error} />
+                )}
                 {tab === 'settings' && <Profile doctor={doctor} />}
                 {tab === 'changePassword' && <ChangePassword />}
               </div>

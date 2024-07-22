@@ -7,6 +7,7 @@ import {
   createSlotDoctor,
   getTimeSlotDoctor,
   deleteSlotDoctor,
+  getMyAppointment,
 } from "../Controllers/doctorController.js";
 import express from "express";
 import { authenticate, restrict } from "../auth/verifyToken.js";
@@ -21,34 +22,10 @@ router.use("/:doctorId/reviews", reviewRoute);
 router.get("/:id", getSingleDoctor);
 router.get("/", getAllDoctor);
 router.put("/:id", authenticate, restrict(["doctor", "admin"]), updateDoctor);
-router.delete(
-  "/:id",
-  authenticate,
-  restrict(["doctor", "admin"]),
-  deleteDoctor
-);
-router.get(
-  "/profile/me",
-  authenticate,
-  restrict(["doctor", "admin"]),
-  getDoctorProfile
-);
-router.post(
-  "/add-slot",
-  authenticate,
-  restrict(["admin", "doctor"]),
-  createSlotDoctor
-);
-router.get(
-  "/:id/slots",
-  authenticate,
-  restrict(["admin", "doctor"]),
-  getTimeSlotDoctor
-);
-router.delete(
-  "/:doctorId/delete-slot",
-  authenticate,
-  restrict(["admin", "doctor"]),
-  deleteSlotDoctor
-);
+router.delete("/:id", authenticate, restrict(["doctor", "admin"]), deleteDoctor);
+router.get("/profile/me", authenticate, restrict(["doctor", "admin"]), getDoctorProfile);
+router.post("/add-slot", authenticate, restrict(["admin", "doctor"]), createSlotDoctor);
+router.get("/:id/slots", authenticate, restrict(["admin", "doctor"]), getTimeSlotDoctor);
+router.delete("/:doctorId/delete-slot", authenticate, restrict(["admin", "doctor"]), deleteSlotDoctor);
+router.get("/appointments/my-appointments", authenticate, restrict(["doctor"]), getMyAppointment);
 export default router;
