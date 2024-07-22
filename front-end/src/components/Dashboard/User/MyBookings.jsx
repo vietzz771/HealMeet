@@ -17,7 +17,6 @@ const MyBookings = () => {
     error,
   } = useGetBookings('users/appointments/my-appointments');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  console.log(appointment);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const handleCancel = async (id) => {
@@ -185,7 +184,8 @@ const MyBookings = () => {
                       <h3 className="font-bold">Time</h3>
                       <p>{formatDate(item.timeSlot.date)}</p>
                       <p>
-                        {item.timeSlot.startingTime} - {item.timeSlot.endingTime}
+                        {convertTime(item.timeSlot.startingTime)} -{' '}
+                        {convertTime(item.timeSlot.endingTime)}
                       </p>
                     </div>
                   </div>

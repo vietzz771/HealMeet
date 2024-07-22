@@ -4,6 +4,7 @@ import {
   getBookingById,
   updateBooking,
   cancelBooking,
+  updateBookingStatus,
   getCheckoutSession,
 } from "../Controllers/bookingController.js";
 import Booking from "../models/BookingSchema.js";
@@ -18,6 +19,7 @@ router.get("/:id", authenticate, restrict(["patient", "admin"]), getBookingById)
 router.get("/", getAllBooking);
 router.put("/:id", authenticate, restrict(["admin"]), updateBooking);
 router.put("/", authenticate, restrict(["patient", "admin"]), cancelBooking);
+router.put("/status", authenticate, restrict(["doctor"]), updateBookingStatus);
 router.post("/", authenticate, restrict(["patient", "admin"]), createBooking);
 router.post("/checkout-session/:doctorId", authenticate, restrict(["patient", "admin"]), getCheckoutSession);
 
@@ -48,11 +50,6 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (reques
 
   // handle the event
   if (eventType === "checkout.session.completed") {
-    // const booking = new Booking({
-    //   ...data.box,
-    //   session: data.id,
-    // });
-    // await booking.save();
     stripe.customers
       .retrieve(data.customer, { apiKey: process.env.STRIPE_SECRET_KEY })
       .then((customer) => {
